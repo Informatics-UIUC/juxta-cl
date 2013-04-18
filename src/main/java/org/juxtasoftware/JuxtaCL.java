@@ -1,6 +1,7 @@
 package org.juxtasoftware;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -13,28 +14,47 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  */
 public class JuxtaCL {
-    public static ClassPathXmlApplicationContext context;
+    private ClassPathXmlApplicationContext context;
+    private static Logger LOG = LoggerFactory.getLogger(JuxtaCL.class);
     
     public static int main(String[] args) {
         try {
-            // be sure to use the saxon parser
+            // init parser and logging
             System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-    
-            // initialize application context
-            initApplicationContext();
+            PropertyConfigurator.configure("config/log4j.properties");
+            
+            // create an instance of the juxtaCL
+            JuxtaCL juxtaCl = new JuxtaCL();
+            
+            return 0;
+            
         } catch (Exception e) {
             LoggerFactory.getLogger(JuxtaCL.class).info("JuxtaCL Failed", e);
             return -1;
         }
-        
-        LoggerFactory.getLogger(JuxtaCL.class).info("JuxtaCL Started");
-        return 0;
     }
-
-    private static void initApplicationContext() {
-        PropertyConfigurator.configure("config/log4j.properties");
-        JuxtaCL.context = new ClassPathXmlApplicationContext(new String[]{
+    
+    /**
+     * Create an instance of JuxtaCL and initialize the spring application context
+     */
+    public JuxtaCL() {
+        this.context = new ClassPathXmlApplicationContext(new String[]{
             "applicationContext.xml"});
-        JuxtaCL.context.registerShutdownHook();
+        this.context.registerShutdownHook();
+        LOG.info("JuxtaCL Started");
+        
+    }
+    
+    /**
+     * Compare 2 files and return the change index
+     * 
+     * @param filePath1 Absolute path to test file 1
+     * @param filePath2 Absolute path to test file 2
+     * 
+     * @return Change index
+     */
+    public int compare( String filePath1, String filePath2) {
+        LOG.info("Compare "+filePath1+" vs "+filePath2);
+        return 0;
     }
 }
