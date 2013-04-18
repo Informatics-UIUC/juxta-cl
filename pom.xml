@@ -64,6 +64,13 @@
             <version>2.6</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.mahout.commons</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>2.0-mahout</version>
+        </dependency>
+            
+            
+        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
