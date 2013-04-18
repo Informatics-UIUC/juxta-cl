@@ -1,0 +1,12 @@
+
+===============================================================================
+Juxta Command Line (Juxta CL)
+===============================================================================
+
+Synopsis
+--------
+
+JuxtaCL is a specialized form of Juxta. It is a command-line tool that accepts
+the path to two files a parameters. It will collate them and return their
+change index (degree of difference between the two files).
+
