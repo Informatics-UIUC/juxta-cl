@@ -14,14 +14,57 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Unit test for JuxtaCLTest
+ * Unit test for JuxtaCLTest; high level tests that validate command line 
+ * argument processing and happy day simple text compare
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:/applicationContext.xml"})
 public class JuxtaCLTest {
 
-    @Test void testMissingArgs() {
-        JuxtaCL.main( new String[] {});
+    @Test 
+    public void testMissingComparands() {
+        boolean caughtException = false;
+        try {
+            JuxtaCL.parseArgs(new String[] {""});
+        } catch (Exception e ) {
+            caughtException = true;
+        }
+        assertTrue("Accepted no comparands on command line", caughtException);
+    }
+    
+    @Test 
+    public void testOneComparand() {
+        boolean caughtException = false;
+        try {
+            JuxtaCL.parseArgs(new String[] {"file1"});
+        } catch (Exception e ) {
+            caughtException = true;
+        }
+        assertTrue("Accepted one comparand on command line", caughtException);
+    }
+    
+    @Test 
+    public void testTooManyComparands() {
+        boolean caughtException = false;
+        try {
+            JuxtaCL.parseArgs(new String[] {"file1", "file2", "file3"});
+        } catch (Exception e ) {
+            caughtException = true;
+        }
+        assertTrue("Accepted too many comparands on command line", caughtException);
+    }
+    
+    @Test 
+    public void testInvalidPath() {
+        boolean caughtException = false;
+        try {
+            Configuration config  = JuxtaCL.parseArgs(new String[] {"/tmp/invalid/file.txt", "/tmp/invalid/file.txt"});
+            JuxtaCL juxtaCl = new JuxtaCL( config );
+            juxtaCl.compare();
+        } catch (Exception e ) {
+            caughtException = true;
+        }
+        assertTrue("Accepted invalid file paths", caughtException);
     }
 	 
     @Test
@@ -33,9 +76,24 @@ public class JuxtaCLTest {
         config.addFile(testFile.getPath() );
         
         JuxtaCL juxtaCl = new JuxtaCL( config );
-        int changeIdx = juxtaCl.compare(testFile.getPath(), testFile.getPath());
-        assertTrue(changeIdx == 0);
+        int changeIdx = juxtaCl.compare();
+        assertTrue("Same files have non-zero change index", changeIdx == 0);
     }
+    
+    @Test
+    public void testCompareDifferent() throws IOException {
+        
+        File testFile = resourceToFile("roses.txt");
+        File testFile2 = resourceToFile("roses2.txt");
+        Configuration config = new Configuration();
+        config.addFile(testFile.getPath() );
+        config.addFile(testFile2.getPath() );
+        
+        JuxtaCL juxtaCl = new JuxtaCL( config );
+        int changeIdx = juxtaCl.compare();
+        assertTrue("Different files have zero change index", changeIdx != 0);
+    }
+    
     
     private File resourceToFile(String resourceName) throws IOException {
         InputStream is = getClass().getResourceAsStream("/"+resourceName);

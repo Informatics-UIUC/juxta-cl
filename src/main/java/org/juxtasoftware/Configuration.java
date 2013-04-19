@@ -14,15 +14,21 @@ public class Configuration {
     private List<String> files = new ArrayList<String>();
     private boolean ignorePunctuation = true;
     private boolean ignoreCase = true;
+    private boolean verbose = false;
     private HyphenationFilter hyphenationFilter = HyphenationFilter.INCLUDE_ALL; 
     
     public void addFile(String file) {
         if ( this.files.size() < 2 ) {
             this.files.add(file);
+        } else {
+            throw new RuntimeException("Only 2 files can be accepted");
         }
-        throw new RuntimeException("Only 2 files can be accepted");
     }
     
+    public void setVerbose( boolean val ) {
+        this.verbose = val;
+    }
+   
     public void setIgnorePunctuation( boolean val ) {
         this.ignorePunctuation = val;
     }
@@ -46,8 +52,19 @@ public class Configuration {
     public boolean isIgnoreCase() {
         return this.ignoreCase;
     }
+    
+    public boolean isVerbose() {
+        return this.ignoreCase;
+    }
 
     public HyphenationFilter getHyphenationFilter() {
         return this.hyphenationFilter;
     }
+
+    @Override
+    public String toString() {
+        return "Configuration [files=" + files + ", ignorePunctuation=" + ignorePunctuation + ", ignoreCase="
+            + ignoreCase + ", verbose=" + verbose + ", hyphenationFilter=" + hyphenationFilter + "]";
+    }
+    
 }
