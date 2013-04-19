@@ -10,12 +10,14 @@ import java.util.List;
  */
 public class Configuration {
     public enum HyphenationFilter {INCLUDE_ALL, FILTER_LINEBREAK, FILTER_ALL}
+    public enum Mode {VERSION, HELP, TRANSFORM, TOKENIZE, CHANGE_INDEX};
     
     private List<String> files = new ArrayList<String>();
     private boolean ignorePunctuation = true;
     private boolean ignoreCase = true;
     private boolean verbose = false;
     private HyphenationFilter hyphenationFilter = HyphenationFilter.INCLUDE_ALL; 
+    private Mode mode = Mode.CHANGE_INDEX;
     
     public void addFile(String file) {
         if ( this.files.size() < 2 ) {
@@ -54,11 +56,19 @@ public class Configuration {
     }
     
     public boolean isVerbose() {
-        return this.ignoreCase;
+        return this.verbose;
     }
 
     public HyphenationFilter getHyphenationFilter() {
         return this.hyphenationFilter;
+    }
+    
+    public void setMode( Mode mode ) {
+        this.mode = mode;
+    }
+    
+    public Mode getMode() {
+        return this.mode;
     }
 
     @Override

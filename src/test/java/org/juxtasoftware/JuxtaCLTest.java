@@ -10,6 +10,7 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -20,12 +21,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:/applicationContext.xml"})
 public class JuxtaCLTest {
+    @Autowired JuxtaCL juxtaCL;
 
     @Test 
     public void testMissingComparands() {
         boolean caughtException = false;
         try {
-            JuxtaCL.parseArgs(new String[] {""});
+            this.juxtaCL.parseArgs(new String[] {""});
         } catch (Exception e ) {
             caughtException = true;
         }
@@ -36,7 +38,7 @@ public class JuxtaCLTest {
     public void testOneComparand() {
         boolean caughtException = false;
         try {
-            JuxtaCL.parseArgs(new String[] {"file1"});
+            this.juxtaCL.parseArgs(new String[] {"file1"});
         } catch (Exception e ) {
             caughtException = true;
         }
@@ -47,7 +49,7 @@ public class JuxtaCLTest {
     public void testTooManyComparands() {
         boolean caughtException = false;
         try {
-            JuxtaCL.parseArgs(new String[] {"file1", "file2", "file3"});
+            this.juxtaCL.parseArgs(new String[] {"file1", "file2", "file3"});
         } catch (Exception e ) {
             caughtException = true;
         }
@@ -58,9 +60,8 @@ public class JuxtaCLTest {
     public void testInvalidPath() {
         boolean caughtException = false;
         try {
-            Configuration config  = JuxtaCL.parseArgs(new String[] {"/tmp/invalid/file.txt", "/tmp/invalid/file.txt"});
-            JuxtaCL juxtaCl = new JuxtaCL( config );
-            juxtaCl.compare();
+            this.juxtaCL.parseArgs(new String[] {"/tmp/invalid/file.txt", "/tmp/invalid/file.txt"});
+            this.juxtaCL.execute();
         } catch (Exception e ) {
             caughtException = true;
         }
@@ -75,8 +76,8 @@ public class JuxtaCLTest {
         config.addFile(testFile.getPath() );
         config.addFile(testFile.getPath() );
         
-        JuxtaCL juxtaCl = new JuxtaCL( config );
-        int changeIdx = juxtaCl.compare();
+        this.juxtaCL.setConfig(config);
+        int changeIdx = this.juxtaCL.doComparison();
         assertTrue("Same files have non-zero change index", changeIdx == 0);
     }
     
@@ -89,12 +90,11 @@ public class JuxtaCLTest {
         config.addFile(testFile.getPath() );
         config.addFile(testFile2.getPath() );
         
-        JuxtaCL juxtaCl = new JuxtaCL( config );
-        int changeIdx = juxtaCl.compare();
+        this.juxtaCL.setConfig(config);
+        int changeIdx = this.juxtaCL.doComparison();
         assertTrue("Different files have zero change index", changeIdx != 0);
     }
-    
-    
+   
     private File resourceToFile(String resourceName) throws IOException {
         InputStream is = getClass().getResourceAsStream("/"+resourceName);
         File local = File.createTempFile("resource", "dat");
