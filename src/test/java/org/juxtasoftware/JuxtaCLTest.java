@@ -90,7 +90,6 @@ public class JuxtaCLTest {
         config.addFile(testFile.getPath() );
         config.addFile(testFile2.getPath() );
         
-        System.out.println("test");
         this.juxtaCL.setConfig(config);
         int changeIdx = this.juxtaCL.doComparison();
         assertTrue("Different files have zero change index", changeIdx != 0);
