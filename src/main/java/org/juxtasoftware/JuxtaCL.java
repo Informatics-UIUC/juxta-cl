@@ -14,7 +14,7 @@ import org.apache.commons.cli2.builder.DefaultOptionBuilder;
 import org.apache.commons.cli2.builder.GroupBuilder;
 import org.apache.commons.cli2.commandline.Parser;
 import org.apache.log4j.PropertyConfigurator;
-import org.juxtasoftware.Configuration.HyphenationFilter;
+import org.juxtasoftware.Configuration.Hyphens;
 import org.juxtasoftware.Configuration.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,16 +91,16 @@ public class JuxtaCL {
         Option verbose = oBuilder
                 .withLongName("verbose")
                 .withShortName("v")
-                .withDescription("display collation details")
                 .create();
         Option version = oBuilder
             .withLongName("version")
-            .withDescription("display JuxtaCL version information")
+            .create();
+        Option help = oBuilder
+            .withLongName("help")
             .create();
         Option punct = oBuilder
-            .withLongName("ignore-punctuation")
+            .withLongName("ignore-punct")
             .withShortName("p")
-            .withDescription("Toggle punctuation filtering")
             .withArgument(
                 aBuilder
                     .withMinimum(1)
@@ -110,7 +110,6 @@ public class JuxtaCL {
         Option caps = oBuilder
             .withLongName("ignore-case")
             .withShortName("c")
-            .withDescription("Toggle case sensitivity")
             .withArgument(
                 aBuilder
                     .withMinimum(1)
@@ -119,8 +118,7 @@ public class JuxtaCL {
             .create();
         Option hyphen = oBuilder
             .withLongName("hyphens")
-            .withShortName("c")
-            .withDescription("Hyphenation settings")
+            .withShortName("h")
             .withArgument(
                 aBuilder
                     .withMinimum(1)
@@ -134,6 +132,7 @@ public class JuxtaCL {
             .withOption(hyphen)
             .withOption(verbose)
             .withOption(version)
+            .withOption(help)
             .create();
 
         // parse the options passed in
@@ -144,7 +143,11 @@ public class JuxtaCL {
         // if version was requested, set mode to version and ignore everything else
         if ( cl.hasOption(version)) {
             this.config.setMode(Mode.VERSION);
-        } else {
+            
+        } else if ( cl.hasOption(help)) {
+         
+            this.config.setMode(Mode.HELP);
+        } else{
             
             // extract files
             List<String> comparands = cl.getValues("comparand");
@@ -167,7 +170,7 @@ public class JuxtaCL {
             
             if ( cl.hasOption(hyphen)) {
                 String hs = (String)cl.getValue(hyphen);
-                HyphenationFilter hFilter = HyphenationFilter.valueOf(hs.toUpperCase());
+                Hyphens hFilter = Hyphens.valueOf(hs.toUpperCase());
                 if ( hFilter == null ) {
                     throw new RuntimeException("Invalid hypnenation setting");
                 }
@@ -201,7 +204,7 @@ public class JuxtaCL {
         System.out.println("   Comparand          : " + cfg.getFiles().get(1));
         System.out.println("   Ignore Case        : " + cfg.isIgnoreCase() );
         System.out.println("   Ignore Punctuation : " + cfg.isIgnorePunctuation());
-        System.out.println("   Hyphenation        : " + cfg.getHyphenationFilter());
+        System.out.println("   Hyphenation        : " + cfg.getHyphenation());
         System.out.println("   Mode               : " + cfg.getMode());
     }
     
@@ -213,10 +216,26 @@ public class JuxtaCL {
     public void execute() throws FileNotFoundException {
         if ( this.config.getMode().equals(Mode.VERSION)) {
             System.out.println("JuxtaCL Version "+this.version);
+        } else if (this.config.getMode().equals(Mode.HELP)) {
+            
+            displayHelp();
         } else {
             // compare the two files and dump change index to std:out
             doComparison();
         }
+    }
+    
+    private void displayHelp() {
+        StringBuilder out = new StringBuilder("Usage: juxta file1 file2 [options]\n");
+        out.append("  Options:\n");
+        out.append("    --ignore-punct or -p (true|false)          : Toggle punctuation filtering\n");
+        out.append("                                                 Default true\n");  
+        out.append("    --ignore-case or -c  (true|false)          : Toggle case sensitivity\n");
+        out.append("                                                 Default true\n");  
+        out.append("    --hyphens or -h      (all|linebreak|none)  : Hyphenation inclusion setting\n");
+        out.append("                                                 Default all\n");  
+        out.append("    --verbose or -v                            : Show collation details\n");
+        System.out.println(out.toString());
     }
     
     /**

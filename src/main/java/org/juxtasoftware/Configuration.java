@@ -9,14 +9,14 @@ import java.util.List;
  *
  */
 public class Configuration {
-    public enum HyphenationFilter {INCLUDE_ALL, FILTER_LINEBREAK, FILTER_ALL}
+    public enum Hyphens {ALL, LINEBREAK, NONE}
     public enum Mode {VERSION, HELP, TRANSFORM, TOKENIZE, CHANGE_INDEX};
     
     private List<String> files = new ArrayList<String>();
     private boolean ignorePunctuation = true;
     private boolean ignoreCase = true;
     private boolean verbose = false;
-    private HyphenationFilter hyphenationFilter = HyphenationFilter.INCLUDE_ALL; 
+    private Hyphens hyphenationFilter = Hyphens.ALL; 
     private Mode mode = Mode.CHANGE_INDEX;
     
     public void addFile(String file) {
@@ -39,7 +39,7 @@ public class Configuration {
         this.ignoreCase = val;
     }
     
-    public void setHyphenationFilter( HyphenationFilter f ) {
+    public void setHyphenation( Hyphens f ) {
         this.hyphenationFilter = f;
     }
 
@@ -59,7 +59,7 @@ public class Configuration {
         return this.verbose;
     }
 
-    public HyphenationFilter getHyphenationFilter() {
+    public Hyphens getHyphenation() {
         return this.hyphenationFilter;
     }
     
