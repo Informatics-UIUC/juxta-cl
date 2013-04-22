@@ -11,5 +11,5 @@ the path to two files a parameters. It will collate them and return their
 change index (degree of difference between the two files).
 
 It accepts command line flags to control how case-sensitivity, punctuation 
-and hypenation are handled..
+and hypenation are handled.
 
