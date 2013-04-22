@@ -17,7 +17,7 @@
     </fileSets>
     <files>
         <file>
-            <source>scripts/start.sh</source>
+            <source>scripts/juxta.sh</source>
             <outputDirectory></outputDirectory>
             <fileMode>0744</fileMode>   
         </file>
