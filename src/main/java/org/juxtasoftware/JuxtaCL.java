@@ -46,6 +46,7 @@ public class JuxtaCL {
     @Autowired
     @Qualifier("version")
     private String version;
+    @Autowired XmlTagStripper tagStripper;
     
     public static void main(String[] args) {
         try {
@@ -95,6 +96,9 @@ public class JuxtaCL {
         Option version = oBuilder
             .withLongName("version")
             .create();
+        Option strip = oBuilder
+            .withLongName("strip")
+            .create();
         Option help = oBuilder
             .withLongName("help")
             .create();
@@ -133,6 +137,7 @@ public class JuxtaCL {
             .withOption(verbose)
             .withOption(version)
             .withOption(help)
+            .withOption(strip)
             .create();
 
         // parse the options passed in
@@ -149,12 +154,21 @@ public class JuxtaCL {
             this.config.setMode(Mode.HELP);
         } else{
             
+            int expectedFiles = 2;
+            if ( cl.hasOption(strip)) {
+                expectedFiles = 1;
+                this.config.setMode(Mode.STRIP);
+            }
+            
             // extract files
             List<String> comparands = cl.getValues("comparand");
             for ( String c : comparands) {
                 this.config.addFile(c);
             }
-            if ( this.config.getFiles().size() < 2) {
+            if ( this.config.getFiles().size() < expectedFiles) {
+                if ( expectedFiles == 1) {
+                    throw new RuntimeException("Must target file");
+                }
                 throw new RuntimeException("Must have two comparands");
             }
             

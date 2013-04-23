@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Configuration {
     public enum Hyphens {ALL, LINEBREAK, NONE}
-    public enum Mode {VERSION, HELP, TRANSFORM, TOKENIZE, CHANGE_INDEX};
+    public enum Mode {VERSION, HELP, STRIP, TOKENIZE, CHANGE_INDEX};
     
     private List<String> files = new ArrayList<String>();
     private boolean ignorePunctuation = true;
