@@ -233,6 +233,8 @@ public class JuxtaCL {
         } else if (this.config.getMode().equals(Mode.HELP)) {
             
             displayHelp();
+        } else if ( this.config.getMode().equals(Mode.STRIP)){
+            // TODO stub for stripping xml tags
         } else {
             // compare the two files and dump change index to std:out
             doComparison();
