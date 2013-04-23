@@ -1,0 +1,336 @@
+<?xml version="1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+<teiHeader>
+<fileDesc>
+<titleStmt>
+<title>Moby-Dick; or, The Whale</title>
+<title type="gmd">[electronic resource]</title>
+<author>Herman Melville</author>
+<respStmt>
+<resp>Creation of machine-readable version</resp>
+<name>Keyboarded by Aptara, Inc.</name>
+</respStmt>
+<respStmt>
+<resp>Creation of digital images</resp>
+<name>Aptara, Inc.</name>
+</respStmt>
+<respStmt>
+<resp>Conversion to TEI-conformant markup</resp>
+<name>Aptara, Inc.</name>
+</respStmt>
+</titleStmt>
+<extent>ca. 1,498,198 kilobytes</extent>
+<publicationStmt>
+<publisher>Harper &#x0026; Brothers, Publishers</publisher>
+<pubPlace>New York</pubPlace>
+<idno type="ETC">Modern English, MelMoby</idno>
+<availability status="unknown">
+<p>Publicly accessible</p>
+<p n="public">URL: http://www.nzetc.org/collections.html</p>
+<p>Herman Melville</p>
+</availability>
+<date>1851</date>
+</publicationStmt>
+<sourceDesc>
+<biblFull>
+<titleStmt>
+<title>Moby-Dick; or, The Whale</title>
+<author>Herman Melville</author>
+</titleStmt>
+<editionStmt>
+<p/>
+</editionStmt>
+<extent/>
+<publicationStmt>
+<publisher>Harper &#x0026; Brothers, Publishers</publisher>
+<pubPlace>New York</pubPlace>
+<idno type="callNo">Source copy consulted: MelMoby</idno>
+</publicationStmt>
+</biblFull>
+</sourceDesc>
+</fileDesc>
+</teiHeader>
+<text xml:id="t1">
+<front xml:id="t1-front">
+<pb xml:id="n1"/>
+<pb xml:id="n2"/>
+<pb xml:id="n3"/>
+<pb xml:id="n4"/>
+<pb xml:id="n5"/>
+<pb xml:id="n6"/>
+<pb xml:id="n7"/>
+<pb xml:id="n8"/>
+<pb xml:id="n9"/>
+<pb xml:id="n10"/>
+<pb xml:id="n11"/>
+<pb xml:id="n12"/>
+<pb xml:id="n13"/>
+<pb xml:id="n14"/>
+<titlePage xml:id="t1-front-d1-d1">
+<docTitle>
+<titlePart type="main"><hi rend="c">Moby-Dick</hi>; <hi rend="sc">or</hi>, <hi rend="c">The Whale</hi></titlePart>
+</docTitle>
+<docAuthor><hi rend="c">Herman Melville</hi></docAuthor><lb/>
+<byline/>
+<docImprint>
+<hi rend="sc">author of</hi>
+<hi rend="sc">&#x201C;typee&#x201D; &#x201C;omoo&#x201D; &#x201C;redburn&#x201D; &#x201C;mardi&#x201D; &#x201C;white-jacket&#x201D;</hi>
+<publisher>
+<hi rend="b"><hi rend="c">New York:</hi></hi><lb/>
+<hi rend="b"><hi rend="c">Harper &#x0026; Brothers, Publishers</hi></hi>.<lb/>
+<hi rend="b"><hi rend="c">London: Richard Bentley</hi></hi>.<lb/>
+<date>1851</date>
+</publisher>
+</docImprint>
+</titlePage>
+<pb xml:id="n15"/>
+<div1 xml:id="t1-front-d1" type="copyright">
+<p>Entered, according to Act of Congress, in the year 1851, by<lb/>
+HERMAN MELVILLE,<lb/>
+In the Clerk&#x0027;s Office of the District Court of the Southern District of New York.</p>
+</div1>
+<pb xml:id="n16"/>
+<div1 xml:id="t1-front-d2" type="inscribe">
+<p><hi rend="sc">in token</hi><lb/>
+<hi rend="sc">of my admiration for his genius</hi>.<lb/>
+This Book is Inscribed<lb/>
+<hi rend="sc">to</hi><lb/>
+NATHANIEL HAWTHORNE.</p>
+</div1>
+<pb xml:id="n17"/>
+<pb xml:id="n18"/>
+<pb xml:id="n21"/>
+<pb xml:id="n23"/>
+<pb xml:id="n24"/>
+</front>
+<body xml:id="t1-body">
+<pb xml:id="n37"/>
+<pb xml:id="n38" n="1"/>
+<div1 xml:id="t1-body-d1" type="chapter">
+<head>CHAPTER I.<lb/>
+<hi rend="sc">loomings</hi>.</head>
+<p><hi rend="sc">Call</hi> me Ishmael. Some years ago&#x2014;never mind how long<lb/>
+precisely&#x2014;having little or no money in my purse, and nothing<lb/>
+particular to interest me on shore, I thought I would sail about<lb/>
+a little and see the watery part of the world. It is a way I have<lb/>
+of driving off the spleen, and regulating the circulation. When-<lb/>
+ever I find myself growing grim about the mouth; whenever it<lb/>
+is a damp, drizzly November in my soul; whenever I find myself<lb/>
+involuntarily pausing before coffin warehouses, and bringing up<lb/>
+the rear of every funeral I meet; and especially whenever my<lb/>
+hypos get such an upper hand of me, that it requires a strong<lb/>
+moral principle to prevent me from deliberately stepping into<lb/>
+the street, and methodically knocking people&#x0027;s hats off&#x2014;then, I<lb/>
+account it high time to get to sea as soon as I can. This is my<lb/>
+substitute for pistol and ball. With a philosophical flourish<lb/>
+Cato throws himself upon his sword; I quietly take to the<lb/>
+ship. There is nothing surprising in this. If they but knew it,<lb/>
+almost all men in their degree, some time or other, cherish very<lb/>
+nearly the same feelings towards the ocean with me.</p>
+<p>There now is your insular city of the Manhattoes, belted<lb/>
+round by wharves as Indian isles by coral reefs&#x2014;commerce sur-<lb/>
+rounds it with her surf. Right and left, the streets take you<lb/>
+waterward. Its extreme down-town is the battery, where that<lb/>
+noble mole is washed by waves, and cooled by breezes, which<lb/>
+a few hours previous were out of sight of land. Look at the<lb/>
+crowds of water-gazers there.</p>
+<p>Circumambulate the city of a dreamy Sabbath afternoon.<lb/>
+Go from Corlears Hook to Coenties Slip, and from thence, by<lb/>
+<pb xml:id="n39" n="2"/>
+Whitehall, northward. What do you see?&#x2014;Posted like silent<lb/>
+sentinels all around the town, stand thousands upon thousands<lb/>
+of mortal men fixed in ocean reveries. Some leaning against the<lb/>
+spiles; some seated upon the pier-heads; some looking over the<lb/>
+bulwarks of ships from China; some high aloft in the rigging,<lb/>
+as if striving to get a still better seaward peep. But these are<lb/>
+all landsmen; of week days pent up in lath and plaster&#x2014;tied<lb/>
+to counters, nailed to benches, clinched to desks. How then<lb/>
+is this? Are the green fields gone? What do they here?</p>
+<p>But look! here come more crowds, pacing straight<lb/>
+for the water, and seemingly bound for a dive. Strange! Nothing<lb/>
+will content them but the extremest limit of the land; loitering<lb/>
+under the shady lee of yonder warehouses will not suffice. No.<lb/>
+They must get just as nigh the water as they possibly can<lb/>
+without falling in. And there they stand&#x2014;miles of them&#x2014;<lb/>
+leagues. Inlanders all, they come from lanes and alleys, streets<lb/>
+and avenues&#x2014;north, east, south, and west. Yet here they all<lb/>
+unite. Tell me, does the magnetic virtue of the needles of the<lb/>
+compasses of all those ships attract them thither?</p>
+<p>Once more. Say, you are in the country; in some high<lb/>
+land of lakes. Take almost any path you please, and ten to one<lb/>
+it carries you down in a dale, and leaves you there by a pool in<lb/>
+the stream. There is magic in it. Let the most absent-minded<lb/>
+of men be plunged in his deepest reveries&#x2014;stand that man on<lb/>
+his legs, set his feet a-going, and he will infallibly lead you to<lb/>
+water, if water there be in all that region. Should you ever be<lb/>
+athirst in the great American desert, try this experiment, if your<lb/>
+caravan happen to be supplied with a metaphysical professor.<lb/>
+Yes, as every one knows, meditation and water are wedded for<lb/>
+ever.</p>
+<p>But here is an artist. He desires to paint you the dream-<lb/>
+iest, shadiest, quietest, most enchanting bit of romantic land-<lb/>
+scape in all the valley of the Saco. What is the chief element<lb/>
+he employs? There stand his trees, each with a hollow trunk,<lb/>
+<pb xml:id="n40" n="3"/>
+as if a hermit and a crucifix were within; and here sleeps his<lb/>
+meadow, and there sleep his cattle; and up from yonder cottage<lb/>
+goes a sleepy smoke. Deep into distant woodlands winds a<lb/>
+mazy way, reaching to overlapping spurs of mountains bathed<lb/>
+in their hill-side blue. But though the picture lies thus<lb/>
+tranced, and though this pine-tree shakes down its sighs like<lb/>
+leaves upon this shepherd&#x0027;s head, yet all were vain, unless the<lb/>
+shepherd&#x0027;s eye were fixed upon the magic stream before him.<lb/>
+Go visit the Prairies in June, when for scores on scores of<lb/>
+miles you wade knee-deep among Tiger-lilies&#x2014;what is the<lb/>
+one charm wanting?&#x2014;Water&#x2014;there is not a drop of water<lb/>
+there! Were Niagara but a cataract of sand, would you<lb/>
+travel your thousand miles to see it? Why did the poor poet<lb/>
+of Tennessee, upon suddenly receiving two handfuls of silver,<lb/>
+deliberate whether to buy him a coat, which he sadly<lb/>
+needed, or invest his money in a pedestrian trip to Rockaway<lb/>
+Beach? Why is almost every robust healthy boy with a<lb/>
+robust healthy soul in him, at some time or other crazy to go<lb/>
+to sea? Why upon your first voyage as a passenger, did you<lb/>
+yourself feel such a mystical vibration, when first told that you<lb/>
+and your ship were now out of sight of land? Why did the,<lb/>
+old Persians hold the sea holy? Why did the Greeks give it<lb/>
+a separate deity, and own brother of Jove? Surely all this is<lb/>
+not without meaning. And still deeper the meaning of that<lb/>
+story of Narcissus, who because he could not grasp the torment-<lb/>
+ing, mild image he saw in the fountain, plunged into it and<lb/>
+was drowned. But that same image, we ourselves see in all rivers<lb/>
+and oceans. It is the image of the ungraspable phantom of<lb/>
+life; and this is the key to it all.</p>
+<p>Now, when I say that I am in the habit of going to sea<lb/>
+whenever I begin to grow hazy about the eyes, and begin to be<lb/>
+over conscious of my lungs, I do not mean to have it inferred<lb/>
+that I ever go to sea as a passenger. For to go as a passenger<lb/>
+you must needs have a purse, and a purse is but a rag unless<lb/>
+<pb xml:id="n41" n="4"/>
+you have something in it. Besides, passengers get sea-sick&#x2014;<lb/>
+grow quarrelsome&#x2014;don&#x0027;t sleep of nights&#x2014;do not enjoy them-<lb/>
+selves much, as a general thing;&#x2014;no, I never go as a passen-<lb/>
+ger; nor, though I am something of a salt, do I ever<lb/>
+go to sea as a Commodore, or a Captain, or a Cook. I aban-<lb/>
+don the glory and distinction of such offices to those who like<lb/>
+them. For my part, I abominate all honorable respectable<lb/>
+toils, trials, and tribulations of every kind whatsoever. It is<lb/>
+quite as much as I can do to take care of myself, without<lb/>
+taking care of ships, barques, brigs, schooners, and what not.<lb/>
+And as for going as cook,&#x2014;though I confess there is considerable<lb/>
+glory in that, a cook being a sort of officer on ship-board&#x2014;<lb/>
+yet, somehow, I never fancied broiling fowls;&#x2014;though once<lb/>
+broiled, judiciously buttered, and judgmatically salted and<lb/>
+peppered, there is no one who will speak more respectfully, not<lb/>
+to say reverentially, of a broiled fowl than I will. It is out of<lb/>
+the idolatrous dotings of the old Egyptians upon broiled ibis<lb/>
+and roasted river horse, that you see the mummies of those<lb/>
+creatures in their huge bake-houses the pyramids.</p>
+<p>No, when I go to sea, I go as a simple sailor, right before<lb/>
+the mast, plumb down into the forecastle, aloft there<lb/>
+to the royal mast-head. True, they rather order me about some, and<lb/>
+make me jump from spar to spar, like a grasshopper in a<lb/>
+May meadow. And at first, this sort of thing is unpleasant<lb/>
+enough. It touches one&#x0027;s sense of honor, particularly if you<lb/>
+come of an old established family in the land, the Van Rensse-<lb/>
+laers, or Randolphs, or Hardicanutes. And more than all,<lb/>
+if just previous to putting your hand into the tar-pot, you have<lb/>
+been lording it as a country schoolmaster, making the tallest<lb/>
+boys stand in awe of you. The transition is a keen one, I<lb/>
+assure you, from a schoolmaster to a sailor, and requires a strong<lb/>
+decoction of Seneca and the Stoics to enable you to grin and<lb/>
+bear it. But even this wears off in time.</p>
+<p>What of it, if some old hunks of a sea-captain orders me to<lb/>
+<pb xml:id="n42" n="5"/>
+get a broom and sweep down the decks? What does that<lb/>
+indignity amount to, weighed, I mean, in the scales of the New<lb/>
+Testament? Do you think the archangel Gabriel thinks any-<lb/>
+thing the less of me, because I promptly and respectfully obey<lb/>
+that old hunks in that particular instance? Who aint a slave?<lb/>
+Tell me that. Well, then, however the old sea-captains may<lb/>
+order me about&#x2014;however they may thump and punch me<lb/>
+about, I have the satisfaction of knowing that it is all right;<lb/>
+that everybody else is one way or other served in much the<lb/>
+same way&#x2014;either in a physical or metaphysical point of view,<lb/>
+that is; and so the universal thump is passed round, and all<lb/>
+hands should rub each other&#x0027;s shoulder-blades, and be con-<lb/>
+tent.</p>
+<p>Again, I always go to sea as a sailor, because they make<lb/>
+a point of paying me for my trouble, whereas they never pay<lb/>
+passengers a single penny that I ever heard of. On the con-<lb/>
+trary, passengers themselves must pay. And there is all the<lb/>
+difference in the world between paying and being paid. The<lb/>
+act of paying is perhaps the most uncomfortable infliction that<lb/>
+the two orchard thieves entailed upon us. But <hi rend="i">being paid</hi>,<lb/>
+&#x2014;what will compare with it? The urbane activity with which a<lb/>
+man receives money is really marvellous, considering that we so<lb/>
+earnestly believe money to be the root of all earthly ills, and<lb/>
+that on no account can a monied man enter heaven. Ah! how<lb/>
+cheerfully we consign ourselves to perdition!</p>
+<p>Finally, I always go to sea as a sailor, because of the whole-<lb/>
+some exercise and pure air of the forecastle deck. For as<lb/>
+in this world, head winds are far more prevalent than winds from<lb/>
+astern (that is, if you never violate the Pythagorean maxim), so<lb/>
+for the most part the Commodore on the quarter-deck gets his<lb/>
+atmosphere at second hand from the sailors on the forecastle.<lb/>
+He thinks he breathes it first; but not so. In much the same<lb/>
+way do the commonalty lead their leaders in many other<lb/>
+things, at the same time that the leaders little suspect it. But<lb/>
+<pb xml:id="n43" n="6"/>
+wherefore it was that after having repeatedly smelt the sea as a<lb/>
+merchant sailor, I should now take it into my head to go on a<lb/>
+whaling voyage; this the invisible police officer of the Fates, who<lb/>
+has the constant surveillance of me, and secretly dogs me, and<lb/>
+influences me in some unaccountable way&#x2014;he can better answer<lb/>
+than any one else. And, doubtless, my going on this whaling<lb/>
+voyage, formed part of the grand programme of Providence that<lb/>
+was drawn up a long time ago. It came in as a sort of brief<lb/>
+interlude and solo between more extensive performances. I take<lb/>
+it that this part of the bill must have run something like this:</p>
+<p>&#x201C;<hi rend="i">Grand Contested Election for the Presidency of the United States.</hi><lb/>
+&#x201C;WHALING VOYAGE BY ONE ISHMAEL.<lb/>
+&#x201C;BLOODY BATTLE IN AFFGHANISTAN.&#x201D;</p>
+<p>Though I cannot tell why it was exactly that those stage<lb/>
+managers, the Fates, put me down for this shabby part of a<lb/>
+whaling voyage, when others were set down for magnificent<lb/>
+parts in high tragedies, and short and easy parts in genteel<lb/>
+comedies, and jolly parts in farces&#x2014;though I cannot tell why<lb/>
+this was exactly; yet, now that I recall all the circumstances, I<lb/>
+think I can see a little into the springs and motives which being<lb/>
+cunningly presented to me under various disguises, induced me<lb/>
+to set about performing the part I did, besides cajoling me into<lb/>
+the delusion that it was a choice resulting from my own unbiased<lb/>
+freewill and discriminating judgment.</p>
+<p>Chief among these motives was the overwhelming idea of the<lb/>
+great whale himself. Such a portentous and mysterious monster<lb/>
+roused all my curiosity. Then the wild and distant seas where<lb/>
+he rolled his island bulk; the undeliverable, nameless perils of<lb/>
+the whale; these, with all the attending marvels of a thousand<lb/>
+Patagonian sights and sounds, helped to sway me to my wish.<lb/>
+With other men, perhaps, such things would not have been<lb/>
+inducements; but as for me, I am tormented with an everlas-<lb/>
+ting itch for things remote. I love to sail forbidden seas, and<lb/>
+<pb xml:id="n44" n="7"/>
+land on barbarous coasts. Not ignoring what is good, I am<lb/>
+quick to perceive a horror, and could still be social with it<lb/>
+&#x2014;would they let me&#x2014;since it is but well to be on friendly<lb/>
+terms with all the inmates of the place one lodges in.</p>
+<p>By reason of these things, then, the whaling voyage was wel-<lb/>
+come; the great flood-gates of the wonder-world swung open,<lb/>
+and in the wild conceits that swayed me to my purpose, two<lb/>
+and two there floated into my inmost soul, endless processions<lb/>
+of the whale, and, mid most of them all, one grand hooded phan-<lb/>
+tom, like a snow hill in the air.</p>
+</div1>
+<pb xml:id="n680"/>
+<pb xml:id="n681"/>
+<pb xml:id="n682"/>
+<pb xml:id="n683"/>
+<pb xml:id="n684"/>
+<pb xml:id="n685"/>
+<pb xml:id="n686"/>
+<pb xml:id="n687"/>
+<pb xml:id="n688"/>
+</body>
+</text>
+</TEI>

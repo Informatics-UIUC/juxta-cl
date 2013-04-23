@@ -47,11 +47,10 @@ import org.springframework.stereotype.Component;
 public class JuxtaCL {
     private static Logger LOG = LoggerFactory.getLogger(JuxtaCL.class);
     private Configuration config;
-    
-    @Autowired
+ 
     @Qualifier("version")
-    private String version;
-    @Autowired XmlTagStripper tagStripper;
+    @Autowired private String version;
+    @Autowired private XmlTagStripper tagStripper;
     
     public static void main(String[] args) {
         try {
@@ -311,6 +310,6 @@ public class JuxtaCL {
             throw new FileNotFoundException(a.getPath());
         }
         
-        return "";
+        return this.tagStripper.stripTags(a);
     }
 }

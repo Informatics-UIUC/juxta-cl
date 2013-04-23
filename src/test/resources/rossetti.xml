@@ -1,0 +1,789 @@
+<?xml version='1.0' encoding='UTF-8'?><ram xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.rossettiarchive.org/ram.xsd" archivetype="rad" type="letter" id="a.dgr.ltr.0556" metatype="web.manuscript, web.correspondence" workcode="dgr.ltr" subset="0556" image="a.dgr.ltr.0556.1.tif">
+    
+
+    
+
+    <ramheader>
+        <filedesc>
+            <titlestmt>
+                <title>Letter to William Michael Rossetti, 18 October 1849</title>
+                <author>DGR</author>
+
+                
+                
+            </titlestmt>
+            <editionstmt>
+                <edition>1</edition>
+                <note>By Permission of University of British Columbia.</note>
+            </editionstmt>
+            <extent/>
+            
+            
+
+
+            <notesstmt> </notesstmt>
+            <sourcedesc>
+                <citnstruct>
+                    <title>Letter to William Michael Rossetti, 18 October 1849</title>
+                    <author>DGR</author>
+                    <msprod>
+                        <date compdate="1849-10-18">1849 October 18</date>
+                        <type>letter</type>
+                        <assign/>
+                        <collation>4 large leaves</collation>
+                        <note>The verse is written in two columns, the prose is margin to
+                        margin.</note>
+                    </msprod>
+                    <scribe>DGR</scribe>
+                    <corrector/>
+                    <provenance>
+                        <location>University of British Columbia library</location>
+                        <recnum/>
+                        <note/>
+                    </provenance>
+                    <physicaldesc>
+                        <binding>
+                            <cover/>
+                        </binding>
+                        <paper/>
+                        <watermark/>
+                        <note/>
+                    </physicaldesc>
+                </citnstruct>
+            </sourcedesc>
+        </filedesc>
+        <encodingdesc/>
+        <profiledesc>
+            <commentaries>
+                <head>Commentary</head>
+                <section type="intro">
+                    <head>Introduction</head>
+                    <p>The first part of the letter is devoted to copying the texts of the poems,
+                        the second part to the ordinary prose part of the letter. The following
+                        poems are included as part of this letter: <xref doc="a.19-1849.raw">
+                            <title level="wrk">“Last Visit to the Louvre”</title>
+                        </xref>; <xref doc="a.39-1849.raw">
+                            <title level="wrk">“For Ruggiero and Angelica, by Ingres”</title>
+                        </xref>; and<xref doc="a.20-1849.raw">
+                            <title level="wrk">“Last Sonnets at Paris”</title>
+                        </xref>, <xref doc="a.23-1849.raw">
+                            <title level="wrk">“From Paris to Brussels”</title>
+                        </xref>, <xref doc="a.24-1849.raw">
+                            <title level="wrk">“On the Road”</title>
+                        </xref>, <xref doc="a.35-1849.raw">
+                            <title level="wrk">“L'Envoi: Brussels, Hotel du Midi”</title>
+                        </xref>, <xref doc="a.25-1849.raw">
+                            <title level="wrk">“On the Road to Waterloo: 17 October”</title>
+                        </xref>, <xref doc="a.26-1849.raw">
+                            <title level="wrk">“A Half-Way Pause”</title>
+                        </xref>, <xref doc="a.27-1849.raw">
+                            <title level="wrk">“On the Field of Waterloo”</title>
+                        </xref>, and<xref doc="a.28-1849.raw">
+                            <title level="wrk">“Returning to Brussels”</title>
+                        </xref>.</p>
+                </section>
+                <section type="texthistcomp">
+                    <head>Textual History: Composition</head>
+                    <p/>
+                </section>
+                <section type="texthistrev">
+                    <head>Textual History: Revision</head>
+                    <p/>
+                </section>
+                <section type="prodhist">
+                    <head>Production History</head>
+                    <p/>
+                </section>
+                <section type="recepthist">
+                    <head>Reception History</head>
+                    <p/>
+                </section>
+                <section type="icon">
+                    <head>Iconographic</head>
+                    <p/>
+                </section>
+                <section type="printhist">
+                    <head>Printing History</head>
+                    <p/>
+                </section>
+                <section type="pictorial">
+                    <head>Pictorial</head>
+                    <p/>
+                </section>
+                <section type="historical">
+                    <head>Historical</head>
+                    <p/>
+                </section>
+                <section type="literary">
+                    <head>Literary</head>
+                    <p/>
+                </section>
+                <section type="translation">
+                    <head>Translation</head>
+                    <p/>
+                </section>
+                <section type="autobio">
+                    <head>Autobiographical</head>
+                    <p/>
+                </section>
+                <section type="biblio">
+                    <head>Bibliographic</head>
+                    <p/>
+                </section>
+            </commentaries>
+        </profiledesc>
+        <revisiondesc/>
+    </ramheader>
+    <text>
+        <body>
+            <div0 anchor="0.1" type="letter" n="1" title="Letter to William Michael Rossetti, 18 October 1849" workcode="dgr.ltr" subset="0556">
+
+                <page n="[1]" image="a.dgr.ltr.0556.1.tif"/>
+                <pageheader>
+                    <note>The text shifts to a second column after line 2 of the third poem.</note>
+                </pageheader>
+
+                <div1 anchor="0.1.1" type="sonnet" n="1" title="Last Visit to the Louvre" workcode="19-1849">
+                    <divheader>
+                        <title>
+                            <hi rend="center">Last visit to the Louvre
+                                <lb/>
+                                <ornlb>=======</ornlb>
+                        <lb/>
+                                The Cry of the P.R.B.<lb/>after a careful examination of the
+                                canvasses <lb/>of Rubens, Correggio, <hi rend="u">
+                                    <foreign lang="latin">et hoc genus omne</foreign>
+                                </hi>.</hi>
+                        </title>
+                    </divheader>
+                    <lg n="1" type="quatorzain">
+                        <l n="1">
+                     <hi rend="u">
+                                <foreign lang="italian">Non noi pittori!</foreign>
+                            </hi> God of Nature's truth,</l>
+                        <l n="2" indent="1"> If these, not we! Be it not said, when one </l>
+                        <l n="3" indent="1"> Of us goes hence: “As these did, he hath done; </l>
+                        <l n="4">His feet sought out their footprints from his youth.”</l>
+                        <l n="5">Because, dear God! the flesh Thou madest smooth </l>
+                        <l n="6" indent="1"> These carked and fretted, that it seemed to run </l>
+                        <l n="7" indent="1"> With ulcers; and the daylight of thy sun </l>
+                        <l n="8">They parcelled into blots and glares, uncouth </l>
+                        <l n="9">With <del>[?]</del> 
+                     <add>stagnant</add> grouts of paint. Men say that these </l>
+                        <l n="10" indent="1"> Had further sight than Man's, but that God saw </l>
+                        <l n="11" indent="2"> Their works were good. God that didst know them foul! </l>
+                        <l n="12" indent="2"> In such a blindness, blinder than the owl </l>
+                        <l n="13">Leave us! Our sight can reach unto thy seas </l>
+                        <l n="14" indent="1"> And hills: and 'tis enough for tears of awe.</l>
+                    </lg>
+                </div1>
+                <ornlb>=======</ornlb>
+                <div1 anchor="0.1.2" type="poem group" n="2" title="For Ruggiero and Angelica, by Ingres." workcode="39-1849">
+                    <divheader>
+                        <title>
+                     <hi rend="center">Last visit to the Luxembourg.
+                            <lb/>“Roger Rescuing Angelica”; by Ingres.</hi>
+                  </title>
+                    </divheader>
+                    <ornlb>=======</ornlb>
+                    <div2 anchor="0.1.2.1" type="sonnet" n="1" title="For Ruggiero and Angelica, by Ingres. I." workcode="39-1849" subset="a">
+                        <divheader>
+                            <title level="wrk">1</title>
+                        </divheader>
+                        <lg n="1" type="quatorzain">
+                            <l n="1"> A remote sky, prolonged to the sea's brim:</l>
+                            <l n="2" indent="1"> One rock-point standing buffeted alone,</l>
+                            <l n="3" indent="1"> Vexed at its base with a foul beast unknown,</l>
+                            <l n="4"> Hell-birth of geomaunt and teraphim:</l>
+                            <l n="5"> A knight, and a winged creature bearing him,</l>
+                            <l n="6" indent="1"> Reared at the rock: a woman fettered there,</l>
+                            <l n="7" indent="1"> Leaning into the hollow with loose hair</l>
+                            <l n="8"> And throat let back and heartsick trail of limb.</l>
+                            <l n="9"> The sky is harsh, and the sea shrewd and salt.</l>
+                            <l n="10" indent="1"> Under his lord the griffin-horse ramps blind</l>
+                            <l n="11" indent="2"> With rigid wings and tail. The spear's lithe stem</l>
+                            <l n="12" indent="1"> Thrills in the roaring of those jaws: behind,</l>
+                            <l n="13"> That evil length of body chafes at fault.</l>
+                            <l n="14" indent="2"> She does not hear nor see—she knows of them.</l>
+                        </lg>
+                    </div2>
+                    <div2 anchor="0.1.2.2" type="sonnet" n="2" title="For Ruggiero and Angelica, by Ingres. II." workcode="39-1849" subset="b">
+                        <divheader>
+                            <title level="wrk">2</title>
+                        </divheader>
+                        <lg n="1" type="quatorzain">
+                            <l n="1"> Clench thine eyes now,—'tis the last instant, girl:</l>
+                            <l n="2" indent="1"> Draw in thy senses, loose thy knees, and shake.</l>
+                            <cb/>
+                            <l n="3" indent="1"> Set thy breath fast: thy life is keen awake,—</l>
+                            <l n="4">Thou may'st not swoon. Was that the scattered whirl</l>
+                            <l n="5"> Of its foam drenched thee?—or the waves that curl</l>
+                            <l n="6" indent="1"> And split—bleak spray wherein thy temples ache?</l>
+                            <l n="7" indent="1"> Or was it his the champion's blood, to flake</l>
+                            <l n="8"> That flesh which has the colour of fine pearl.</l>
+                            <l n="9"> Now, silence: for the sea's is such a sound</l>
+                            <l n="10" indent="1"> As irks not silence: and except the sea,</l>
+                            <l n="11" indent="2"> All now is still. Now the dead thing doth cease</l>
+                            <l n="12" indent="1"> To writhe, and drifts. He turns to her: and she,</l>
+                            <l n="13"> Cast from the jaws of Death, remains there, bound,</l>
+                            <l n="14" indent="2"> Again a woman in her nakedness.</l>
+                        </lg>
+                    </div2>
+                </div1>
+            <ornlb>======</ornlb>
+                <div1 anchor="0.1.3" type="poem group" n="3" title="Last Sonnets at Paris" workcode="20-1849">
+                    <divheader>
+                        <title>
+                            <hi rend="center">Last Sonnets at Paris.</hi>
+                        </title>
+                    </divheader>
+                    <ornlb>----------</ornlb>
+                    <div2 anchor="0.1.3.1" type="sonnet" n="1" title="Last Sonnets at Paris. I." workcode="20-1849" subset="a">
+                        <divheader>
+                            <title level="wrk">1</title>
+                        </divheader>
+                        <lg n="1" type="quatorzain">
+                            <l n="1">Chins that might serve the new Jerusalem: </l>
+                            <l n="2" indent="1"> Streets footsore: minute whisking milliners, </l>
+                            <l n="3" indent="1"> Dubbed graceful, but at whom one's eye demurs, </l>
+                            <l n="4">Knowing of England: ladies, much the same; </l>
+                            <l n="5">Bland smiling dogs with manes,—a few of them </l>
+                            <l n="6" indent="1"> At pains to look like sporting characters; </l>
+                            <l n="7" indent="1"> Vast humming tabbies, smothered in their furs; </l>
+                            <l n="8">Groseille, Orgeat, Meringues à la crême—</l>
+                            <l n="9">Good things to study: ditto bad—the maps </l>
+                            <l n="10" indent="1"> Of sloshy colour in the Louvre: <foreign lang="french">
+                                    <hi rend="u">Cinq-francs</hi>
+                                </foreign>
+                     </l>
+                            <l n="11" indent="1"> The largest coin; and at the <foreign lang="french">
+                           <hi rend="u">restaurants</hi>
+                        </foreign> 
+                     </l>
+                            <l n="12">Large Ibrahim pachas <del>[?]</del> in Turkish caps </l>
+                            <l n="13" indent="1"> To pocket them. <foreign lang="french">
+                                    <hi rend="u">Un million d'habitants:</hi>
+                                </foreign>
+                     </l>
+                            <l n="14">Cast up, they'll make an Englishman—perhaps.</l>
+                        </lg>
+                    </div2>
+
+                    <div2 anchor="0.1.3.2" type="sonnet" n="2" title="Last Sonnets at Paris. II." workcode="20-1849" subset="b">
+                        <divheader>
+                            <title level="wrk">2</title>
+                        </divheader>
+                        <lg n="1" type="quatorzain">
+                            <l n="1">Tiled floors in bedrooms: Trees (now run to seed—</l>
+                            <l n="2" indent="1"> Such seed as the wind takes) of Liberty: </l>
+                            <l n="3" indent="1"> Squares with new names that no one seems to see; </l>
+                            <l n="4">Scrambling Briarean passages, which lead </l>
+                            <l n="5">To the first place you came from: urgent need </l>
+                            <l n="6" indent="1"> Of unperturbed nasal philosophy: </l>
+                            <l n="7" indent="1"> Through Paris (what with Church and Gallery) </l>
+                            <l n="8">Some forty first-rate paintings,—or indeed </l>
+                            <l n="9">Fifty mayhap: fine churches, splendid inns; </l>
+                            <l n="10" indent="1"> Fierce sentinels (toy-size without the stands) </l>
+                            <l n="11" indent="2"> Who spit their oaths at you and grind their r's </l>
+                            <l n="12" indent="1"> If at a fountain you would wash your hands; </l>
+                            <l n="13" indent="2"> One Frenchman (this is fact) who thinks he spars:—</l>
+                            <l n="14">Can even good dinners cover all these sins?</l>
+                        </lg>
+                    </div2>
+
+                    <div2 anchor="0.1.3.3" type="sonnet" n="3" title="Last Sonnets at Paris. III." workcode="20-1849" subset="c">
+                        <divheader>
+                            <title level="wrk">3</title>
+                        </divheader>
+                        <lg n="1" type="quatorzain">
+                            <l n="1">Yet in the mighty French metropolis, </l>
+                            <l n="2" indent="1"> Our time has not gone from us utterly </l>
+                            <l n="3" indent="1"> In waste. The wise man saith, <hi rend="u">An ample fee</hi>
+                     </l>
+                            <l n="4">
+                        <hi rend="u">For toil, to work thine end</hi>. <del>[?]</del>
+                        <add>Aye, that</add> it is! </l>
+                            <l n="5">
+                        <del>Whe[?]</del>
+                        <add>Should</add> 
+                        <del>God sh[?]</del>
+                        <add>England</add> ask: “Was narrow prejudice </l>
+                            <l n="6" indent="1"> Stretched to its utmost point unflinchingly, </l>
+                            <l n="7" indent="1"> Even unto lying, at all times, by ye?”</l>
+                            <l n="8">We can say firmly: “Lord, thou knowest this, </l>
+                            <l n="9">
+                        <del>England</del>
+                        <add>Our soil</add> may own us.” Having but small French, </l>
+                            <l n="10" indent="1"> Hunt passed for a stern Spartan <del>[?]</del>all the while, </l>
+                            <l n="11" indent="2"> Uncompromising, of few words: for me—</l>
+                            <l n="12" indent="2"> I think I was accounted generally </l>
+                            <l n="13" indent="1"> A <del>[?], only</del>
+                        <add>fool, and just</add> a little cracked. Thy smile </l>
+                            <l n="14">May light on us, Britannia, <del>sturdy</del>
+                        <add>healthy</add> wench.</l>
+                        </lg>
+                    </div2>
+                </div1>
+
+                <page n="[2]" image="a.dgr.ltr.0556.2.tif"/>
+                <pageheader>
+                    <note>The text shifts to a second column after line 11 of the second poem.</note>
+                    <note>The leaf is slightly torn. The gaps at the beginning of lines 19-20 of “From Paris to Brussels”, and lines 7-11 of “On the Road”,  have been editorially supplied (in square brackets).</note>
+                </pageheader>
+                <div1 anchor="0.1.4" type="epistle" n="4" title="From Paris to Brussels" workcode="23-1849">
+                    <divheader>
+                        <title>
+                     <hi rend="center">From Paris to Brussels.
+                            <lb/>(11 p.m. <del>16<hi rend="sup">th</hi>
+                        </del>
+                        <add>15</add> Oct. to 1/2 past 1 p.m. <del>17</del>
+                        <add>16</add>
+                        <hi rend="sup">th</hi>)
+                            <lb/>
+                        <ornlb>======</ornlb>
+                            <lb/>Proem at the Paris Station.</hi>
+                  </title>
+                    </divheader>
+                    <lg n="1" type="stanza">
+                        <l n="1">In France, (to baffle thieves and murderers) </l>
+                        <l n="2">A journey takes two days of passport-work </l>
+                        <l n="3">At least. The plan's sometimes a tedious one, </l>
+                        <l n="4">But bears its fruit. Because, the other day, </l>
+                        <l n="5">In passing by the Morgue, <del>I</del>
+                     <add>we</add> saw a man </l>
+                        <l n="6">(The thing is common, and we never should </l>
+                        <l n="7">Have known of it, only we passed that way) </l>
+                        <l n="8">Who had been stabbed and tumbled in the Seine </l>
+                        <l n="9">Where he had stayed some days. The face was black </l>
+                        <l n="10">And, like a negro's, swollen; all the flesh </l>
+                        <l n="11">Had furred, and broken into a green mould.</l>
+                    </lg>
+                    <lg n="2" type="stanza">
+                        <l n="12">Now very likely, he who did the job </l>
+                        <l n="13">Was standing among those who stood with us </l>
+                        <l n="14">To look upon the corpse. You fancy him—</l>
+                        <l n="15">Smoking an early pipe, and watching, as </l>
+                        <l n="16">An artist, the effect of his last work. </l>
+                        <l n="17">This always if it had not struck him that </l>
+                        <l n="18">'Twere best to leave while yet the body took </l>
+                        <l n="19">[Its] crust of rot beneath the Seine. It may: </l>
+                        <l n="20">[But] if it did not, he can now remain </l>
+                        <l n="21">[W]ithout much fear. <hi rend="u">Only</hi>, if he should want </l>
+                        <l n="22">To travel, and have not his passport yet, </l>
+                        <l n="23">(Deep dogs these French police!) he <hi rend="u">may</hi> be caught.</l>
+                    </lg>
+                    <lg n="3" type="stanza">
+                        <l n="24">Therefore you see, (lest, being murderers, </l>
+                        <l n="25">We should not have the sense to go before </l>
+                        <l n="26">The thing were known, or to stay afterwards) </l>
+                        <l n="27">There is good reason why—having resolved </l>
+                        <l n="28">To start for Belgium—we were kept three days </l>
+                        <l n="29">To learn about the passports first, then do </l>
+                        <l n="30">As we had learned. This notwithstanding, in </l>
+                        <l n="31">The fullness of the time, 'tis come to pass.</l>
+                    </lg>
+                </div1>
+                <ornlb>-----------</ornlb>
+                <div1 anchor="0.1.5" type="epistle" n="5" title="On the Road" workcode="24-1849">
+                    <divheader>
+                        <title>
+                            <hi rend="center">On the Road.</hi>
+                        </title>
+                    </divheader>
+                    <ornlb>-----------</ornlb>
+                    <lg n="1" type="stanza">
+                        <l n="1">October, and eleven after dark: </l>
+                        <l n="2">Both mist and night. Among us in the coach </l>
+                        <l n="3">Packed heat on which the windows have been shut: </l>
+                        <l n="4">Our backs unto the motion—Hunt's and mine. </l>
+                        <l n="5">The last lamps of the Paris station move </l>
+                        <l n="6">Slow with wide haloes past the clouded pane; </l>
+                        <l n="7">[The] road in secret empty darkness. One </l>
+                        <l n="8">[W]ho sits beside me, now I turn, has pulled </l>
+                        <l n="9">[A] nightcap to his eyes. A woman here, </l>
+                        <l n="10">[Kne]es to my knees—a twenty-nine-year-old—</l>
+                        <l n="11">[Smiles] at the mouth I open, seeing him: </l>
+                        <cb/>
+                        <l n="12">I look her gravely in the jaws, and write. </l>
+                        <l n="13">Already while I write, heads have been leaned </l>
+                        <l n="14">Upon the wall,—the lamp that's overhead </l>
+                        <l n="15">Dropping its shadow to the waist and hands.</l>
+                    </lg>
+                    <lg n="2" type="stanza">
+                        <l n="16">Some time 'twixt sleep and wake. A dead pause then, </l>
+                        <l n="17">With giddy humming silence in the ears. </l>
+                        <l n="18">It is a station. Eyes are opening now </l>
+                        <l n="19">And mouths collecting their propriety. </l>
+                        <l n="20">From one of our two windows, now drawn up, </l>
+                        <l n="21">A lady leans, hawks a clear throat, and spits.</l>
+                    </lg>
+                    <note>Several lines in this stanza and the following are indented around what appears to have been a stain or wet spot on the paper.</note>
+                    <lg n="3" type="stanza">
+                        <l n="22">Hunt lifts his head from my cramped shoulder where </l>
+                        <l n="23">It has been lying—long stray hairs from it </l>
+                        <l n="24">Crawling upon my face and teazing me. </l>
+                        <l n="25">Ten minutes' law. Our feet are in the road. </l>
+                        <l n="26">A weak thin dimness at the sky, whose chill </l>
+                        <l n="27">Lies vague and hard. The mist of crimson heat </l>
+                        <l n="28">Hangs, a spread glare, about our engine's bulk. </l>
+                        <l n="29">I shall get in again, and sleep this time.</l>
+                    </lg>
+                    <lg n="4" type="stanza">
+                        <l n="30">A heavy clamour that fills up the brain </l>
+                        <l n="31">Like thought grown burdensome; and in the ears </l>
+                        <l n="32">Speed that seems striving to o'ertake itself; </l>
+                        <l n="33">And in the pulses torpid life, which shakes </l>
+                        <l n="34">As water to a stir of wind beneath.</l>
+                    </lg>
+                    <lg n="5" type="stanza">
+                        <l n="35">Poor Hunt, who has the toothache and can't smoke, </l>
+                        <l n="36">Has asked me twice for brandy. I would sleep; </l>
+                        <l n="37">But man proposes, and no more. I sit </l>
+                        <l n="38">With open eyes, and a head quite awake </l>
+                        <l n="39">But which keeps catching itself lolled aside </l>
+                        <l n="40">And looking sentimental. In the coach, </l>
+                        <l n="41">If any one tries talking, the <del>sound</del>
+                     <add>voice</add> jolts, </l>
+                        <l n="42">And stuns the ear that stoops for it.</l>
+                    </lg>
+                    <p>
+                  <hi rend="center">Amiens.</hi>
+               </p>
+                    <lg n="6" type="stanza">
+                        <l n="43">Half-an-hour's rest. Another shivering walk </l>
+                        <l n="44">Along the station, waiting for the bell. </l>
+                        <l n="45">Ding-dong. Now this time, by the Lord, I'll sleep.</l>
+                    </lg>
+                    <ornlb>x x x x x x x x x x x x x</ornlb>
+                    <lg n="7" type="stanza">
+                        <l n="46">I must have slept some <del>time</del>
+                     <add>while</add>. Now that I wake, </l>
+                        <l n="47">Day is beginning in a kind of haze </l>
+                        <l n="48">White with grey trees. The hours have had their lapse.</l>
+                    </lg>
+                    <lg n="8" type="stanza">
+                        <l n="49">A sky too dull for cloud. A country lain </l>
+                        <l n="50">In fields, where teams drag up the furrow yet; </l>
+                        <l n="51">Or else a level of trees, the furthest ones </l>
+                        <l n="52">Seen like faint clouds at the horizon's point. </l>
+                        <l n="53">Quite a clear distance, though in vapour. Mills </l>
+                        <l n="54">That turn with the dry wind. Large stacks of hay </l>
+                        <l n="55">Made to look bleak. Dead Autumn, and no sun.</l>
+                    </lg>
+                    <lg n="9" type="stanza">
+                        <l n="56">The smoke upon our course is borne so near </l>
+                        <l n="57">Along the earth, the earth appears to steam. </l>
+                        <l n="58">Blanc-Misseron, the last French station, passed. </l>
+
+                        <page n="[3]" image="a.dgr.ltr.0556.3.tif"/>
+                        <pageheader>
+                            <note>The text shifts to a second column after line 10 of “4 hours”.</note>
+                        </pageheader>
+                        <l n="59">We are in Belgium. It is just the same;— </l>
+                        <l n="60">Nothing to write of, and no good in verse.</l>
+                    </lg>
+                    <lg n="10" type="stanza">
+                        <l n="61">Curse the big mounds of sand-weed! curse the miles </l>
+                        <l n="62">Of barren chill,—the twentyfold relays! </l>
+                        <l n="63">Curse every beastly Station on the road.</l>
+                    </lg>
+                    <lg n="11" type="stanza">
+                        <l n="64">As well to write as swear. Hunt was just now </l>
+                        <l n="65">Making great eyes because outside the pane </l>
+                        <l n="66">One of the stokers passed whom he declared </l>
+                        <l n="67">A stunner. A vile mummy with a bag </l>
+                        <l n="68">Is squatted next me: a disgusting girl </l>
+                        <l n="69">Broad opposite. We have a poet, though, </l>
+                        <l n="70">Who is a gentleman, and looks like one; </l>
+                        <l n="71">Only he seems ashamed of writing verse, </l>
+                        <l n="72">And heads each new page with “<hi rend="u">Mon cher Ami</hi>.” </l>
+                        <l n="73">Hunt's stunner has just come into the coach </l>
+                        <l n="74">And set us hard agrin from ear to ear.</l>
+                    </lg>
+                    <lg n="12" type="stanza">
+                        <l n="75">Another station. There's a stupid horn </l>
+                        <l n="76">Set wheezing. Now I should just like to know </l>
+                        <l n="77">—Just merely for the whim—what good that is. </l>
+                        <l n="78">These Stations for the most part are a kind </l>
+                        <l n="79">Of London coal-merchant's back premises; </l>
+                        <l n="80">Whitewashed, but as by hands of coalheavers; </l>
+                        <l n="81">Grimy themselves, and always circled in </l>
+                        <l n="82">With foul coke-loads that make the nose aroint.</l>
+                    </lg>
+                    <lg n="13" type="stanza">
+                        <l n="83">Here is a Belgian village,—no, a town </l>
+                        <l n="84">Moated and buttressed. Next, a water-track </l>
+                        <l n="85">Lying with draggled reeds in a flat slime. </l>
+                        <l n="86">Next, the old country, always all the same. </l>
+                        <l n="87">Now by Hans Hemmling and by John Van Eyck, </l>
+                        <l n="88">You'll find, till something's new, I write no more.</l>
+                    </lg>
+                    <ornlb>x x x x x x x x x x x x x</ornlb>
+                    <p>
+                        <hi rend="center">4 hours</hi>
+                    </p>
+                    <ornlb>x x x x x x x x x x x x x</ornlb>
+                    <lg n="14" type="stanza">
+                        <l n="89">There is small change of country; but the sun </l>
+                        <l n="90">Is out, and it <del>were</del>
+                     <add>seems</add> shame this were not said. </l>
+                        <l n="91">For upon all the grass the warmth has caught; </l>
+                        <l n="92">And betwixt distant whitened poplar-stems </l>
+                        <l n="93">Makes greener darkness; and in dells of trees </l>
+                        <l n="94">Shows spaces of a verdure that <del>lay</del>
+                     <add>was</add> hid; </l>
+                        <l n="95">And the sky has its blue floated with white </l>
+                        <l n="96">And crossed with falls of the sun's glory aslant </l>
+                        <l n="97">To lay upon the waters of the world; </l>
+                        <l n="98">And from the road men stand with shaded eyes </l>
+                        <cb/>
+                        <l n="99">To look; and flowers in gardens have grown strong, </l>
+                        <l n="100">And our own shadows here within the coach </l>
+                        <l n="101">Are brighter; and all colour has more bloom. </l>
+                    </lg>
+                    <lg n="15" type="stanza">
+                        <l n="102">So, after <del>all</del> the <add>sore</add> torments of the route:— </l>
+                        <l n="103">Toothache, and headache, and the ache of wind, </l>
+                        <l n="104">And huddled sleep, and smarting wakefulness, </l>
+                        <l n="105">And night, and day, and hunger sick at food, </l>
+                        <l n="106">And twentyfold relays, and packages </l>
+                        <l n="107">To be unlocked, and passports to be found, </l>
+                        <l n="108">And heavy well-kept landscape;—we were glad </l>
+                        <l n="109">Because we entered Brussels in the sun.</l>
+                    </lg>
+                </div1>
+            <ornlb>--------</ornlb>
+                <div1 anchor="0.1.6" type="epistle" n="6" title="L'Envoi: Brussels, Hotel du Midi" workcode="35-1849">
+                    <divheader>
+                        <title>
+                     <hi rend="center">
+                        <foreign lang="french">
+                                L'Envoi: Brussels. Hotel du Midi.</foreign>
+                            <lb/>18 <hi rend="sup">th</hi> Oct.</hi>
+                  </title>
+                    </divheader>
+                    <ornlb>=====</ornlb>
+                    <lg n="1" type="stanza">
+                        <l n="1">It's copied out at last: very poor stuff </l>
+                        <l n="2">Writ in the cold, with pauses of the cramp. </l>
+                        <l n="3">Direct, dear William, to the Poste Restante </l>
+                        <l n="4">At Ghent—here written Gand (Gong, Hunticè. </l>
+                        <l n="5">We go to Antwerp first, but shall not stay; </l>
+                        <l n="6">After, to Ghent and Bruges; and after that </l>
+                        <l n="7">To Ostend, and thence home. To Waterloo </l>
+                        <l n="8">Was yesterday. Thither, and there, and back, </l>
+                        <l n="9">I managed to scrawl something,—most of it </l>
+                        <l n="10">Bad, and the sonnet at the close mere slosh. </l>
+                        <l n="11">'Twas only made because I was knocked up, </l>
+                        <l n="12">And it helped yawning. Take it, and the rest.</l>
+                    </lg>
+                </div1>
+                <ornlb>--------</ornlb>
+                <div1 anchor="0.1.7" type="sonnet" n="7" title="On the Road to Waterloo: 17 October" workcode="25-1849">
+                    <divheader>
+                        <title>
+                     <hi rend="center">On the road to Waterloo.  17<hi rend="sup">th</hi>
+                                Oct.<lb/>(<hi rend="u">
+                                <foreign lang="italian">en vigilante</foreign>
+                                </hi>, 2 hours.)</hi>
+                  </title>
+                    </divheader>
+                    <ornlb>--------</ornlb>
+                    <lg n="1" type="quatorzain">
+                        <l n="1">It is grey tingling azure overhead </l>
+                        <l n="2" indent="1"> With silver drift. Beneath, <del>the ground is</del>
+                     <add>where from the</add> green </l>
+                        <l n="3" indent="1"> 
+                     <del>Where</del> the trees are <add>reared,</add> the distance stands between </l>
+                        <l n="4">At peace: <add>
+                        <del>[?]</del> and</add> on <del>one</del>
+                     <add>that</add> side <del>[?]</del> the <del>land</del>
+                     <add>whole</add> is spread </l>
+                        <l n="5">For sowing and for harvest, subjected </l>
+                        <l n="6" indent="1"> Clear to the sky and wind. The sun's slow height </l>
+                        <l n="7" indent="1"> Holds it through noon; and at the furthest night </l>
+                        <l n="8">It lies to the moist starshine and is fed. </l>
+                        <l n="9">Sometimes there is no <del>distance</del>
+                     <add>country</add> seen, (for miles </l>
+                        <l n="10" indent="1"> You think) because of the near roadside path </l>
+                        <l n="11" indent="2"> Dense with long forest. Where the waters run </l>
+                        <l n="12" indent="1"> They have the sky sunk into them—a bath </l>
+                        <l n="13">Of still blue heat; and in their flow, at whiles, </l>
+                        <l n="14" indent="2"> There is a blinding vortex of the sun.</l>
+                    </lg>
+                </div1>
+            <ornlb>=========</ornlb>
+                <page n="[4]" image="a.dgr.ltr.0556.4.tif"/>
+            <pageheader>
+               <note>The text breaks into a second column between the poems and DGR's prose letter.</note>
+            </pageheader>
+                <div1 anchor="0.1.8" type="lyric" n="8" title="A Half-Way Pause" workcode="26-1849">
+                    <divheader>
+                        <title>
+                            <hi rend="center">A half-way Pause.</hi>
+                        </title>
+                    </divheader>
+                    <ornlb>--------</ornlb>
+                    <lg n="1" type="septet">
+                        <l n="1">The turn of noontide has begun. </l>
+                        <l n="2" indent="1"> In the weak breeze the sunshine yields. </l>
+                        <l n="3" indent="1"> There is a bell upon the fields. </l>
+                        <l n="4">On the long hedgerow's tangled run </l>
+                        <l n="5" indent="1"> A low white cottage intervenes: </l>
+                        <l n="6" indent="1"> Against the wall a blind man leans </l>
+                        <l n="7">And sways his face to have the sun.</l>
+                    </lg>
+                    <lg n="2" type="septet">
+                        <l n="8">Our horses' hoofs stir in the road </l>
+                        <l n="9" indent="1"> 
+                     <del>Sudden</del>
+                     <add>Quiet</add> and sharp. Light hath a song </l>
+                        <l n="10" indent="1"> Whose silence, being heard, seems long. </l>
+                        <l n="11">The point of noon maketh abode </l>
+                        <l n="12" indent="1"> And will not be at once gone thro. </l>
+                        <l n="13" indent="1"> The sky's deep colour saddens you, </l>
+                        <l n="14">And the heat weighs a dreamy load.</l>
+                    </lg>
+                </div1>
+                <ornlb>--------</ornlb>
+                <div1 anchor="0.1.9" type="sonnet" n="9" title="On the Field of Waterloo" workcode="27-1849">
+                    <divheader>
+                        <title>
+                            <hi rend="center">On the Field of Waterloo.</hi>
+                        </title>
+                    </divheader>
+                    <ornlb>---------</ornlb>
+                    <lg n="1" type="quatorzain">
+                        <l n="1">So then, the name which travels side by side </l>
+                        <l n="2" indent="1"> With English life from childhood—Waterloo,</l>
+                        <l n="3" indent="1"> Means this. The sun is setting. “Their strife grew </l>
+                        <l n="4">Till the sunset, and ended,” says our guide.</l>
+                        <l n="5">It lacked the “chord” by stage-use sanctified, </l>
+                        <l n="6" indent="1"> Yet I believe one should have thrilled. For me, </l>
+                        <l n="7" indent="1"> I grinned not, and 'twas something:—certainly </l>
+                        <l n="8">These held their point, and did not turn but died:</l>
+                        <l n="9">So much is very well. “Under each span </l>
+                        <l n="10" indent="1"> Of these ploughed fields” ('tis the guide still)
+                            “there rot</l>
+                        <l n="11" indent="2"> Three nations' slain, a thousand-thousandfold.”</l>
+                        <l n="12" indent="2"> Am I to weep? Good sirs, the earth is old: </l>
+                        <l n="13" indent="1"> Of the whole earth there is no single spot </l>
+                        <l n="14">But hath among its dust the dust of man.</l>
+                    </lg>
+                </div1>
+                <ornlb>--------</ornlb>
+                <div1 anchor="0.1.10" type="sonnet" n="10" title="Returning to Brussels" workcode="28-1849">
+                    <divheader>
+                        <title>
+                            <hi rend="center">Returning to Brussels.</hi>
+                        </title>
+                    </divheader>
+                    <ornlb>--------</ornlb>
+                    <lg n="1" type="quatorzain">
+                        <l n="1">Upon a Flemish road, when noon was deep, </l>
+                        <l n="2" indent="1"> I passed a little consecrated shrine, </l>
+                        <l n="3" indent="1"> Where, among simple pictures ranged in line, </l>
+                        <l n="4">The blessed Mary holds her child asleep. </l>
+                        <l n="5">To kneel here, shepherd-maidens leave their sheep </l>
+                        <l n="6" indent="1"> When they feel grave because of the sunshine, </l>
+                        <l n="7" indent="1"> And again kneel here in the day's decline; </l>
+                        <l n="8">And here, when their life ails them, come to weep. </l>
+                        <l n="9">Night being full, I passed on the same road </l>
+                        <l n="10" indent="1"> By the same shrine: within, a lamp was lit </l>
+                        <l n="11">Which through the silence of clear darkness glowed. </l>
+                        <l n="12" indent="2"> Thus, when life's heat is past and doubts arise </l>
+                        <l n="13" indent="1"> Darkling,—the lamp of Faith must strengthen it, </l>
+                        <l n="14" indent="2"> Which sometimes will not light and sometimes dies.</l>
+                    </lg>
+                </div1>
+                <ornlb>--------</ornlb>
+            <cb/>
+                <opener>
+               <salute>Dear William,</salute>
+            </opener>
+                <p n="1">I have been thinking whether Brussels offers materials for a sonnet, but have
+                    come to the conclusion that not even thus much is to be got out of its utter
+                    muffishness. I will therefore fill this last column with as much prose as I can
+                    afford you. However, the verse must stand for a letter this time: though, with
+                    the exception of two or three of the sonnets, I fear it is not even so good as
+                    what I have already sent you. The fact is a journey in fair &amp; foul weather are
+                    two very different things, and the verse gets its measure of <hi rend="u">
+                  <foreign lang="italian">estro</foreign>
+               </hi> accordingly.
+                    But I will not grunt about past evils, for the weather, these days in Brussels,
+                    has been like the finest summer.</p>
+                <p n="2">There is a most servile aping of the French here, notwithstanding that they seem
+                    to be held in hatred. The English are victimized to a beastly extent everywhere.
+                    One of the great nuisances of this place, as also at Waterloo, is the plague of
+                    guides from which there is no escape. The one we had at Waterloo completely
+                    baulked me of all the sonnets I had promised myself; so that all I accomplished
+                    was the embryo bottled up in the preceding column. Between you and me, William,
+                    Waterloo is simply a bore.</p>
+                <p n="3">I believe we saw all the town to day, except a lot of scientific and industrial
+                    silliness, and one room at the Museum which we perceived was full of Rubenses
+                    and so held aloof. There are a few very fine early German pictures, among them a
+                    wonderful Van Eyck. I believe we shall see no end of these stunning things at
+                    Antwerp, Ghent, &amp;c. and as I am convinced they will drag me into rhyme,
+                    I almost fear that I shall not do much, if anything, to Bride Chamber Talk, till
+                    my return. Before leaving Paris, we went to the Hotel de Cluny, a first-rate
+                    place, which will be of great use to me in finishing this poem. Could I do it on
+                    the spot, I fancy I should be a made man. I fear there is no chance now of going
+                    to Brittany.</p>
+                <p n="4">All further matters concerning your poem we can discuss on my return, which will
+                    be much shorter work. I will only mention one thing which I forgot to include in
+                    my last. I think the penultimate line of the poem would perhaps be more forcible
+                    if it stood thus: “I can wait, John, but is not <hi rend="u">the whole</hi> due?”</p>
+
+                <page n="[5]" image="a.dgr.ltr.0556.5.tif"/>
+            <pageheader>
+               <note>It seems WMR added square brackets around a reference to Nussey that he wished later to exclude.</note>
+            </pageheader>
+                <p n="5">You can have no conception of the intense sweating exasperation incident on
+                    passport-hunting. We had three days of it before leaving Paris.</p>
+                <p n="6">You talk about printing my blessed journal. I fear this would never do: there is
+                    too much of a kind of exclusive matter belonging only to ourselves; and
+                    moreover, among the things I have written since leaving London, there are only
+                    3 sonnets which have received any consideration: viz: the 2 on Ingres'
+                    picture &amp; the one on the road to Waterloo—all in the present letter.</p>
+                <p n="7">I believe it is very probable that you will receive before my return a large
+                    volume of old Charivaris containing Gavarni's sketches, which I left with
+                    Broadie at Paris, to be bound and forwarded to you, in order to escape paying
+                    double duty both in Belgium &amp; England. They will be bound anyhow, provisorily,
+                    merely that they may go in the book form, and not have to pay 1<hi rend="sup">d</hi> apiece, as
+                    prints, at the Custom House.</p>
+                <p n="8">Of the 2 prospectuses you sent me, I gave one to Broadie, and the other has
+                    somehow got all covered with ink. I must therefore let the sending to Lyell &amp;
+                    Cottingham stand over for the present. We can discuss advertising at length when
+                    we are all together. I quite agree with you about the inadvisability of getting
+                    any more proprietors as yet. <add>[</add>Nussey is certainly a man I should not wish to
+                    include, as I suspect he is rather fidgetty &amp; obstinate, &amp; also
+                    that his genius as a writer is not overpowering<add>]</add>. It appears to me quite
+                    unnecessary to begin sending about prospectuses at present in any great
+                    quantity.</p>
+                <p n="9">You speak of the uncertainty of Haynes' estimate coinciding with Tupper's. If
+                    Tupper is more moderate, let us print by all means with him.</p>
+                <p n="10">Will you tell Papa that while in Paris I called with his letter for Ronna at the
+                    address which it bears, and saw a crusty old woman who said he had been gone
+                    some time and she did not know whither, but that if I called next day perhaps
+                    someone would be there who knew. The quarter of Paris, however, was one we never
+                    had occasion to be in, &amp; which is infamously paved. The consequence was
+                    that we put off calling again till it was too late. Owing to the number of
+                    things we were obliged to run after, several other letters with which we had
+                    been entrusted shared the same fate.</p>
+                <p n="11">To Papa, Mamma, &amp; Collinson, I intend to write as soon as possible. I
+                    hope they have made allowances hitherto. A letter is also due to Christina which
+                    still lies unattempted. I have likewise to answer Woolner, and to redeem my
+                    promise to Hancock.</p>
+                <p n="12">Write at once, and if you have done anything send it: if not, something of
+                    Christina's. Remember me warmly to all friends, who, by my good fortune, are too
+                    numerous to particularize. I trust Papa's health holds good. By the bye, I hear
+                    nothing of the Bermondsey murder.</p>
+
+                <closer>
+               <name>D. G. R.</name>
+            </closer>
+            </div0>
+            <epage/>
+        </body>
+    </text>
+</ram>
