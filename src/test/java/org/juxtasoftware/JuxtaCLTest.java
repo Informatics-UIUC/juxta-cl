@@ -22,45 +22,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration({"classpath:/applicationContext.xml"})
 public class JuxtaCLTest {
     @Autowired JuxtaCL juxtaCL;
-
-    @Test 
-    public void testMissingComparands() {
-        boolean caughtException = false;
-        try {
-            this.juxtaCL.parseArgs(new String[] {""});
-        } catch (Exception e ) {
-            caughtException = true;
-        }
-        assertTrue("Accepted no comparands on command line", caughtException);
-    }
-    
-    @Test 
-    public void testOneComparand() {
-        boolean caughtException = false;
-        try {
-            this.juxtaCL.parseArgs(new String[] {"file1"});
-        } catch (Exception e ) {
-            caughtException = true;
-        }
-        assertTrue("Accepted one comparand on command line", caughtException);
-    }
-    
-    @Test 
-    public void testTooManyComparands() {
-        boolean caughtException = false;
-        try {
-            this.juxtaCL.parseArgs(new String[] {"file1", "file2", "file3"});
-        } catch (Exception e ) {
-            caughtException = true;
-        }
-        assertTrue("Accepted too many comparands on command line", caughtException);
-    }
     
     @Test 
     public void testInvalidPath() {
         boolean caughtException = false;
         try {
-            this.juxtaCL.parseArgs(new String[] {"/tmp/invalid/file.txt", "/tmp/invalid/file.txt"});
+            this.juxtaCL.parseArgs(new String[] {"-diff", "/tmp/invalid/file.txt", "/tmp/invalid/file.txt"});
             this.juxtaCL.execute();
         } catch (Exception e ) {
             caughtException = true;
@@ -84,15 +51,15 @@ public class JuxtaCLTest {
     @Test
     public void testCompareDifferent() throws IOException {
         
-//        File testFile = resourceToFile("roses.txt");
-//        File testFile2 = resourceToFile("roses2.txt");
-//        Configuration config = new Configuration();
-//        config.addFile(testFile.getPath() );
-//        config.addFile(testFile2.getPath() );
-//        
-//        this.juxtaCL.setConfig(config);
-//        int changeIdx = this.juxtaCL.doComparison();
-//        assertTrue("Different files have zero change index", changeIdx != 0);
+        File testFile = resourceToFile("roses.txt");
+        File testFile2 = resourceToFile("roses2.txt");
+        Configuration config = new Configuration();
+        config.addFile(testFile.getPath() );
+        config.addFile(testFile2.getPath() );
+        
+        this.juxtaCL.setConfig(config);
+        int changeIdx = this.juxtaCL.doComparison();
+        assertTrue("Different files have zero change index", changeIdx != 0);
     }
    
     private File resourceToFile(String resourceName) throws IOException {

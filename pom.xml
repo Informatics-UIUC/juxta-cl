@@ -152,7 +152,7 @@
                     <configuration>
                     </configuration>
                 </plugin>
-                
+
                 <!-- Ignore/Execute plugin execution -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
@@ -269,6 +269,11 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>2.5.2</version>
+                <configuration>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                    <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+                    <xmlOutput>true</xmlOutput>
+                </configuration>
             </plugin>
 
             <plugin>

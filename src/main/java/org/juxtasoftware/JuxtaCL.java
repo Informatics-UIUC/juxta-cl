@@ -3,6 +3,8 @@ package org.juxtasoftware;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.cli2.Argument;
 import org.apache.commons.cli2.CommandLine;
@@ -12,7 +14,10 @@ import org.apache.commons.cli2.OptionException;
 import org.apache.commons.cli2.builder.ArgumentBuilder;
 import org.apache.commons.cli2.builder.DefaultOptionBuilder;
 import org.apache.commons.cli2.builder.GroupBuilder;
+import org.apache.commons.cli2.builder.SwitchBuilder;
 import org.apache.commons.cli2.commandline.Parser;
+import org.apache.commons.cli2.option.Switch;
+import org.apache.commons.cli2.validation.EnumValidator;
 import org.apache.log4j.PropertyConfigurator;
 import org.juxtasoftware.Configuration.Hyphens;
 import org.juxtasoftware.Configuration.Mode;
@@ -85,60 +90,67 @@ public class JuxtaCL {
         final ArgumentBuilder aBuilder = new ArgumentBuilder();
         final DefaultOptionBuilder oBuilder = new DefaultOptionBuilder();
         final GroupBuilder gBuilder = new GroupBuilder();
+        final SwitchBuilder sBuilder = new SwitchBuilder();
         this.config = new Configuration();
-
-        Argument fileArg = aBuilder.withMinimum(0).withMaximum(2).withName("comparand").create();
         
         Option verbose = oBuilder
-                .withLongName("verbose")
-                .withShortName("v")
+                .withShortName("verbose")
                 .create();
+       
         Option version = oBuilder
             .withLongName("version")
-            .create();
-        Option strip = oBuilder
-            .withLongName("strip")
             .create();
         Option help = oBuilder
             .withLongName("help")
             .create();
-        Option punct = oBuilder
-            .withLongName("ignore-punct")
-            .withShortName("p")
-            .withArgument(
-                aBuilder
-                    .withMinimum(1)
-                    .withMaximum(1)
-                    .create())
+        
+        // XML strip options; 1 file to strip and optional verbose flag
+        Group stripOpt = gBuilder.withOption(verbose).create();
+        Argument stripArg = aBuilder.withMinimum(1).withMaximum(1).withName("file").create();
+        Option strip = oBuilder
+            .withShortName("strip")
+            .withArgument(stripArg )
+            .withChildren(stripOpt)
             .create();
-        Option caps = oBuilder
-            .withLongName("ignore-case")
-            .withShortName("c")
-            .withArgument(
-                aBuilder
-                    .withMinimum(1)
-                    .withMaximum(1)
-                    .create())
+        
+        // Diff options; 2 files and optional switches
+        Argument diffArg = aBuilder.withMinimum(2).withMaximum(2).withName("file").create();
+        Switch punct = sBuilder
+            .withName("punct")
+            .withRequired(false)
+            .withSwitchDefault(true)
             .create();
+        Switch caps = sBuilder
+            .withName("caps")
+            .withRequired(false)
+            .withSwitchDefault(true)
+            .create();
+        
+        Set<String> enumSet = new TreeSet<String>();
+        enumSet.add("all");
+        enumSet.add("linebreak");
+        enumSet.add("none");     
+        EnumValidator hyphenVal = new EnumValidator( enumSet );
         Option hyphen = oBuilder
-            .withLongName("hyphens")
-            .withShortName("h")
-            .withArgument(
-                aBuilder
-                    .withMinimum(1)
-                    .withMaximum(1)
-                    .create())
+          .withShortName("hyphen")
+          .withArgument(
+              aBuilder
+                  .withMinimum(1)
+                  .withMaximum(1)
+                  .withDefault("all")
+                  .withValidator(hyphenVal)
+                  .create())
+          .create();
+        Group diffOpt = gBuilder.withOption(punct).withOption(caps).withOption(verbose).withOption(hyphen).create();
+        Option diff = oBuilder
+            .withShortName("diff")
+            .withArgument(diffArg )
+            .withChildren(diffOpt)
             .create();
-        Group opts = gBuilder
-            .withOption(fileArg)
-            .withOption(punct)
-            .withOption(caps)
-            .withOption(hyphen)
-            .withOption(verbose)
-            .withOption(version)
-            .withOption(help)
-            .withOption(strip)
-            .create();
+
+
+
+        Group opts = gBuilder.withOption(strip).withOption(diff).withOption(help).withOption(version).create();
 
         // parse the options passed in
         Parser parser = new Parser();
@@ -147,56 +159,46 @@ public class JuxtaCL {
         
         // if version was requested, set mode to version and ignore everything else
         if ( cl.hasOption(version)) {
-            this.config.setMode(Mode.VERSION);
             
+            this.config.setMode(Mode.VERSION);
         } else if ( cl.hasOption(help)) {
          
             this.config.setMode(Mode.HELP);
+        } else if ( cl.hasOption(strip)) {
+            
+            this.config.setVerbose( cl.hasOption(verbose));
+            this.config.setMode(Mode.STRIP);
+            this.config.addFile( (String)cl.getValue(strip));
         } else{
             
-            int expectedFiles = 2;
-            if ( cl.hasOption(strip)) {
-                expectedFiles = 1;
-                this.config.setMode(Mode.STRIP);
-            }
-            
-            // extract files
-            List<String> comparands = cl.getValues("comparand");
-            for ( String c : comparands) {
-                this.config.addFile(c);
-            }
-            if ( this.config.getFiles().size() < expectedFiles) {
-                if ( expectedFiles == 1) {
-                    throw new RuntimeException("Must target file");
-                }
-                throw new RuntimeException("Must have two comparands");
+            // extract to diff
+            List<String> files = cl.getValues(diff);
+            for ( String f : files) {
+                this.config.addFile(f);
             }
             
             if ( cl.hasOption(punct)) {
-                Boolean ignorePunct = Boolean.valueOf((String)cl.getValue(punct));
-                this.config.setIgnorePunctuation(ignorePunct);
+                Boolean p = cl.getSwitch(punct);
+                this.config.setIgnorePunctuation(!p);
             }
-            
             if ( cl.hasOption(caps)) {
-                Boolean ignoreCaps = Boolean.valueOf((String)cl.getValue(caps));
-                this.config.setIgnoreCase(ignoreCaps);
+                Boolean p = cl.getSwitch(caps);
+                this.config.setIgnoreCase(!p);
             }
-            
+
             if ( cl.hasOption(hyphen)) {
                 String hs = (String)cl.getValue(hyphen);
                 Hyphens hFilter = Hyphens.valueOf(hs.toUpperCase());
-                if ( hFilter == null ) {
-                    throw new RuntimeException("Invalid hypnenation setting");
-                }
+                this.config.setHyphenation(hFilter);
             }
              
             if ( cl.hasOption(verbose)) {
                 this.config.setVerbose(true);
             }
-            
-            if ( this.config.isVerbose() ) {
-                displayConfiguration(config);
-            }
+        }
+        
+        if ( this.config.isVerbose() ) {
+            displayConfiguration(this.config);
         }
     }
     
@@ -207,19 +209,31 @@ public class JuxtaCL {
     protected void setConfig(Configuration cfg) {
         this.config = cfg;
     }
+    
+    /**
+     * Back door for unit tests to test cfg
+     * @param cfg
+     */
+    protected Configuration getConfig() {
+        return this.config;
+    }
 
     /**
      * helper to dump configuration information to console
      * @param cfg
      */
     private void displayConfiguration(Configuration cfg) {
-        System.out.println("Configuration: ");
-        System.out.println("   Comparand          : " + cfg.getFiles().get(0));
-        System.out.println("   Comparand          : " + cfg.getFiles().get(1));
-        System.out.println("   Ignore Case        : " + cfg.isIgnoreCase() );
-        System.out.println("   Ignore Punctuation : " + cfg.isIgnorePunctuation());
-        System.out.println("   Hyphenation        : " + cfg.getHyphenation());
-        System.out.println("   Mode               : " + cfg.getMode());
+        if ( cfg.getMode().equals(Mode.CHANGE_INDEX)) {
+            System.out.println("Collation Configuration: ");
+            System.out.println("   Comparand          : " + cfg.getFiles().get(0));
+            System.out.println("   Comparand          : " + cfg.getFiles().get(1));
+            System.out.println("   Ignore Case        : " + cfg.isIgnoreCase() );
+            System.out.println("   Ignore Punctuation : " + cfg.isIgnorePunctuation());
+            System.out.println("   Hyphenation        : " + cfg.getHyphenation());
+        } else {
+            System.out.println("Tag Strip Configuration: ");
+            System.out.println("   File : " + cfg.getFiles().get(0));
+        }
     }
     
     /**
@@ -234,7 +248,8 @@ public class JuxtaCL {
             
             displayHelp();
         } else if ( this.config.getMode().equals(Mode.STRIP)){
-            // TODO stub for stripping xml tags
+            // strip XML tags and dump plain text to std::out
+            doTagStrip();
         } else {
             // compare the two files and dump change index to std:out
             doComparison();
@@ -242,7 +257,7 @@ public class JuxtaCL {
     }
     
     private void displayHelp() {
-        StringBuilder out = new StringBuilder("Usage: juxta file1 file2 [options]\n");
+        StringBuilder out = new StringBuilder("Usage: juxta [-diff file1 file2 [options]] | [-strip file]\n");
         out.append("  Options:\n");
         out.append("    --ignore-punct or -p (true|false)          : Toggle punctuation filtering\n");
         out.append("                                                 Default true\n");  
@@ -280,5 +295,22 @@ public class JuxtaCL {
         }
         
         return 0;
+    }
+    
+    /**
+     * Strip all XML tags and return plain text string
+     * 
+     * @return
+     * @throws FileNotFoundException 
+     */
+    protected String doTagStrip() throws FileNotFoundException {
+        LOG.info("Strip XML tags from "+this.config.getFiles().get(0));
+        File a = new File(this.config.getFiles().get(0));
+        if ( a.exists() == false ) {
+            LOG.error("Tag Strip Failed. '"+a+"' does not exist");
+            throw new FileNotFoundException(a.getPath());
+        }
+        
+        return "";
     }
 }
