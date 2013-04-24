@@ -81,7 +81,6 @@ public class JuxtaCL {
      */
     public JuxtaCL() {
         this.tagStripper = new XmlTagStripper();
-        LOG.info("JuxtaCL started");
     }
     
     /**
@@ -233,7 +232,7 @@ public class JuxtaCL {
      * @param cfg
      */
     private void displayConfiguration(Configuration cfg) {
-        if ( cfg.getMode().equals(Mode.CHANGE_INDEX)) {
+        if ( cfg.getMode().equals(Mode.DIFF)) {
             System.out.println("Collation Configuration: ");
             System.out.println("   Comparand          : " + cfg.getFiles().get(0));
             System.out.println("   Comparand          : " + cfg.getFiles().get(1));

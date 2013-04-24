@@ -139,4 +139,28 @@ public class CommandLineParserTest extends BaseTest {
             assertTrue("Threw exception on valid cmd line args", true);
         }
     }
+    
+    @Test 
+    public void testMode() throws OptionException {
+        this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2"});
+        assertTrue("Incorrect mode detected", this.juxtaCL.getConfig().getMode().equals(Mode.DIFF));
+        this.juxtaCL.parseArgs(new String[] {"-strip", "file1"});
+        assertTrue("Incorrect mode detected", this.juxtaCL.getConfig().getMode().equals(Mode.STRIP));
+        this.juxtaCL.parseArgs(new String[] {"-help"});
+        assertTrue("Incorrect mode detected", this.juxtaCL.getConfig().getMode().equals(Mode.HELP));
+        this.juxtaCL.parseArgs(new String[] {"-version"});
+        assertTrue("Incorrect mode detected", this.juxtaCL.getConfig().getMode().equals(Mode.VERSION));
+    }
+    
+    @Test
+    public void testVerbose() throws OptionException {
+        this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-verbose"});
+        String out = this.sysOut.toString();
+        assertTrue("Invalid verbose output", out.contains("Collation Configuration:"));
+        this.sysOut.reset();
+        
+        this.juxtaCL.parseArgs(new String[] {"-strip", "file1", "-verbose"});
+        out = this.sysOut.toString();
+        assertTrue("Invalid verbose output", out.contains("Tag Strip Configuration:"));
+    }
 }

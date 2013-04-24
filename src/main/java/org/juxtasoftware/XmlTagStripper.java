@@ -1,8 +1,9 @@
 package org.juxtasoftware;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -36,9 +37,10 @@ public class XmlTagStripper {
     
     public String stripTags(File xmlFile) throws IOException, SAXException, TransformerException {
         LOG.info("Ensure file is XML");
-        FileReader r = new FileReader(xmlFile);
-        String content = IOUtils.toString(r);
-        IOUtils.closeQuietly(r);
+        FileInputStream fis = new FileInputStream(xmlFile);
+        InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+        String content = IOUtils.toString( isr );
+        IOUtils.closeQuietly(isr);
 
         boolean isXml = XmlUtils.isXml( new StringReader(content) );
         
@@ -48,16 +50,12 @@ public class XmlTagStripper {
         
         LOG.info("Determine XML flavor");
         XmlType xmlType = XmlUtils.determineXmlType( new StringReader(content) );
-        IOUtils.closeQuietly(r);
         
-        if ( xmlType.equals(XmlType.TEI)) {
-            
+        if ( xmlType.equals(XmlType.TEI)) {            
             return extractTeiText(content);
         } else if ( xmlType.equals(XmlType.RAM)) {
-            
             return extractRamText(content);
         } else {
-            
             return extractXmlText(content);
         }
     }

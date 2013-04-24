@@ -10,21 +10,17 @@ import java.util.List;
  */
 public class Configuration {
     public enum Hyphens {ALL, LINEBREAK, NONE}
-    public enum Mode {VERSION, HELP, STRIP, TOKENIZE, CHANGE_INDEX};
+    public enum Mode {VERSION, HELP, STRIP, DIFF};
     
     private List<String> files = new ArrayList<String>();
     private boolean ignorePunctuation = true;
     private boolean ignoreCase = true;
     private boolean verbose = false;
     private Hyphens hyphenationFilter = Hyphens.ALL; 
-    private Mode mode = Mode.CHANGE_INDEX;
+    private Mode mode = Mode.DIFF;
     
     public void addFile(String file) {
-        if ( this.files.size() < 2 ) {
-            this.files.add(file);
-        } else {
-            throw new RuntimeException("Only 2 files can be accepted");
-        }
+        this.files.add(file); 
     }
     
     public void setVerbose( boolean val ) {

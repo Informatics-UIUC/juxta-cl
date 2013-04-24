@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,8 +26,9 @@ public final class EncodingUtils {
         File fixed = File.createTempFile("txt", "dat");
         fixed.deleteOnExit();
         OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(fixed), "UTF-8");
-
-        BufferedReader r = new BufferedReader(new FileReader(srcFile));
+        FileInputStream fis = new FileInputStream(srcFile);
+        InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+        BufferedReader r = new BufferedReader(isr);
         while (true) {
             String line = r.readLine();
             if (line == null) {
@@ -68,7 +68,7 @@ public final class EncodingUtils {
         File utf8Out = File.createTempFile("utf8out","dat");
         Reader in = null;
         if ( encoding == "UNK" ) {
-            in  = new InputStreamReader(new FileInputStream(tmpSrc) );
+            in  = new InputStreamReader(new FileInputStream(tmpSrc), "UTF-8" ); // default to a UTF-8
         } else {
             in  = new InputStreamReader(new FileInputStream(tmpSrc), encoding);
         }
@@ -158,7 +158,9 @@ public final class EncodingUtils {
     }
     
     private static String scanFileForEncodingDeclaration(File srcFile) throws IOException {
-        BufferedReader r = new BufferedReader( new FileReader(srcFile ));
+        FileInputStream fis = new FileInputStream(srcFile);
+        InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+        BufferedReader r = new BufferedReader(isr);
         boolean foundHeader = false;
         String encoding = null;
         while (true) {
