@@ -23,26 +23,33 @@ public final class EncodingUtils {
     private static final Logger LOG = Logger.getLogger( JuxtaCL.class );
     
     public static final void stripUnknownUTF8(File srcFile) throws IOException {
-        File fixed = File.createTempFile("txt", "dat");
-        fixed.deleteOnExit();
-        OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(fixed), "UTF-8");
-        FileInputStream fis = new FileInputStream(srcFile);
-        InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-        BufferedReader r = new BufferedReader(isr);
-        while (true) {
-            String line = r.readLine();
-            if (line == null) {
-                break;
-            } else {
-                char bad = 0xfffd;
-                line = line.replaceAll("" + bad, "");
-                osw.write(line + "\n");
+        File fixed = null;
+        try {
+            fixed = File.createTempFile("txt", "dat");
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(fixed), "UTF-8");
+            FileInputStream fis = new FileInputStream(srcFile);
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+            BufferedReader r = new BufferedReader(isr);
+            while (true) {
+                String line = r.readLine();
+                if (line == null) {
+                    break;
+                } else {
+                    char bad = 0xfffd;
+                    line = line.replaceAll("" + bad, "");
+                    osw.write(line + "\n");
+                }
+            }
+            IOUtils.closeQuietly(r);
+            IOUtils.closeQuietly(osw);
+            IOUtils.copy(new FileInputStream(fixed), new FileOutputStream(srcFile));
+        } finally {
+            if (fixed != null ) {
+                if (!fixed.delete() ) {
+                    fixed.deleteOnExit();
+                }
             }
         }
-        IOUtils.closeQuietly(r);
-        IOUtils.closeQuietly(osw);
-        IOUtils.copy(new FileInputStream(fixed), new FileOutputStream(srcFile));
-        fixed.delete();
     }
     
     /**
@@ -61,7 +68,7 @@ public final class EncodingUtils {
             EncodingUtils.finalFixes(tmpSrc);
             return tmpSrc;
         }
-        
+            
         LOG.info("Converting from "+encoding+" to UTF-8");
         
         // stream the input in original encoding to output in UTF-8
@@ -79,7 +86,9 @@ public final class EncodingUtils {
         }
         IOUtils.closeQuietly(in);
         IOUtils.closeQuietly(out);
-        tmpSrc.delete();
+        if (!tmpSrc.delete() ) {
+            tmpSrc.deleteOnExit();
+        }
         
         // lastly, strip the xml declaration and repair ^M linefeeds.
         EncodingUtils.finalFixes(utf8Out);
@@ -87,32 +96,41 @@ public final class EncodingUtils {
     }
     
     private static void finalFixes(File tmpSrc) throws IOException {
-        FileInputStream fis = new FileInputStream(tmpSrc);
-        InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-        BufferedReader r = new BufferedReader( isr );
-        File out = File.createTempFile("fix", "dat");
-        FileOutputStream fos = new FileOutputStream(out);
-        OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
-        boolean pastHeader = false;
-        while (true) {
-            String line = r.readLine();
-            if ( line != null ) {
-                if ( pastHeader == false && line.contains("<?xml") ) {
-                    pastHeader = true;
-                    int pos = line.indexOf("<?xml");
-                    int end = line.indexOf("?>", pos);
-                    line = line.substring(0,pos)+line.substring(end+2);
+        File out=null;
+        try {
+            FileInputStream fis = new FileInputStream(tmpSrc);
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+            BufferedReader r = new BufferedReader( isr );
+            out = File.createTempFile("fix", "dat");
+            FileOutputStream fos = new FileOutputStream(out);
+            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+            boolean pastHeader = false;
+            while (true) {
+                String line = r.readLine();
+                if ( line != null ) {
+                    if ( pastHeader == false && line.contains("<?xml") ) {
+                        pastHeader = true;
+                        int pos = line.indexOf("<?xml");
+                        int end = line.indexOf("?>", pos);
+                        line = line.substring(0,pos)+line.substring(end+2);
+                    }
+                    line += "\n";
+                    osw.write(line);
+                } else {
+                    break;
                 }
-                line += "\n";
-                osw.write(line);
-            } else {
-                break;
+            }
+            IOUtils.closeQuietly( r );
+            IOUtils.closeQuietly(osw);
+
+            IOUtils.copy(new FileInputStream(out), new FileOutputStream(tmpSrc));
+        } finally {
+            if (out != null ) {
+                if (!out.delete() ) {
+                    out.deleteOnExit();
+                }
             }
         }
-        IOUtils.closeQuietly( r );
-        IOUtils.closeQuietly(osw);
-        IOUtils.copy(new FileInputStream(out), new FileOutputStream(tmpSrc));
-        out.delete();
     }
 
     private static String detectEncoding(File srcFile) throws IOException {

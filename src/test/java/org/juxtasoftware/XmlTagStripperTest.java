@@ -11,7 +11,7 @@ import org.juxtasoftware.Configuration.Mode;
 /**
  * Unit test for XML tag stripper
  */
-public class XmlTagStripperTest extends BaseTest {
+public class XmlTagStripperTest extends JuxtaBase {
     
     @Test 
     public void testInvalidPath() {

@@ -11,7 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 
-public class BaseTest {
+public abstract class JuxtaBase {
     protected JuxtaCL juxtaCL = new JuxtaCL();
     protected ByteArrayOutputStream sysOut = new ByteArrayOutputStream();
     protected PrintStream origSysOut;

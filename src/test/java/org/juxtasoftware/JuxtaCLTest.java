@@ -11,7 +11,7 @@ import org.junit.Test;
  * Unit test for JuxtaCLTest; high level tests that validate command line 
  * argument processing and happy day simple text compare
  */
-public class JuxtaCLTest extends BaseTest {
+public class JuxtaCLTest extends JuxtaBase {
     
     @Test 
     public void testInvalidPath() {

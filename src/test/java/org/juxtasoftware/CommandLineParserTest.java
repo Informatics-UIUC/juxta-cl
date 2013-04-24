@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.juxtasoftware.Configuration.Hyphens;
 import org.juxtasoftware.Configuration.Mode;
 
-public class CommandLineParserTest extends BaseTest {
+public class CommandLineParserTest extends JuxtaBase {
     
     @Test 
     public void testNoArgs() throws OptionException {
