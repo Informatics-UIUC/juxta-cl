@@ -6,9 +6,38 @@ import static org.junit.Assert.assertTrue;
 import org.apache.commons.cli2.OptionException;
 import org.junit.Test;
 import org.juxtasoftware.Configuration.Hyphens;
+import org.juxtasoftware.Configuration.Mode;
 
-public class CommandLineParserTest {
-    JuxtaCL juxtaCL = new JuxtaCL();
+public class CommandLineParserTest extends BaseTest {
+    
+    @Test 
+    public void testNoArgs() throws OptionException {
+       this.juxtaCL.parseArgs(new String[] {});
+       assertTrue("No args call missing help", this.juxtaCL.getConfig().getMode().equals(Mode.HELP));
+    }
+    
+    @Test 
+    public void testHelp() throws OptionException {
+       this.juxtaCL.parseArgs(new String[] {"-help"});
+       assertTrue("Parse of help failed", this.juxtaCL.getConfig().getMode().equals(Mode.HELP));
+    }
+    
+    @Test 
+    public void testVersion() throws OptionException {
+       this.juxtaCL.parseArgs(new String[] {"-version"});
+       assertTrue("Parse of version failed", this.juxtaCL.getConfig().getMode().equals(Mode.VERSION));
+    }
+    
+    @Test
+    public void testBadArgs() throws OptionException {
+        boolean exception = false;
+        try {
+            this.juxtaCL.parseArgs(new String[] { "broken junk" });
+        } catch (Exception e) {
+            exception = true;
+        }
+        assertTrue("Accepted garbage args", exception);
+    }
     
     @Test 
     public void testMissingDiffComparands() {

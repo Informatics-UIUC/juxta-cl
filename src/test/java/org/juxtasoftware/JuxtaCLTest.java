@@ -3,19 +3,15 @@ package org.juxtasoftware;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 /**
  * Unit test for JuxtaCLTest; high level tests that validate command line 
  * argument processing and happy day simple text compare
  */
-public class JuxtaCLTest {
-    JuxtaCL juxtaCL = new JuxtaCL();
+public class JuxtaCLTest extends BaseTest {
     
     @Test 
     public void testInvalidPath() {
@@ -54,15 +50,5 @@ public class JuxtaCLTest {
 //        this.juxtaCL.setConfig(config);
 //        int changeIdx = this.juxtaCL.doComparison();
 //        assertTrue("Different files have zero change index", changeIdx != 0);
-    }
-   
-    private File resourceToFile(String resourceName) throws IOException {
-        InputStream is = getClass().getResourceAsStream("/"+resourceName);
-        File local = File.createTempFile("resource", "dat");
-        FileOutputStream fos = new FileOutputStream(local);
-        IOUtils.copy(is, fos);
-        IOUtils.closeQuietly(fos);
-        local.deleteOnExit();
-        return local;
     }
 }

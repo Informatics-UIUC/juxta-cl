@@ -2,6 +2,7 @@ package org.juxtasoftware;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -29,8 +30,25 @@ public class XmlUtilsTest {
     }
     
     @Test 
+    public void testTeiNamespaceDetection() throws IOException {
+        InputStream is = getClass().getResourceAsStream("/Bijou1828.xml");
+        InputStreamReader r = new InputStreamReader(is);
+        String xml = IOUtils.toString(r);
+        boolean hasNs = XmlUtils.hasNamespace(xml);
+        IOUtils.closeQuietly(r);
+        assertTrue("Unable to detect no namespace TEI", (hasNs == false));
+        
+        is = getClass().getResourceAsStream("/MD_AmerCh1b.xml");
+        r = new InputStreamReader(is);
+        xml = IOUtils.toString(r);
+        hasNs = XmlUtils.hasNamespace(xml);
+        IOUtils.closeQuietly(r);
+        assertTrue("Unable to detect namespace TEI", (hasNs == true));
+    }
+    
+    @Test 
     public void testRam() {
-        InputStream is = getClass().getResourceAsStream("/46p-1849.sa76.raw.xml");
+        InputStream is = getClass().getResourceAsStream("/ram.xml");
         InputStreamReader r = new InputStreamReader(is);
         XmlType type = XmlUtils.determineXmlType(r);
         IOUtils.closeQuietly(r);

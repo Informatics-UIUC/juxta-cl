@@ -67,11 +67,11 @@ public class JuxtaCL {
             juxtaCl.execute();
             
         }  catch(FileNotFoundException fnf) {
-            System.out.println("Juxta CL Failed - file not found: '"+fnf.getMessage()+"'");
+            System.out.println("JuxtaCL Failed - file not found: '"+fnf.getMessage()+"'");
             System.exit(-1);
         } catch (Exception e) {
             LOG.error("JuxtaCL Failed", e);
-            System.out.println("Juxta CL Failed! "+e.getMessage());
+            System.out.println("JuxtaCL Failed! "+e.getMessage());
             System.exit(-1);
         }
     }
@@ -91,6 +91,12 @@ public class JuxtaCL {
      */
     @SuppressWarnings("unchecked")
     public void parseArgs(String[] args) throws OptionException {
+        if ( args.length == 0 ) {
+            this.config = new Configuration();
+            this.config.setMode(Mode.HELP);
+            return;
+        }
+        
         final ArgumentBuilder aBuilder = new ArgumentBuilder();
         final DefaultOptionBuilder oBuilder = new DefaultOptionBuilder();
         final GroupBuilder gBuilder = new GroupBuilder();
