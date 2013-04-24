@@ -1,10 +1,14 @@
 package org.juxtasoftware;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import javax.xml.transform.TransformerException;
 
 import org.apache.commons.cli2.Argument;
 import org.apache.commons.cli2.CommandLine;
@@ -18,6 +22,7 @@ import org.apache.commons.cli2.builder.SwitchBuilder;
 import org.apache.commons.cli2.commandline.Parser;
 import org.apache.commons.cli2.option.Switch;
 import org.apache.commons.cli2.validation.EnumValidator;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.PropertyConfigurator;
 import org.juxtasoftware.Configuration.Hyphens;
 import org.juxtasoftware.Configuration.Mode;
@@ -27,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -97,10 +103,10 @@ public class JuxtaCL {
                 .create();
        
         Option version = oBuilder
-            .withLongName("version")
+            .withShortName("version")
             .create();
         Option help = oBuilder
-            .withLongName("help")
+            .withShortName("help")
             .create();
         
         // XML strip options; 1 file to strip and optional verbose flag
@@ -238,9 +244,9 @@ public class JuxtaCL {
     /**
      * Perform transformation / tokenizaton / collation based upon parsed config.
      * Results posted to std:out
-     * @throws FileNotFoundException 
+     * @throws IOException 
      */
-    public void execute() throws FileNotFoundException {
+    public void execute() throws IOException {
         if ( this.config.getMode().equals(Mode.VERSION)) {
             System.out.println("JuxtaCL Version "+this.version);
         } else if (this.config.getMode().equals(Mode.HELP)) {
@@ -248,7 +254,8 @@ public class JuxtaCL {
             displayHelp();
         } else if ( this.config.getMode().equals(Mode.STRIP)){
             // strip XML tags and dump plain text to std::out
-            doTagStrip();
+            String txtContent = doTagStrip();
+            System.out.println(txtContent);
         } else {
             // compare the two files and dump change index to std:out
             doComparison();
@@ -258,13 +265,13 @@ public class JuxtaCL {
     private void displayHelp() {
         StringBuilder out = new StringBuilder("Usage: juxta [-diff file1 file2 [options]] | [-strip file]\n");
         out.append("  Options:\n");
-        out.append("    --ignore-punct or -p (true|false)          : Toggle punctuation filtering\n");
-        out.append("                                                 Default true\n");  
-        out.append("    --ignore-case or -c  (true|false)          : Toggle case sensitivity\n");
-        out.append("                                                 Default true\n");  
-        out.append("    --hyphens or -h      (all|linebreak|none)  : Hyphenation inclusion setting\n");
-        out.append("                                                 Default all\n");  
-        out.append("    --verbose or -v                            : Show collation details\n");
+        out.append("    (+|-)punct                     : Toggle punctuation filtering\n");
+        out.append("                                       defaults to ignore punctuation\n");  
+        out.append("    (+|-)caps                      : Toggle case sensitivity\n");
+        out.append("                                       defaults to case insensitive\n");  
+        out.append("    -hyphens (all|linebreak|none)  : Hyphenation inclusion setting\n");
+        out.append("                                       defaults to include all\n");  
+        out.append("    -verbose                       : Show collation details\n");
         System.out.println(out.toString());
     }
     
@@ -300,9 +307,9 @@ public class JuxtaCL {
      * Strip all XML tags and return plain text string
      * 
      * @return
-     * @throws FileNotFoundException 
+     * @throws IOException 
      */
-    protected String doTagStrip() throws FileNotFoundException {
+    protected String doTagStrip() throws IOException {
         LOG.info("Strip XML tags from "+this.config.getFiles().get(0));
         File a = new File(this.config.getFiles().get(0));
         if ( a.exists() == false ) {
@@ -310,6 +317,33 @@ public class JuxtaCL {
             throw new FileNotFoundException(a.getPath());
         }
         
-        return this.tagStripper.stripTags(a);
+        LOG.info("Normalizing input file encoding");
+        File workFile = createCleanWorkFile(a);
+        try {
+            return this.tagStripper.stripTags(workFile);
+        } catch (SAXException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return "";
+    }
+    
+    /**
+     * Clone the source file into a temporary working file that the JuxtaCL will
+     * manipulate during processing.
+     * 
+     * @param src
+     * @return
+     * @throws IOException
+     */
+    private File createCleanWorkFile( File src ) throws IOException {
+        FileInputStream fis = new FileInputStream(src);
+        File workFile = EncodingUtils.fixEncoding(fis);
+        IOUtils.closeQuietly(fis);
+        workFile.deleteOnExit();
+        return workFile;
     }
 }
