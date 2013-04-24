@@ -8,17 +8,17 @@ import java.io.StringWriter;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.juxtasoftware.XmlUtils.XmlType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -31,9 +31,8 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @author loufoster
  *
  */
-@Component
 public class XmlTagStripper {
-    private static Logger LOG = LoggerFactory.getLogger(XmlTagStripper.class);
+    private static Logger LOG = Logger.getLogger(XmlTagStripper.class);
     
     public String stripTags(File xmlFile) throws IOException, SAXException, TransformerException {
         LOG.info("Ensure file is XML");
@@ -65,9 +64,17 @@ public class XmlTagStripper {
 
     private String extractTeiText(String content) throws IOException, SAXException, TransformerException {
         LOG.info("Extract TEI text");
-        String teiXslt = IOUtils.toString( ClassLoader.getSystemResourceAsStream("xslt/tei.xslt"), "utf-8");
-        
-        
+        String teiXslt = "";
+        if ( XmlUtils.hasNamespace(content)) {
+            teiXslt = IOUtils.toString( ClassLoader.getSystemResourceAsStream("xslt/tei.xslt"), "utf-8");
+        } else {
+            teiXslt = IOUtils.toString( ClassLoader.getSystemResourceAsStream("xslt/tei-nons.xslt"), "utf-8");
+        }
+        return doExtract(content, teiXslt);
+    }
+
+    private String doExtract(String content, String teiXslt) throws SAXException, TransformerFactoryConfigurationError,
+        TransformerConfigurationException, TransformerException {
         XMLReader reader = XMLReaderFactory.createXMLReader();
         reader.setEntityResolver(new EntityResolver() {
 
@@ -99,16 +106,16 @@ public class XmlTagStripper {
         return xmlOutput.getWriter().toString();
     }
     
-    private String extractRamText(String content) {
+    private String extractRamText(String content) throws IOException, SAXException, TransformerException {
         LOG.info("Extract RAM text");        
-        // TODO Auto-generated method stub
-        return null;
+        String teiXslt = IOUtils.toString( ClassLoader.getSystemResourceAsStream("xslt/ram.xslt"), "utf-8");
+        return doExtract(content, teiXslt);
     }
     
-    private String extractXmlText(String content) {
+    private String extractXmlText(String content) throws IOException, SAXException, TransformerException {
         LOG.info("Extract generic XML text");        
-        // TODO Auto-generated method stub
-        return null;
+        String teiXslt = IOUtils.toString( ClassLoader.getSystemResourceAsStream("xslt/general.xslt"), "utf-8");
+        return doExtract(content, teiXslt);
     }
 
 }

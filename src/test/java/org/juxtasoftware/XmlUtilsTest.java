@@ -9,10 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.juxtasoftware.XmlUtils.XmlType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Unit test for for the NamespaceExtractor. Verify that it can detect the
@@ -20,8 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * 
  * @author loufoster
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:/applicationContext.xml"})
 public class XmlUtilsTest {
     
     @Test 

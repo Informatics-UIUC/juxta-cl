@@ -5,16 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.cli2.OptionException;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.juxtasoftware.Configuration.Hyphens;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:/applicationContext.xml"})
 public class CommandLineParserTest {
-    @Autowired JuxtaCL juxtaCL;
+    JuxtaCL juxtaCL = new JuxtaCL();
     
     @Test 
     public void testMissingDiffComparands() {

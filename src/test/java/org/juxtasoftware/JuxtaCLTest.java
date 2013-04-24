@@ -9,19 +9,13 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Unit test for JuxtaCLTest; high level tests that validate command line 
  * argument processing and happy day simple text compare
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:/applicationContext.xml"})
 public class JuxtaCLTest {
-    @Autowired JuxtaCL juxtaCL;
+    JuxtaCL juxtaCL = new JuxtaCL();
     
     @Test 
     public void testInvalidPath() {

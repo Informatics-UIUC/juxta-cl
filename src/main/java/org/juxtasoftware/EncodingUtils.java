@@ -14,15 +14,14 @@ import java.io.Reader;
 import java.io.Writer;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.mozilla.intl.chardet.nsDetector;
 import org.mozilla.intl.chardet.nsICharsetDetectionObserver;
 import org.mozilla.universalchardet.UniversalDetector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class EncodingUtils {
 
-    private static final Logger LOG = LoggerFactory.getLogger( JuxtaCL.class );
+    private static final Logger LOG = Logger.getLogger( JuxtaCL.class );
     
     public static final void stripUnknownUTF8(File srcFile) throws IOException {
         File fixed = File.createTempFile("txt", "dat");

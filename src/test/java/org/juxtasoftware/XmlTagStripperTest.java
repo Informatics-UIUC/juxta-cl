@@ -3,18 +3,12 @@ package org.juxtasoftware;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Unit test for XML tag stripper
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:/applicationContext.xml"})
 public class XmlTagStripperTest {
-    @Autowired JuxtaCL juxtaCL;
+    JuxtaCL juxtaCL = new JuxtaCL();
 
     @Test 
     public void testInvalidPath() {

@@ -23,15 +23,10 @@ import org.apache.commons.cli2.commandline.Parser;
 import org.apache.commons.cli2.option.Switch;
 import org.apache.commons.cli2.validation.EnumValidator;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.juxtasoftware.Configuration.Hyphens;
 import org.juxtasoftware.Configuration.Mode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
 
@@ -49,25 +44,21 @@ import org.xml.sax.SAXException;
  * @author loufoster
  *
  */
-@Component
 public class JuxtaCL {
-    private static Logger LOG = LoggerFactory.getLogger(JuxtaCL.class);
+    private static Logger LOG = Logger.getLogger(JuxtaCL.class);
     private Configuration config;
  
-    @Qualifier("version")
-    @Autowired private String version;
-    @Autowired private XmlTagStripper tagStripper;
+    private String version = "0.1-SNAPSHOT";
+    private XmlTagStripper tagStripper;
     
     public static void main(String[] args) {
         try {
             // init parser and logging
             System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
             PropertyConfigurator.configure("config/log4j.properties");
-            ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/applicationContext.xml");
-            context.registerShutdownHook();
             
             // get the application bean
-            JuxtaCL juxtaCl = (JuxtaCL)context.getBean(JuxtaCL.class);
+            JuxtaCL juxtaCl = new JuxtaCL();
 
             // Parse the command line to configure this instance of JuxtaCL
             juxtaCl.parseArgs(args);
@@ -79,10 +70,18 @@ public class JuxtaCL {
             System.out.println("Juxta CL Failed - file not found: '"+fnf.getMessage()+"'");
             System.exit(-1);
         } catch (Exception e) {
-            LoggerFactory.getLogger(JuxtaCL.class).info("JuxtaCL Failed", e);
+            LOG.error("JuxtaCL Failed", e);
             System.out.println("Juxta CL Failed! "+e.getMessage());
             System.exit(-1);
         }
+    }
+    
+    /**
+     * JuxtaCL constructor
+     */
+    public JuxtaCL() {
+        this.tagStripper = new XmlTagStripper();
+        LOG.info("JuxtaCL started");
     }
     
     /**

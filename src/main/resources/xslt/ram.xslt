@@ -6,14 +6,13 @@
     <xsl:variable name="display-linebreak" select="'&#10;'" />
 
     <!--global-exclusions-->
-    <xsl:template match="tei:note"/>
-    <xsl:template match="tei:milestone"/>
-    <xsl:template match="tei:teiHeader"/>
-    <xsl:template match="tei:facsimile"/>
-    <xsl:template match="tei:front"/>
+    <xsl:template match="back"/>
+    <xsl:template match="ramheader"/>
+    <xsl:template match="front"/>
+    <xsl:template match="add"/>
 
     <!--breaks-->
-    <xsl:template match="tei:pb|tei:opener|tei:body|tei:floatingText|tei:castGroup|tei:broadcast|tei:dateline|tei:actor|tei:castList|tei:head|tei:argument|tei:text|tei:sp|tei:prologue|tei:addrLine|tei:table|tei:finalRubric|tei:row|tei:salute|tei:epilogue|tei:explicit|tei:biblStruct|tei:lg|tei:view|tei:lb|tei:epigraph|tei:entryFree|tei:trailer|tei:set|tei:postscript|tei:div|tei:stage|tei:closer|tei:byline|tei:graph|tei:def|tei:colophon|tei:performance|tei:headLabel|tei:div7|tei:div6|tei:div5|tei:div4|tei:div3|tei:div2|tei:activity|tei:div1|tei:titlePage|tei:signed|tei:camera|tei:back|tei:caption|tei:l|tei:tech|tei:catchwords|tei:headItem|tei:castItem|tei:bibl|tei:address|tei:entry|tei:p|tei:ab|tei:divGen">
+    <xsl:template match="title|divheader|lg|p|l|lb|epage|closer">
         <xsl:call-template name="line-break"/>
     </xsl:template>
 

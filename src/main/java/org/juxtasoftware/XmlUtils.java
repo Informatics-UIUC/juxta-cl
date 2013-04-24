@@ -3,12 +3,14 @@ package org.juxtasoftware;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -35,6 +37,21 @@ public final class XmlUtils {
         factory.setNamespaceAware(true);
         try {
             builder = factory.newDocumentBuilder();
+            
+            // ignore dtd and stuff during validation
+            builder.setEntityResolver(new EntityResolver() {
+
+                @Override
+                public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                    if (systemId.endsWith(".dtd") || systemId.endsWith(".ent")) {
+                        StringReader stringInput = new StringReader(" ");
+                        return new InputSource(stringInput);
+                    }
+                    else {
+                        return null; // use default behavior
+                    }
+                }
+            });
         } catch (ParserConfigurationException e1) {
             return false;
         }
@@ -89,5 +106,15 @@ public final class XmlUtils {
             IOUtils.closeQuietly(br);
         }
         return type;
+    }
+    
+    public static boolean hasNamespace( final String xmlContent) {
+        final String defaultNs = "xmlns=\"";
+        final String noNamespace = ":noNamespaceSchemaLocation=\"";
+        final String ns = "xmlns:";
+        if ( xmlContent.contains(noNamespace)) {
+            return false;
+        }
+        return ( xmlContent.contains(defaultNs) || xmlContent.contains(ns));
     }
 }
