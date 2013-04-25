@@ -35,9 +35,7 @@ public class Tokenizer {
     
     public void setConfig(Configuration cfg) {
         this.config = cfg;
-        this.filterLineBreak = (
-            cfg.getHyphenation().equals(Hyphens.LINEBREAK) || 
-            cfg.getHyphenation().equals(Hyphens.NONE) );
+        this.filterLineBreak = cfg.getHyphenation().equals(Hyphens.LINEBREAK);
     }
     
     /**
@@ -77,7 +75,8 @@ public class Tokenizer {
                 }
                 break;
             } else {
-
+                
+                // letter, digit or hyphen?
                 if (isTokenChar(read)) {
                     // this ends a prior run of non-token characters
                     if (runType.equals(RunType.NON_TOKEN)) {
@@ -93,7 +92,43 @@ public class Tokenizer {
                         start = offset;
                     }
                     
+                    // Special case handling for linebreak hyphen filtering
+                    if ( this.filterLineBreak ) {
+                        // If we have found a hyphen before (and possibly identified this as a linebreak),
+                        // the next text encountered is the continuation of the hyphenated word.
+                        if ( hyphenState.equals(HyphenState.FOUND_HYPHEN) || 
+                             hyphenState.equals(HyphenState.LINEBREAK_HYPHEN) ) {
+                            hyphenState = HyphenState.IN_HYPHENATED_PART;
+                        }
+                        else if ( read == '-' ) {
+                            hyphenState = HyphenState.FOUND_HYPHEN;
+                        }
+                    }
+                    
                 } else {
+                    // This char is whitespace or punctuation
+                    // more specialized hyphen handling
+                    if ( this.filterLineBreak ) {
+                        if ( hyphenState.equals( HyphenState.IN_HYPHENATED_PART) ) {
+                            createToken( start, offset, tokenText );
+                            start = -1;
+                            runType = RunType.NONE;
+                            hyphenState = HyphenState.NONE;
+                            tokenText = new StringBuilder();
+                        } else if ( hyphenState.equals(HyphenState.FOUND_HYPHEN) || hyphenState.equals(HyphenState.LINEBREAK_HYPHEN)) {
+                            // Special case for text that is a candidate for being a linebreak 
+                            // hyphenated word. We have a hyphen. Do nothing but wait if more whitespace
+                            // is encountered. If the whitespace is a linefeed, flag
+                            // this as a line break. In either case, do no more processing.
+                            if ( Character.isWhitespace(read) ) {
+                                if (  read == 13 || read == 10 ) {
+                                    hyphenState = HyphenState.LINEBREAK_HYPHEN;
+                                }
+                                offset++;
+                                continue;
+                            }
+                        }
+                    }
                     
                     // if this non-token char breaks up a prior token
                     // run, create a new token with it
@@ -143,6 +178,9 @@ public class Tokenizer {
         } 
         if ( this.config.isIgnorePunctuation()) {
             txt = PUNCTUATION.matcher(txt).replaceAll("");
+        }
+        if ( this.config.getHyphenation().equals(Hyphens.ALL)==false) {
+            txt = txt.replaceAll("-", "");
         }
         txt = txt.trim().replaceAll("\\s+", " ");
         
