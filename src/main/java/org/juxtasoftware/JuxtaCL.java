@@ -4,11 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import javax.xml.transform.TransformerException;
 
 import org.apache.commons.cli2.Argument;
 import org.apache.commons.cli2.CommandLine;
@@ -28,8 +27,8 @@ import org.apache.log4j.PropertyConfigurator;
 import org.juxtasoftware.model.Configuration;
 import org.juxtasoftware.model.Configuration.Hyphens;
 import org.juxtasoftware.model.Configuration.Mode;
+import org.juxtasoftware.model.Token;
 import org.juxtasoftware.util.EncodingUtils;
-import org.xml.sax.SAXException;
 
 
 /**
@@ -52,6 +51,7 @@ public class JuxtaCL {
  
     private String version = "0.1-SNAPSHOT";
     private XmlTagStripper tagStripper;
+    private Tokenizer tokenizer;
     
     public static void main(String[] args) {
         try {
@@ -83,6 +83,7 @@ public class JuxtaCL {
      */
     public JuxtaCL() {
         this.tagStripper = new XmlTagStripper();
+        this.tokenizer = new Tokenizer();
     }
     
     /**
@@ -159,8 +160,7 @@ public class JuxtaCL {
             .withChildren(diffOpt)
             .create();
 
-
-
+        // glom all of the options together into the main grouping. it will be used for the parse.
         Group opts = gBuilder.withOption(strip).withOption(diff).withOption(help).withOption(version).create();
 
         // parse the options passed in
@@ -289,9 +289,9 @@ public class JuxtaCL {
      * @param filePath2 Absolute path to test file 2
      * 
      * @return Change index
-     * @throws FileNotFoundException 
+     * @throws IOException 
      */
-    protected int doComparison() throws FileNotFoundException {
+    protected int doComparison() throws IOException {
         LOG.info("Compare "+this.config.getFiles());
         File a = new File(this.config.getFiles().get(0));
         File b = new File(this.config.getFiles().get(1));
@@ -304,6 +304,31 @@ public class JuxtaCL {
         if ( b.exists() == false ) {
             LOG.error("Compare Failed. '"+b+"' does not exist");
             throw new FileNotFoundException(b.getPath());
+        }
+        
+        LOG.info("Create normalized working files for sources");
+        File workA = createCleanWorkFile(a);
+        File workB = createCleanWorkFile(b);
+        
+        LOG.info("Tokenizing sources");
+        this.tokenizer.setConfig(this.config);
+        InputStreamReader isr = null;
+        List<Token> aTokens;
+        List<Token> bTokens;
+        try {
+            FileInputStream fis = new FileInputStream(workA);
+            isr = new InputStreamReader(fis, "UTF-8");
+            aTokens = this.tokenizer.tokenize(isr);
+        } finally {
+            IOUtils.closeQuietly(isr);
+        }
+        
+        try {
+            FileInputStream fis = new FileInputStream(workB);
+            isr = new InputStreamReader(fis, "UTF-8");
+            bTokens = this.tokenizer.tokenize(isr);
+        } finally {
+            IOUtils.closeQuietly(isr);
         }
         
         return 0;
@@ -327,13 +352,9 @@ public class JuxtaCL {
         File workFile = createCleanWorkFile(a);
         try {
             return this.tagStripper.stripTags(workFile);
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        } catch (Exception e) {
+            System.out.println("Unable to strip tags. "+e.getMessage());
+        } 
         return "";
     }
     
