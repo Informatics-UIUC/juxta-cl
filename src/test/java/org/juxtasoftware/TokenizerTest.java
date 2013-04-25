@@ -55,10 +55,91 @@ public class TokenizerTest {
         assertTrue("missing token 'representatives'", tokens.get(3).getText().equals("representatives"));
         
         tokens.clear();
-        txt = "We, therefore, the represen- \ntatives of the United States";
+        txt = "We, therefore, the represen - \ntatives of the United States";
         tokenizer.tokenize( new StringReader(txt));
         tokens = tokenizer.getTokens();
         assertTrue("Wrong number of tokens", tokens.size()==8);
         assertTrue("missing token 'representatives'", tokens.get(3).getText().equals("representatives"));
+    }
+    
+    @Test
+    public void ignoreLinebreakTest() throws IOException {
+        String txt = "week-days";
+        
+        Configuration cfg = new Configuration();
+        cfg.setIgnoreCase(true);
+        cfg.setIgnorePunctuation(true);
+        cfg.setHyphenation(Hyphens.NONE);
+        Tokenizer tokenizer = new Tokenizer();
+        tokenizer.setConfig(cfg);
+        tokenizer.tokenize( new StringReader(txt));
+        List<Token> tokens = tokenizer.getTokens();
+        assertTrue("Wrong number of tokens", tokens.size()==2);
+        assertTrue("missing token 'week'", tokens.get(0).getText().equals("week"));
+        assertTrue("missing token 'days'", tokens.get(1).getText().equals("days"));
+    }
+    
+    @Test
+    public void punctuationTest() throws IOException {
+        String txt = "this... is a big, scary test!";
+        String[] expected1 = {"this", "is", "a", "big", "scary", "test"};
+        String[] expected2 = {"this", "...", "is", "a", "big", ",", "scary", "test", "!"};
+        
+        Configuration cfg = new Configuration();
+        cfg.setIgnoreCase(true);
+        cfg.setIgnorePunctuation(true);
+        cfg.setHyphenation(Hyphens.ALL);
+        Tokenizer tokenizer = new Tokenizer();
+        tokenizer.setConfig(cfg);
+        tokenizer.tokenize( new StringReader(txt));
+        List<Token> tokens = tokenizer.getTokens();
+        assertTrue("Wrong number of tokens", tokens.size()==expected1.length);
+        for ( int i=0; i<expected1.length; i++ ) {
+            boolean match = false;
+            for ( Token t : tokens ) {
+                if (t.getText().equals(expected1[i])) {
+                    match = true;
+                }
+            }
+            assertTrue("Missing expected token when ignoring punctuation",match);
+        }
+        
+        cfg.setIgnorePunctuation(false);
+        tokenizer.tokenize( new StringReader(txt));
+        tokens = tokenizer.getTokens();
+        assertTrue("Wrong number of tokens", tokens.size()==expected2.length);
+        for ( int i=0; i<expected2.length; i++ ) {
+            boolean match = false;
+            for ( Token t : tokens ) {
+                if (t.getText().equals(expected2[i])) {
+                    match = true;
+                }
+            }
+            assertTrue("Missing expected token when NOT ignoring punctuation",match);
+        }
+    }
+    
+    @Test
+    public void caseTest() throws IOException {
+        String txt = "Black CAT";
+        Configuration cfg = new Configuration();
+        cfg.setIgnoreCase(true);
+        cfg.setIgnorePunctuation(true);
+        cfg.setHyphenation(Hyphens.ALL);
+        Tokenizer tokenizer = new Tokenizer();
+        tokenizer.setConfig(cfg);
+        tokenizer.tokenize( new StringReader(txt));
+        List<Token> tokens = tokenizer.getTokens();
+        assertTrue("Wrong number of tokens", tokens.size()==2);
+        assertTrue("missing token 'black'", tokens.get(0).getText().equals("black"));
+        assertTrue("missing token 'cat'", tokens.get(1).getText().equals("cat"));
+        
+        cfg.setIgnoreCase(false);
+        tokenizer.setConfig(cfg);
+        tokenizer.tokenize( new StringReader(txt));
+        tokens = tokenizer.getTokens();
+        assertTrue("Wrong number of tokens", tokens.size()==2);
+        assertTrue("missing token 'black'", tokens.get(0).getText().equals("Black"));
+        assertTrue("missing token 'cat'", tokens.get(1).getText().equals("CAT"));
     }
 }
