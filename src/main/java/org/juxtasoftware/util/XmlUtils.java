@@ -1,4 +1,4 @@
-package org.juxtasoftware;
+package org.juxtasoftware.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

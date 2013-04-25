@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.cli2.OptionException;
 import org.junit.Test;
-import org.juxtasoftware.Configuration.Hyphens;
-import org.juxtasoftware.Configuration.Mode;
+import org.juxtasoftware.model.Configuration.Hyphens;
+import org.juxtasoftware.model.Configuration.Mode;
 
 public class CommandLineParserTest extends JuxtaBase {
     

@@ -25,8 +25,10 @@ import org.apache.commons.cli2.validation.EnumValidator;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.juxtasoftware.Configuration.Hyphens;
-import org.juxtasoftware.Configuration.Mode;
+import org.juxtasoftware.model.Configuration;
+import org.juxtasoftware.model.Configuration.Hyphens;
+import org.juxtasoftware.model.Configuration.Mode;
+import org.juxtasoftware.util.EncodingUtils;
 import org.xml.sax.SAXException;
 
 

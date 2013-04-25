@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
+import org.juxtasoftware.model.Configuration;
 
 /**
  * Unit test for JuxtaCLTest; high level tests that validate command line 

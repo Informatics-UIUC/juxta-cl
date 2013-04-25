@@ -1,4 +1,4 @@
-package org.juxtasoftware;
+package org.juxtasoftware.model;
 
 import java.util.ArrayList;
 import java.util.List;

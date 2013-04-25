@@ -6,7 +6,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.juxtasoftware.Configuration.Mode;
+import org.juxtasoftware.model.Configuration;
+import org.juxtasoftware.model.Configuration.Mode;
 
 /**
  * Unit test for XML tag stripper

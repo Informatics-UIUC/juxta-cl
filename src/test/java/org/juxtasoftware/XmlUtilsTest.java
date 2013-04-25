@@ -10,7 +10,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.juxtasoftware.XmlUtils.XmlType;
+import org.juxtasoftware.util.XmlUtils;
+import org.juxtasoftware.util.XmlUtils.XmlType;
 
 /**
  * Unit test for for the NamespaceExtractor. Verify that it can detect the

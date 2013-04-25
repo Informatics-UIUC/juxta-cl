@@ -19,7 +19,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.juxtasoftware.XmlUtils.XmlType;
+import org.juxtasoftware.util.XmlUtils;
+import org.juxtasoftware.util.XmlUtils.XmlType;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

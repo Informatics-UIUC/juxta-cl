@@ -1,4 +1,4 @@
-package org.juxtasoftware;
+package org.juxtasoftware.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -14,6 +14,7 @@ import java.io.Writer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.juxtasoftware.JuxtaCL;
 import org.mozilla.intl.chardet.nsDetector;
 import org.mozilla.intl.chardet.nsICharsetDetectionObserver;
 import org.mozilla.universalchardet.UniversalDetector;
