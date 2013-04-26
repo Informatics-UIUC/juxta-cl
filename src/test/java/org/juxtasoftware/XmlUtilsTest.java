@@ -72,22 +72,22 @@ public class XmlUtilsTest {
     }
     
     @Test 
-    public void testIsXml() throws ParserConfigurationException {
+    public void testIsValidXml() throws ParserConfigurationException {
         InputStream is = getClass().getResourceAsStream("/roses.txt");
         InputStreamReader r = new InputStreamReader(is);
-        boolean isXml = XmlUtils.isXml(r);
+        boolean isXml = XmlUtils.isValidXml(r);
         IOUtils.closeQuietly(r);
         assertTrue("Incorrect XML detection", isXml==false);
         
         is = getClass().getResourceAsStream("/MD_AmerCh1b.xml");
         r = new InputStreamReader(is);
-        isXml = XmlUtils.isXml(r);
+        isXml = XmlUtils.isValidXml(r);
         IOUtils.closeQuietly(r);
         assertTrue("Incorrect XML detection", isXml==true);
         
         is = getClass().getResourceAsStream("/bad.xml");
         r = new InputStreamReader(is);
-        isXml = XmlUtils.isXml(r);
+        isXml = XmlUtils.isValidXml(r);
         IOUtils.closeQuietly(r);
         assertTrue("Incorrect XML detection", isXml==false);
     }

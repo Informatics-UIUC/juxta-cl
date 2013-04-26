@@ -26,11 +26,11 @@ public final class XmlUtils {
     public enum XmlType {GENERIC, TEI, RAM};
     
     /**
-     * Return true if this file is xml
+     * Return true if this file is valid xml
      * @param fileReader
      * @return
      */
-    public static boolean isXml( final Reader fileReader ) {
+    public static boolean isValidXml( final Reader fileReader ) {
         DocumentBuilder builder = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(false);

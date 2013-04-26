@@ -43,10 +43,10 @@ public class XmlTagStripper {
         String content = IOUtils.toString( isr );
         IOUtils.closeQuietly(isr);
 
-        boolean isXml = XmlUtils.isXml( new StringReader(content) );
+        boolean isXml = XmlUtils.isValidXml( new StringReader(content) );
         
         if ( isXml == false ) {
-            throw new RuntimeException("Not an XML file");
+            throw new RuntimeException("Not a valid XML file");
         }
         
         LOG.info("Determine XML flavor");

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -27,6 +28,9 @@ import org.apache.log4j.PropertyConfigurator;
 import org.juxtasoftware.model.Configuration;
 import org.juxtasoftware.model.Configuration.Hyphens;
 import org.juxtasoftware.model.Configuration.Mode;
+import org.juxtasoftware.model.DiffException;
+import org.juxtasoftware.model.EncodingException;
+import org.juxtasoftware.model.TagStripException;
 import org.juxtasoftware.model.Token;
 import org.juxtasoftware.util.EncodingUtils;
 
@@ -249,10 +253,12 @@ public class JuxtaCL {
     
     /**
      * Perform transformation / tokenizaton / collation based upon parsed config.
-     * Results posted to std:out
-     * @throws IOException 
+     * Results will be streamed to std:out
+     * 
+     * @throws FileNotFoundException 
+     * @throws EncodingException 
      */
-    public void execute() throws IOException {
+    public void execute() throws DiffException, TagStripException, FileNotFoundException, EncodingException {
         if ( this.config.getMode().equals(Mode.VERSION)) {
             System.out.println("JuxtaCL Version "+this.version);
         } else if (this.config.getMode().equals(Mode.HELP)) {
@@ -289,18 +295,19 @@ public class JuxtaCL {
      * @param filePath2 Absolute path to test file 2
      * 
      * @return Change index
+     * @throws EncodingException 
+     * @throws DiffException 
      * @throws IOException 
      */
-    protected int doComparison() throws IOException {
+    protected int doComparison() throws FileNotFoundException, EncodingException, DiffException {
         LOG.info("Compare "+this.config.getFiles());
         File a = new File(this.config.getFiles().get(0));
-        File b = new File(this.config.getFiles().get(1));
-        
-        // be sure both files exist
         if ( a.exists() == false ) {
             LOG.error("Compare Failed. '"+a+"' does not exist");
             throw new FileNotFoundException(a.getPath());
         }
+
+        File b = new File(this.config.getFiles().get(1));
         if ( b.exists() == false ) {
             LOG.error("Compare Failed. '"+b+"' does not exist");
             throw new FileNotFoundException(b.getPath());
@@ -319,6 +326,8 @@ public class JuxtaCL {
             FileInputStream fis = new FileInputStream(workA);
             isr = new InputStreamReader(fis, "UTF-8");
             aTokens = this.tokenizer.tokenize(isr);
+        }  catch (IOException e) {
+            throw new DiffException("Tokenization failed", e);
         } finally {
             IOUtils.closeQuietly(isr);
         }
@@ -327,6 +336,8 @@ public class JuxtaCL {
             FileInputStream fis = new FileInputStream(workB);
             isr = new InputStreamReader(fis, "UTF-8");
             bTokens = this.tokenizer.tokenize(isr);
+        } catch (IOException e) {
+            throw new DiffException("Tokenization failed", e);
         } finally {
             IOUtils.closeQuietly(isr);
         }
@@ -338,9 +349,11 @@ public class JuxtaCL {
      * Strip all XML tags and return plain text string
      * 
      * @return
-     * @throws IOException 
+     * @throws TagStripException 
+     * @throws FileNotFoundException 
+     * @throws EncodingException 
      */
-    protected String doTagStrip() throws IOException {
+    protected String doTagStrip() throws TagStripException, FileNotFoundException, EncodingException {
         LOG.info("Strip XML tags from "+this.config.getFiles().get(0));
         File a = new File(this.config.getFiles().get(0));
         if ( a.exists() == false ) {
@@ -350,27 +363,32 @@ public class JuxtaCL {
         
         LOG.info("Normalizing input file encoding");
         File workFile = createCleanWorkFile(a);
+        
         try {
+            LOG.info("Extracting flat text content");
             return this.tagStripper.stripTags(workFile);
-        } catch (Exception e) {
-            System.out.println("Unable to strip tags. "+e.getMessage());
-        } 
-        return "";
+        } catch ( Exception e ) {
+            throw new TagStripException(e);
+        }
     }
     
     /**
-     * Clone the source file into a temporary working file that the JuxtaCL will
-     * manipulate during processing.
+     * Normalize encoding to UTF-8 and clone the source file into a temporary working
+     * file that the JuxtaCL will manipulate during processing.
      * 
      * @param src
      * @return
-     * @throws IOException
+     * @throws EncodingException
      */
-    private File createCleanWorkFile( File src ) throws IOException {
-        FileInputStream fis = new FileInputStream(src);
-        File workFile = EncodingUtils.fixEncoding(fis);
-        IOUtils.closeQuietly(fis);
-        workFile.deleteOnExit();
-        return workFile;
+    private File createCleanWorkFile( File src ) throws EncodingException {
+        try {
+            FileInputStream fis = new FileInputStream(src);
+            File workFile = EncodingUtils.fixEncoding(fis);
+            IOUtils.closeQuietly(fis);
+            workFile.deleteOnExit();
+            return workFile;
+        } catch (IOException e ) {
+            throw new EncodingException(e);
+        }
     }
 }

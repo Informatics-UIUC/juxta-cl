@@ -3,10 +3,13 @@ package org.juxtasoftware;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.Test;
 import org.juxtasoftware.model.Configuration;
+import org.juxtasoftware.model.DiffException;
+import org.juxtasoftware.model.EncodingException;
 
 /**
  * Unit test for JuxtaCLTest; high level tests that validate command line 
@@ -27,7 +30,7 @@ public class JuxtaCLTest extends JuxtaBase {
     }
 	 
     @Test
-    public void testCompareSame() throws IOException {
+    public void testCompareSame() throws DiffException, FileNotFoundException, IOException, EncodingException {
         
         File testFile = resourceToFile("roses.txt");
         Configuration config = new Configuration();

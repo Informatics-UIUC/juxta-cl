@@ -6,7 +6,7 @@
     <groupId>org.juxtasoftware</groupId>
     <artifactId>juxta-cl</artifactId>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <name>Juxta :: Command Line</name>
     <description>
         A command-line version of Juxta that accepts 2 files and returns a change index. 
@@ -188,12 +188,6 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.6</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.2</version>
             </plugin>
@@ -244,6 +238,11 @@
     <!-- project repoting configurations -->
     <reporting>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

@@ -8,6 +8,9 @@ import java.io.IOException;
 import org.junit.Test;
 import org.juxtasoftware.model.Configuration;
 import org.juxtasoftware.model.Configuration.Mode;
+import org.juxtasoftware.model.DiffException;
+import org.juxtasoftware.model.EncodingException;
+import org.juxtasoftware.model.TagStripException;
 
 /**
  * Unit test for XML tag stripper
@@ -59,7 +62,7 @@ public class XmlTagStripperTest extends JuxtaBase {
     }
     
     @Test 
-    public void testStripGenericXml() throws IOException {
+    public void testStripGenericXml() throws IOException, TagStripException, EncodingException, DiffException {
         File testFile = resourceToFile("note.xml");
         Configuration config = new Configuration();
         config.addFile(testFile.getPath() );
@@ -73,7 +76,7 @@ public class XmlTagStripperTest extends JuxtaBase {
     }
     
     @Test 
-    public void testStripTeiXml() throws IOException {
+    public void testStripTeiXml() throws IOException, TagStripException, EncodingException, DiffException {
         File testFile = resourceToFile("MD_AmerCh1b.xml");
         Configuration config = new Configuration();
         config.addFile(testFile.getPath() );
@@ -87,7 +90,7 @@ public class XmlTagStripperTest extends JuxtaBase {
     }
     
     @Test 
-    public void testStripRamXml() throws IOException {
+    public void testStripRamXml() throws IOException, TagStripException, EncodingException, DiffException {
         File testFile = resourceToFile("ram.xml");
         Configuration config = new Configuration();
         config.addFile(testFile.getPath() );
