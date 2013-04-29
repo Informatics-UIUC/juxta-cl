@@ -11,6 +11,7 @@ import java.util.List;
 public class Configuration {
     public enum Hyphens {ALL, LINEBREAK, NONE}
     public enum Mode {VERSION, HELP, STRIP, DIFF};
+    public enum Algorithm {JUXTA, LEVENSHTEIN};
     
     private List<String> files = new ArrayList<String>();
     private boolean ignorePunctuation = true;
@@ -18,6 +19,7 @@ public class Configuration {
     private boolean verbose = false;
     private Hyphens hyphenationFilter = Hyphens.ALL; 
     private Mode mode = Mode.DIFF;
+    private Algorithm algorithm = Algorithm.JUXTA;
     
     public void addFile(String file) {
         this.files.add(file); 
@@ -65,6 +67,14 @@ public class Configuration {
     
     public Mode getMode() {
         return this.mode;
+    }
+
+    public Algorithm getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(Algorithm algorithm) {
+        this.algorithm = algorithm;
     }
 
     @Override

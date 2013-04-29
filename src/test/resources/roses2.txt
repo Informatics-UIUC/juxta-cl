@@ -1,4 +1,6 @@
 Roses are crimson
-Violets are purple
+Violets never are yellow
 Skunk cabbage stinks
-And so do you
+And you do too!
+
+The End

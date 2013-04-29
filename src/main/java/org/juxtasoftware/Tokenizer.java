@@ -128,7 +128,7 @@ public class Tokenizer {
 
     private void createToken(long start, long offset, StringBuilder tokenText) {
         String txt = tokenText.toString();
-        Range r = new Range(start, (offset - start));
+        Range r = new Range(start, offset);
         
         // try to identify linebreak hyphenation
         boolean joinHyphenated = false;
