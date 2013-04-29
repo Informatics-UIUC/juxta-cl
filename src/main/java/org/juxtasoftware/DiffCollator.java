@@ -4,11 +4,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.juxtasoftware.model.Configuration.Algorithm;
-import org.juxtasoftware.model.Token;
 
 import scala.Option;
 
-import com.rockymadden.stringmetric.similarity.HammingMetric;
 import com.rockymadden.stringmetric.similarity.LevenshteinMetric;
 
 import difflib.Delta;
@@ -40,7 +38,7 @@ public class DiffCollator {
      * 
      * @return
      */
-    public float diff(List<Token> tokensA, List<Token> tokensB) {
+    public float diff(List<String> tokensA, List<String> tokensB) {
         LOG.info("Diff the texts");
         long lengthA = getSourceLength(tokensA);
         long lengthB = getSourceLength(tokensB);
@@ -71,27 +69,26 @@ public class DiffCollator {
         for ( Delta delta : deltas ) {
             if ( delta.getType().equals(TYPE.CHANGE)) {
                 for (int i=0; i<delta.getOriginal().getLines().size(); i++) {
-                    Token orig = (Token)delta.getOriginal().getLines().get(i);
-                    Token rev = (Token)delta.getRevised().getLines().get(i);
-                    Option<Object> out = LevenshteinMetric.apply().compare(orig.getText(), rev.getText(), null);
+                    String orig = (String)delta.getOriginal().getLines().get(i);
+                    String rev = (String)delta.getRevised().getLines().get(i);
+                    Option<Object> out = LevenshteinMetric.apply().compare(orig, rev, null);
                     Integer val = (Integer)out.get();
                     levSum+= val;
                 }
             } else if ( delta.getType().equals(TYPE.DELETE)) {
                 // text was deleted from A. get the deleted tokens
                 for ( Object delObj : delta.getOriginal().getLines() ) {
-                    Token delToken = (Token)delObj;
-                    delSum += delToken.getText().length();
+                    String delToken = (String)delObj;
+                    delSum += delToken.length();
                 }
             } else {
                 // text was inserted relative to A. get the text from B
                 for ( Object insObj : delta.getRevised().getLines() ) {
-                    Token insToken = (Token)insObj;
-                    addSum += insToken.getText().length();
+                    String insToken = (String)insObj;
+                    addSum += insToken.length();
                 }
             }
         }
-        
         
         return (float)(levSum+addSum-delSum) / (float)Math.max(lengthA, lengthB);
     }
@@ -110,31 +107,31 @@ public class DiffCollator {
         for ( Delta delta : deltas ) {
             if ( delta.getType().equals(TYPE.CHANGE)) {
                 for (int i=0; i<delta.getOriginal().getLines().size(); i++) {
-                    Token orig = (Token)delta.getOriginal().getLines().get(i);
-                    Token rev = (Token)delta.getRevised().getLines().get(i);
-                    diffSum += Math.max(orig.getText().length(), rev.getText().length());
+                    String orig = (String)delta.getOriginal().getLines().get(i);
+                    String rev = (String)delta.getRevised().getLines().get(i);
+                    diffSum += Math.max(orig.length(), rev.length());
                 }
             } else if ( delta.getType().equals(TYPE.DELETE)) {
                 // text was deleted from A. get the deleted tokens
                 for ( Object delObj : delta.getOriginal().getLines() ) {
-                    Token delToken = (Token)delObj;
-                    diffSum += delToken.getText().length();
+                    String delToken = (String)delObj;
+                    diffSum += delToken.length();
                 }
             } else {
                 // text was inserted relative to A. get the text from B
                 for ( Object insObj : delta.getRevised().getLines() ) {
-                    Token insToken = (Token)insObj;
-                    diffSum += insToken.getText().length();
+                    String insToken = (String)insObj;
+                    diffSum += insToken.length();
                 }
             }
         }
         return (float)(diffSum) / (float)Math.max(lengthA, lengthB);
     }
     
-    private long getSourceLength( List<Token> srcTokens ) {
+    private long getSourceLength( List<String> srcTokens ) {
         long len = 0;
-        for ( Token t : srcTokens ) {
-            len += t.getText().length();
+        for ( String t : srcTokens ) {
+            len += t.length();
         }
         return len;
     }

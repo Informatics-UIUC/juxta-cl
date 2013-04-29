@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.juxtasoftware.model.Configuration;
 import org.juxtasoftware.model.Configuration.Hyphens;
-import org.juxtasoftware.model.Range;
-import org.juxtasoftware.model.Token;
 
 /**
  * Break a witness into a stream of tokens
@@ -21,7 +19,7 @@ import org.juxtasoftware.model.Token;
 public class Tokenizer {
     private static Logger LOG = Logger.getLogger(Tokenizer.class);
     private Configuration config;
-    private List<Token> tokens;
+    private List<String> tokens;
     private static final Pattern PUNCTUATION = Pattern.compile("[^a-zA-Z0-9\\-]");
 
     private enum RunType {
@@ -40,7 +38,7 @@ public class Tokenizer {
      * Get the tokenizer token list
      * @return
      */
-    public List<Token> getTokens() {
+    public List<String> getTokens() {
         return this.tokens;
     }
 
@@ -53,22 +51,20 @@ public class Tokenizer {
      * @return
      * @throws IOException
      */
-    public List<Token> tokenize(final Reader srcReader) throws IOException {
+    public List<String> tokenize(final Reader srcReader) throws IOException {
         // reset the tokenizer results
-        this.tokens = new ArrayList<Token>();
+        this.tokens = new ArrayList<String>();
         
         // set up token tracking data
         RunType runType = RunType.NONE;
-        long start = -1;
-        long offset = -1;
         StringBuilder tokenText = new StringBuilder();
 
         LOG.info("Tokenizing witness");
         while (true) {
             final int read = srcReader.read();
             if (read < 0) {
-                if (start != -1) {
-                    createToken( start, offset, tokenText);
+                if (tokenText.length() > 0) {
+                    createToken(tokenText);
                 }
                 break;
             } else {
@@ -77,16 +73,12 @@ public class Tokenizer {
                 if (isTokenChar(read)) {
                     // this ends a prior run of non-token characters
                     if (runType.equals(RunType.NON_TOKEN)) {
-                        createToken(start, offset, tokenText);
-                        start = -1;
+                        createToken(tokenText);
                         tokenText = new StringBuilder();
                     }
                     
                     // now it is a token run. track the start if it is new
                     runType = RunType.TOKEN;
-                    if (start == -1 ) {
-                        start = offset;
-                    }
                     
                 } else {
                     // This char is whitespace or punctuation
@@ -94,8 +86,7 @@ public class Tokenizer {
                     // if this non-token char breaks up a prior token
                     // run, create a new token with it
                     if ( runType.equals(RunType.TOKEN) ) {
-                        createToken( start, offset, tokenText);
-                        start = -1;
+                        createToken( tokenText);
                         runType = RunType.NONE;
                         tokenText = new StringBuilder();
                     } 
@@ -103,16 +94,12 @@ public class Tokenizer {
                     // Start or continue a run of non-token characters?
                     if ( Character.isWhitespace(read) == false ) {
                         runType = RunType.NON_TOKEN;
-                        if (start == -1 ) {
-                            start = offset;
-                        }
                     } else {
                         // This is whitespace. See if we need to end a non-token run.
                         // other than that, do not track the whitespace
                         if ( runType.equals(RunType.NON_TOKEN) ) {
-                            createToken(start, offset, tokenText);
+                            createToken(tokenText);
                             runType = RunType.NONE;
-                            start = -1;
                             tokenText = new StringBuilder();
                         }
                     }
@@ -120,21 +107,18 @@ public class Tokenizer {
             }
 
             tokenText.append((char) read);
-            offset++;
         }
-
-        return tokens;
+        return this.tokens;
     }
 
-    private void createToken(long start, long offset, StringBuilder tokenText) {
+    private void createToken(StringBuilder tokenText) {
         String txt = tokenText.toString();
-        Range r = new Range(start, offset);
         
         // try to identify linebreak hyphenation
         boolean joinHyphenated = false;
         if ( this.config.getHyphenation().equals(Hyphens.LINEBREAK) && this.tokens.size()>=2 ) {
-            Token lastToken = this.tokens.get( this.tokens.size()-1);
-            if ( lastToken.getText().equals("-")) {
+            String lastToken = this.tokens.get( this.tokens.size()-1);
+            if ( lastToken.equals("-")) {
                 joinHyphenated = txt.contains("\n");
             }
         }
@@ -156,10 +140,10 @@ public class Tokenizer {
             if ( joinHyphenated) {
                 // toss the hyphen and grab the preceeding token 
                 this.tokens.remove(this.tokens.size()-1);
-                Token prior = this.tokens.remove(this.tokens.size()-1);
-                txt = prior.getText() + txt;
+                String prior = this.tokens.remove(this.tokens.size()-1);
+                txt = prior + txt;
             }
-            this.tokens.add( new Token(r, txt));
+            this.tokens.add( txt );
         }
     }
 

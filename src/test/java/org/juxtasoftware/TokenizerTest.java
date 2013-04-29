@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.juxtasoftware.model.Configuration;
-import org.juxtasoftware.model.Token;
 import org.juxtasoftware.model.Configuration.Hyphens;
 
 /**
@@ -30,13 +29,13 @@ public class TokenizerTest {
         Tokenizer tokenizer = new Tokenizer();
         tokenizer.setConfig(cfg);
         tokenizer.tokenize( new StringReader(txt));
-        List<Token> tokens = tokenizer.getTokens();
+        List<String> tokens = tokenizer.getTokens();
         
         assertTrue("Wrong number of tokens", tokens.size()==4);
-        assertTrue("missing token 'the'", tokens.get(0).getText().equals("the"));
-        assertTrue("missing token 'quick'", tokens.get(1).getText().equals("quick"));
-        assertTrue("missing token 'brown'", tokens.get(2).getText().equals("brown"));
-        assertTrue("missing token 'fox'", tokens.get(3).getText().equals("fox"));
+        assertTrue("missing token 'the'", tokens.get(0).equals("the"));
+        assertTrue("missing token 'quick'", tokens.get(1).equals("quick"));
+        assertTrue("missing token 'brown'", tokens.get(2).equals("brown"));
+        assertTrue("missing token 'fox'", tokens.get(3).equals("fox"));
     }
     
     @Test
@@ -50,16 +49,16 @@ public class TokenizerTest {
         Tokenizer tokenizer = new Tokenizer();
         tokenizer.setConfig(cfg);
         tokenizer.tokenize( new StringReader(txt));
-        List<Token> tokens = tokenizer.getTokens();
+        List<String> tokens = tokenizer.getTokens();
         assertTrue("Wrong number of tokens", tokens.size()==8);
-        assertTrue("missing token 'representatives'", tokens.get(3).getText().equals("representatives"));
+        assertTrue("missing token 'representatives'", tokens.get(3).equals("representatives"));
         
         tokens.clear();
         txt = "We, therefore, the represen - \ntatives of the United States";
         tokenizer.tokenize( new StringReader(txt));
         tokens = tokenizer.getTokens();
         assertTrue("Wrong number of tokens", tokens.size()==8);
-        assertTrue("missing token 'representatives'", tokens.get(3).getText().equals("representatives"));
+        assertTrue("missing token 'representatives'", tokens.get(3).equals("representatives"));
     }
     
     @Test
@@ -73,10 +72,10 @@ public class TokenizerTest {
         Tokenizer tokenizer = new Tokenizer();
         tokenizer.setConfig(cfg);
         tokenizer.tokenize( new StringReader(txt));
-        List<Token> tokens = tokenizer.getTokens();
+        List<String> tokens = tokenizer.getTokens();
         assertTrue("Wrong number of tokens", tokens.size()==2);
-        assertTrue("missing token 'week'", tokens.get(0).getText().equals("week"));
-        assertTrue("missing token 'days'", tokens.get(1).getText().equals("days"));
+        assertTrue("missing token 'week'", tokens.get(0).equals("week"));
+        assertTrue("missing token 'days'", tokens.get(1).equals("days"));
     }
     
     @Test
@@ -92,12 +91,12 @@ public class TokenizerTest {
         Tokenizer tokenizer = new Tokenizer();
         tokenizer.setConfig(cfg);
         tokenizer.tokenize( new StringReader(txt));
-        List<Token> tokens = tokenizer.getTokens();
+        List<String> tokens = tokenizer.getTokens();
         assertTrue("Wrong number of tokens", tokens.size()==expected1.length);
         for ( int i=0; i<expected1.length; i++ ) {
             boolean match = false;
-            for ( Token t : tokens ) {
-                if (t.getText().equals(expected1[i])) {
+            for ( String t : tokens ) {
+                if (t.equals(expected1[i])) {
                     match = true;
                 }
             }
@@ -110,8 +109,8 @@ public class TokenizerTest {
         assertTrue("Wrong number of tokens", tokens.size()==expected2.length);
         for ( int i=0; i<expected2.length; i++ ) {
             boolean match = false;
-            for ( Token t : tokens ) {
-                if (t.getText().equals(expected2[i])) {
+            for ( String t : tokens ) {
+                if (t.equals(expected2[i])) {
                     match = true;
                 }
             }
@@ -129,17 +128,17 @@ public class TokenizerTest {
         Tokenizer tokenizer = new Tokenizer();
         tokenizer.setConfig(cfg);
         tokenizer.tokenize( new StringReader(txt));
-        List<Token> tokens = tokenizer.getTokens();
+        List<String> tokens = tokenizer.getTokens();
         assertTrue("Wrong number of tokens", tokens.size()==2);
-        assertTrue("missing token 'black'", tokens.get(0).getText().equals("black"));
-        assertTrue("missing token 'cat'", tokens.get(1).getText().equals("cat"));
+        assertTrue("missing token 'black'", tokens.get(0).equals("black"));
+        assertTrue("missing token 'cat'", tokens.get(1).equals("cat"));
         
         cfg.setIgnoreCase(false);
         tokenizer.setConfig(cfg);
         tokenizer.tokenize( new StringReader(txt));
         tokens = tokenizer.getTokens();
         assertTrue("Wrong number of tokens", tokens.size()==2);
-        assertTrue("missing token 'black'", tokens.get(0).getText().equals("Black"));
-        assertTrue("missing token 'cat'", tokens.get(1).getText().equals("CAT"));
+        assertTrue("missing token 'black'", tokens.get(0).equals("Black"));
+        assertTrue("missing token 'cat'", tokens.get(1).equals("CAT"));
     }
 }

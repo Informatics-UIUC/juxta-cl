@@ -24,6 +24,9 @@ import org.xml.sax.SAXException;
 public final class XmlUtils {
     
     public enum XmlType {GENERIC, TEI, RAM};
+    private XmlUtils() {
+        throw new RuntimeException("Can't instantiate XmlUtils");
+    }
     
     /**
      * Return true if this file is valid xml

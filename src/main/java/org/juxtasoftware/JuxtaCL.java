@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -31,7 +30,6 @@ import org.juxtasoftware.model.Configuration.Mode;
 import org.juxtasoftware.model.DiffException;
 import org.juxtasoftware.model.EncodingException;
 import org.juxtasoftware.model.TagStripException;
-import org.juxtasoftware.model.Token;
 import org.juxtasoftware.util.EncodingUtils;
 
 
@@ -320,12 +318,13 @@ public class JuxtaCL {
         LOG.info("Tokenizing sources");
         this.tokenizer.setConfig(this.config);
         InputStreamReader isr = null;
-        List<Token> aTokens;
-        List<Token> bTokens;
+        List<String> aTokens;
+        List<String> bTokens;
         try {
             FileInputStream fis = new FileInputStream(workA);
             isr = new InputStreamReader(fis, "UTF-8");
-            aTokens = this.tokenizer.tokenize(isr);
+            this.tokenizer.tokenize(isr);
+            aTokens = this.tokenizer.getTokens();
         }  catch (IOException e) {
             throw new DiffException("Tokenization failed", e);
         } finally {
@@ -335,12 +334,15 @@ public class JuxtaCL {
         try {
             FileInputStream fis = new FileInputStream(workB);
             isr = new InputStreamReader(fis, "UTF-8");
-            bTokens = this.tokenizer.tokenize(isr);
+            this.tokenizer.tokenize(isr);
+            bTokens = this.tokenizer.getTokens();
         } catch (IOException e) {
             throw new DiffException("Tokenization failed", e);
         } finally {
             IOUtils.closeQuietly(isr);
         }
+        
+        // TODO finish
         
         return 0;
     }

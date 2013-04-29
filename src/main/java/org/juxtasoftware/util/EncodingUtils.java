@@ -22,34 +22,34 @@ import org.mozilla.universalchardet.UniversalDetector;
 public final class EncodingUtils {
 
     private static final Logger LOG = Logger.getLogger( JuxtaCL.class );
+    private EncodingUtils() {
+        throw new RuntimeException("Can't instantiate EncodingUtils");
+    }
     
-    public static final void stripUnknownUTF8(File srcFile) throws IOException {
+    public static final File stripUnknownUTF8(File srcFile) throws IOException {
         File fixed = null;
+        BufferedReader r = null;
+        OutputStreamWriter osw = null;
         try {
             fixed = File.createTempFile("txt", "dat");
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(fixed), "UTF-8");
+            osw = new OutputStreamWriter(new FileOutputStream(fixed), "UTF-8");
             FileInputStream fis = new FileInputStream(srcFile);
             InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-            BufferedReader r = new BufferedReader(isr);
+            r = new BufferedReader(isr);
             while (true) {
                 String line = r.readLine();
                 if (line == null) {
                     break;
                 } else {
                     char bad = 0xfffd;
-                    line = line.replaceAll("" + bad, "");
+                    line = line.replaceAll("" + bad, " ");
                     osw.write(line + "\n");
                 }
             }
+            return fixed;
+        } finally {
             IOUtils.closeQuietly(r);
             IOUtils.closeQuietly(osw);
-            IOUtils.copy(new FileInputStream(fixed), new FileOutputStream(srcFile));
-        } finally {
-            if (fixed != null ) {
-                if (!fixed.delete() ) {
-                    fixed.deleteOnExit();
-                }
-            }
         }
     }
     
@@ -134,7 +134,7 @@ public final class EncodingUtils {
         }
     }
 
-    private static String detectEncoding(File srcFile) throws IOException {
+    public static String detectEncoding(File srcFile) throws IOException {
         
         // feed chunks of data to the detector until it is done
         UniversalDetector detector = new UniversalDetector(null);

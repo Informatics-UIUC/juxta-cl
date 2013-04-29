@@ -14,7 +14,6 @@ import org.juxtasoftware.model.Configuration;
 import org.juxtasoftware.model.Configuration.Algorithm;
 import org.juxtasoftware.model.Configuration.Hyphens;
 import org.juxtasoftware.model.Configuration.Mode;
-import org.juxtasoftware.model.Token;
 
 public class DiffCollatorTest extends JuxtaBase {
     private Tokenizer tokenizer;
@@ -35,8 +34,8 @@ public class DiffCollatorTest extends JuxtaBase {
     public void rosesTest() throws IOException {
         File testFileA = resourceToFile("roses.txt");
         File testFileB = resourceToFile("roses2.txt");
-        List<Token> a = this.tokenizer.tokenize(new FileReader(testFileA));
-        List<Token> b = this.tokenizer.tokenize(new FileReader(testFileB));
+        List<String> a = this.tokenizer.tokenize(new FileReader(testFileA));
+        List<String> b = this.tokenizer.tokenize(new FileReader(testFileB));
         
         DiffCollator diff = new DiffCollator();
         
@@ -53,8 +52,8 @@ public class DiffCollatorTest extends JuxtaBase {
     public void basicLevenshteinTest() throws IOException {
         String txtA = "the quick brown fox";
         String txtB = "the quick vrown fox";
-        List<Token> a = this.tokenizer.tokenize(new StringReader(txtA));
-        List<Token> b = this.tokenizer.tokenize(new StringReader(txtB));
+        List<String> a = this.tokenizer.tokenize(new StringReader(txtA));
+        List<String> b = this.tokenizer.tokenize(new StringReader(txtB));
         
         DiffCollator diff = new DiffCollator();
         diff.setAlgorithm(Algorithm.LEVENSHTEIN);
@@ -71,8 +70,8 @@ public class DiffCollatorTest extends JuxtaBase {
     public void basicJuxtaTest() throws IOException {
         String txtA = "the quick brown fox";
         String txtB = "the quick vrown fox";
-        List<Token> a = this.tokenizer.tokenize(new StringReader(txtA));
-        List<Token> b = this.tokenizer.tokenize(new StringReader(txtB));
+        List<String> a = this.tokenizer.tokenize(new StringReader(txtA));
+        List<String> b = this.tokenizer.tokenize(new StringReader(txtB));
         
         DiffCollator diff = new DiffCollator();
         diff.setAlgorithm(Algorithm.LEVENSHTEIN);
