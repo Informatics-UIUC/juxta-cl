@@ -51,7 +51,7 @@ public class DiffCollator {
             case LEVENSHTEIN:
                 return calcLevenshteinDifference( diffResult.getDeltas(), lengthA, lengthB );
             case JARO_WINKLER:
-                return calcJaroWinklerDifference( diffResult.getDeltas() );
+                return calcJaroWinklerDifference( diffResult.getDeltas(), tokensA.size() );
             default:
                 throw new RuntimeException(this.algorithm+" is not yet supported");
         }
@@ -66,8 +66,9 @@ public class DiffCollator {
      * @param lengthA 
      * @return
      */
-    private float calcJaroWinklerDifference(List<Delta> deltas ) {
-        float jaro = -1f;
+    private float calcJaroWinklerDifference(List<Delta> deltas, long baseTokenCnt ) {
+        float jaro = 0f;
+        int cnt = 0;
         int baseTokenIndex = 0; 
         int witnessTokenIndex = 0;
         for (Delta delta : deltas) {
@@ -83,11 +84,8 @@ public class DiffCollator {
                 if ( baseTokenIndex < baseDiffTokenStartIndex && witnessTokenIndex < witnessDiffTokenStartIndex) {
                     baseTokenIndex++;
                     witnessTokenIndex++;
-                    if ( jaro < 0 ) {
-                        jaro += 1f;
-                    } else {
-                        jaro = (jaro + 1f) / 2f;
-                    }
+                    jaro += 1f;
+                    cnt++;
                     continue;
                 }
 
@@ -99,29 +97,22 @@ public class DiffCollator {
                     witnessTokenIndex++;
                     Option<Object> out = JaroWinklerMetric.apply().compare(orig, rev, null);
                     Double val = (Double) out.get();
-                    if ( jaro < 0 ) {
-                        jaro += val;
-                    } else {
-                        jaro = (jaro + val.floatValue()) / 2f;
-                    }
+                    jaro += val.floatValue();
+                    cnt++;
                     continue;
                 }
                 
                 // Base still within change range, witnesss not. 
                 if ( baseTokenIndex < baseDiffTokenEndIndex && witnessTokenIndex >= witnessDiffTokenEndIndex) {
                     baseTokenIndex++;
-                    if ( jaro > 0 ) {
-                        jaro /= 2f;
-                    }
+                    cnt++;
                     continue;
                 }
                 
                 // WITNESS still within change range, base not.
                 if ( baseTokenIndex >= baseDiffTokenEndIndex && witnessTokenIndex < witnessDiffTokenEndIndex) {
                     witnessTokenIndex++;
-//                    if ( jaro > 0 ) {
-//                        jaro /= 2f;
-//                    }
+                    cnt++;
                     continue;
                 }
                 
@@ -130,9 +121,14 @@ public class DiffCollator {
             
         }
         
+        // all tokens after the last diff index align and are the same.
+        // add them to the running average
+        jaro = jaro + (baseTokenCnt - baseTokenIndex);
+        cnt = (int) (cnt + (baseTokenCnt - baseTokenIndex));
+        
         // jaro values are opposite of expected; 1 is the same instead of totally different.
         // flip it around to match other results
-        return 1.0f-jaro;
+        return 1.0f-(jaro/cnt);
     }
 
     /**
@@ -177,7 +173,7 @@ public class DiffCollator {
             }
         }
         
-        return normalizeResult( (float)(levSum+addSum-delSum) / (float)Math.max(lengthA, lengthB) );
+        return normalizeResult( (float)(levSum+addSum+delSum) / (float)Math.max(lengthA, lengthB) );
     }
 
     /**
@@ -204,7 +200,7 @@ public class DiffCollator {
                     for (Object rl : delta.getRevised().getLines() ) {
                         revLen += ((String)rl).length();
                     }
-                    diffSum += Math.max(origLen, revLen);
+                    diffSum += Math.max(origLen, revLen); 
                 }
             } else if ( delta.getType().equals(TYPE.DELETE)) {
                 // text was deleted from A. get the deleted tokens
