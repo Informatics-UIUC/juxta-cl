@@ -7,6 +7,7 @@ import org.juxtasoftware.model.Configuration.Algorithm;
 
 import scala.Option;
 
+import com.rockymadden.stringmetric.similarity.DiceSorensenMetric;
 import com.rockymadden.stringmetric.similarity.JaroWinklerMetric;
 import com.rockymadden.stringmetric.similarity.LevenshteinMetric;
 
@@ -51,7 +52,8 @@ public class DiffCollator {
             case LEVENSHTEIN:
                 return calcLevenshteinDifference( diffResult.getDeltas(), lengthA, lengthB );
             case JARO_WINKLER:
-                return calcJaroWinklerDifference( diffResult.getDeltas(), tokensA.size() );
+            case DICE_SORENSEN:
+                return calcSimilarityMetric( diffResult.getDeltas(), tokensA.size() );
             default:
                 throw new RuntimeException(this.algorithm+" is not yet supported");
         }
@@ -66,7 +68,8 @@ public class DiffCollator {
      * @param lengthA 
      * @return
      */
-    private float calcJaroWinklerDifference(List<Delta> deltas, long baseTokenCnt ) {
+    private float calcSimilarityMetric(List<Delta> deltas, long baseTokenCnt ) {
+        LOG.info("Compute percentage difference using "+this.algorithm+" similarity metric");
         float jaro = 0f;
         int cnt = 0;
         int baseTokenIndex = 0; 
@@ -95,7 +98,12 @@ public class DiffCollator {
                     String rev = (String) delta.getRevised().getLines().get(witnessTokenIndex-witnessDiffTokenStartIndex);
                     baseTokenIndex++;
                     witnessTokenIndex++;
-                    Option<Object> out = JaroWinklerMetric.apply().compare(orig, rev, null);
+                    Option<Object> out = null;
+                    if ( this.algorithm.equals(Algorithm.JARO_WINKLER) ) {
+                        out = JaroWinklerMetric.apply().compare(orig, rev, null);
+                    } else {
+                        out = DiceSorensenMetric.apply().compare(orig, rev, 1);
+                    }
                     Double val = (Double) out.get();
                     jaro += val.floatValue();
                     cnt++;

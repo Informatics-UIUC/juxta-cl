@@ -57,6 +57,19 @@ public class DiffCollatorTest extends JuxtaBase {
     }
     
     @Test
+    public void basicDiceSorensenTest() throws IOException {
+        String txtA = "the quick brown fox";
+        String txtB = "the quick vrown fox";
+        List<String> a = this.tokenizer.tokenize(new StringReader(txtA));
+        List<String> b = this.tokenizer.tokenize(new StringReader(txtB));
+        
+        DiffCollator diff = new DiffCollator();
+        diff.setAlgorithm(Algorithm.DICE_SORENSEN);
+        float ci = diff.diff(a, b);
+        assertTrue("bad dice sorensen result", ci==0.050000012f);
+    }
+    
+    @Test
     public void basicJaroWinklerTest() throws IOException {
         String txtA = "the quick brown fox";
         String txtB = "the quick vrown fox";
@@ -70,7 +83,7 @@ public class DiffCollatorTest extends JuxtaBase {
         // in jaro winkler tokens that are the same get a value of 1.
         // differences are < 1. using this algoithm, the value of
         // the change from brown -> vrown gets a value of: 0.866.
-        // algotithm computes average jw value over all tokens. (answer .93333333)?4
+        // algotithm computes average jw value over all tokens
         // for this it would be ( 1 + 1 + 0.866 + 1 ) / 4 = .9666
         // invert this to make 0 same and one different: gives 0.0333
         assertTrue("bad jaro-winkler result", ci==0.0333333f);

@@ -167,6 +167,8 @@ public class JuxtaCL {
         Set<String> diffSet = new TreeSet<String>();
         diffSet.add("juxta");
         diffSet.add("levenshtein");
+        diffSet.add("jaro_winkler");
+        diffSet.add("dice_sorensen");
         EnumValidator algoVal = new EnumValidator( diffSet );
         Option algo = oBuilder
           .withShortName("algorithm")
