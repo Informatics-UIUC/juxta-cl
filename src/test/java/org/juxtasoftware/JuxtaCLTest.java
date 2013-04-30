@@ -8,12 +8,15 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.juxtasoftware.model.Configuration;
+import org.juxtasoftware.model.Configuration.Algorithm;
+import org.juxtasoftware.model.Configuration.Mode;
 import org.juxtasoftware.model.DiffException;
 import org.juxtasoftware.model.EncodingException;
+import org.juxtasoftware.model.TagStripException;
 
 /**
- * Unit test for JuxtaCLTest; high level tests that validate command line 
- * argument processing and happy day simple text compare
+ * Unit test for JuxtaCLTest; high level tests that validate happy day simple text compare
+ * and tag extraction
  */
 public class JuxtaCLTest extends JuxtaBase {
     
@@ -28,31 +31,45 @@ public class JuxtaCLTest extends JuxtaBase {
         }
         assertTrue("Accepted invalid file paths", caughtException);
     }
+    
+    @Test
+    public void testExtract() throws DiffException, TagStripException, IOException, EncodingException {
+        File testFile = resourceToFile("note.xml");
+        Configuration config = new Configuration();
+        config.addFile(testFile.getPath() );
+        config.setMode(Mode.STRIP);
+        this.juxtaCL.setConfig(config);
+        this.juxtaCL.execute();
+        String out = this.sysOut.toString();
+        assertTrue("bad text extract", out.equals("TestTest2NoteBody\n"));
+    }
 	 
     @Test
-    public void testCompareSame() throws DiffException, FileNotFoundException, IOException, EncodingException {
-        // FIXME
-//        File testFile = resourceToFile("roses.txt");
-//        Configuration config = new Configuration();
-//        config.addFile(testFile.getPath() );
-//        config.addFile(testFile.getPath() );
-//        
-//        this.juxtaCL.setConfig(config);
-//        float changeIdx = this.juxtaCL.doComparison();
-//        assertTrue("Same files have non-zero change index", changeIdx == 0);
+    public void testCompareSame() throws DiffException, FileNotFoundException, IOException, EncodingException, TagStripException {
+        File testFile = resourceToFile("roses.txt");
+        Configuration config = new Configuration();
+        config.addFile(testFile.getPath() );
+        config.addFile(testFile.getPath() );
+        config.setAlgorithm(Algorithm.JUXTA);
+        config.setMode(Mode.DIFF);
+        this.juxtaCL.setConfig(config);
+        this.juxtaCL.execute();
+        String out = this.sysOut.toString();
+        assertTrue("Same files have non-zero change index", Float.parseFloat(out) == 0);
     }
     
     @Test
-    public void testCompareDifferent() throws IOException {
-        // FIXME add this back in later!
-//        File testFile = resourceToFile("roses.txt");
-//        File testFile2 = resourceToFile("roses2.txt");
-//        Configuration config = new Configuration();
-//        config.addFile(testFile.getPath() );
-//        config.addFile(testFile2.getPath() );
-//        
-//        this.juxtaCL.setConfig(config);
-//        int changeIdx = this.juxtaCL.doComparison();
-//        assertTrue("Different files have zero change index", changeIdx != 0);
+    public void testCompareDifferent() throws IOException, EncodingException, DiffException, TagStripException {
+        File testFile = resourceToFile("roses.txt");
+        File testFile2 = resourceToFile("roses2.txt");
+        Configuration config = new Configuration();
+        config.addFile(testFile.getPath() );
+        config.addFile(testFile2.getPath() );
+        config.setMode(Mode.DIFF);
+        config.setAlgorithm(Algorithm.JUXTA);
+        this.juxtaCL.setConfig(config);
+        this.juxtaCL.execute();
+        String out = this.sysOut.toString();
+        assertTrue("Different files have zero change index", Float.parseFloat(out) != 0);
     }
 }
