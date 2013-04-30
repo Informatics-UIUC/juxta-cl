@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -25,12 +27,14 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.juxtasoftware.model.Configuration;
+import org.juxtasoftware.model.Configuration.Algorithm;
 import org.juxtasoftware.model.Configuration.Hyphens;
 import org.juxtasoftware.model.Configuration.Mode;
 import org.juxtasoftware.model.DiffException;
 import org.juxtasoftware.model.EncodingException;
 import org.juxtasoftware.model.TagStripException;
 import org.juxtasoftware.util.EncodingUtils;
+import org.juxtasoftware.util.XmlUtils;
 
 
 /**
@@ -54,6 +58,7 @@ public class JuxtaCL {
     private String version = "0.1-SNAPSHOT";
     private XmlTagStripper tagStripper;
     private Tokenizer tokenizer;
+    private DiffCollator diffCollator;
     
     public static void main(String[] args) {
         try {
@@ -86,6 +91,7 @@ public class JuxtaCL {
     public JuxtaCL() {
         this.tagStripper = new XmlTagStripper();
         this.tokenizer = new Tokenizer();
+        this.diffCollator = new DiffCollator();
     }
     
     /**
@@ -140,6 +146,7 @@ public class JuxtaCL {
             .withSwitchDefault(true)
             .create();
         
+        // hyphenation settings
         Set<String> enumSet = new TreeSet<String>();
         enumSet.add("all");
         enumSet.add("linebreak");
@@ -155,7 +162,25 @@ public class JuxtaCL {
                   .withValidator(hyphenVal)
                   .create())
           .create();
-        Group diffOpt = gBuilder.withOption(punct).withOption(caps).withOption(verbose).withOption(hyphen).create();
+        
+        // algorithm
+        Set<String> diffSet = new TreeSet<String>();
+        diffSet.add("juxta");
+        diffSet.add("levenshtein");
+        EnumValidator algoVal = new EnumValidator( diffSet );
+        Option algo = oBuilder
+          .withShortName("algorithm")
+          .withArgument(
+              aBuilder
+                  .withMinimum(0)
+                  .withMaximum(1)
+                  .withDefault("juxta")
+                  .withValidator(algoVal)
+                  .create())
+          .create();
+        
+        // put together the diff options
+        Group diffOpt = gBuilder.withOption(punct).withOption(caps).withOption(verbose).withOption(hyphen).withOption(algo).create();
         Option diff = oBuilder
             .withShortName("diff")
             .withArgument(diffArg )
@@ -204,6 +229,12 @@ public class JuxtaCL {
                 Hyphens hFilter = Hyphens.valueOf(hs.toUpperCase());
                 this.config.setHyphenation(hFilter);
             }
+            
+            if ( cl.hasOption(algo)) {
+                String a = (String)cl.getValue(algo);
+                Algorithm ciAlgo = Algorithm.valueOf(a.toUpperCase());
+                this.config.setAlgorithm(ciAlgo);
+            }
              
             if ( cl.hasOption(verbose)) {
                 this.config.setVerbose(true);
@@ -243,6 +274,7 @@ public class JuxtaCL {
             System.out.println("   Ignore Case        : " + cfg.isIgnoreCase() );
             System.out.println("   Ignore Punctuation : " + cfg.isIgnorePunctuation());
             System.out.println("   Hyphenation        : " + cfg.getHyphenation());
+            System.out.println("   Algorithm          : " + cfg.getAlgorithm());
         } else {
             System.out.println("Tag Strip Configuration: ");
             System.out.println("   File : " + cfg.getFiles().get(0));
@@ -268,7 +300,8 @@ public class JuxtaCL {
             System.out.println(txtContent);
         } else {
             // compare the two files and dump change index to std:out
-            doComparison();
+            float ci = doComparison();
+            System.out.println(""+ci);
         }
     }
     
@@ -281,6 +314,8 @@ public class JuxtaCL {
         out.append("                                       defaults to case insensitive\n");  
         out.append("    -hyphens (all|linebreak|none)  : Hyphenation inclusion setting\n");
         out.append("                                       defaults to include all\n");  
+        out.append("    -algorithm (juxta|levenshtein) : Algorthm used to determine change index\n");
+        out.append("                                       defaults to juxta\n");  
         out.append("    -verbose                       : Show collation details\n");
         System.out.println(out.toString());
     }
@@ -297,54 +332,65 @@ public class JuxtaCL {
      * @throws DiffException 
      * @throws IOException 
      */
-    protected int doComparison() throws FileNotFoundException, EncodingException, DiffException {
+    protected float doComparison() throws FileNotFoundException, EncodingException, DiffException {
+        // validate files
         LOG.info("Compare "+this.config.getFiles());
-        File a = new File(this.config.getFiles().get(0));
-        if ( a.exists() == false ) {
-            LOG.error("Compare Failed. '"+a+"' does not exist");
-            throw new FileNotFoundException(a.getPath());
+        File[] srcs = new File[2];
+        for ( int i=0;i<2;i++) {
+            srcs[i] = new File(this.config.getFiles().get(i));
+            if ( srcs[i].exists() == false ) {
+                LOG.error("Compare Failed. '"+ srcs[i]+"' does not exist");
+                throw new FileNotFoundException( srcs[i].getPath());
+            }
         }
 
-        File b = new File(this.config.getFiles().get(1));
-        if ( b.exists() == false ) {
-            LOG.error("Compare Failed. '"+b+"' does not exist");
-            throw new FileNotFoundException(b.getPath());
-        }
-        
-        LOG.info("Create normalized working files for sources");
-        File workA = createCleanWorkFile(a);
-        File workB = createCleanWorkFile(b);
-        
-        LOG.info("Tokenizing sources");
-        this.tokenizer.setConfig(this.config);
+        // normalize encoding, extract xml content, populate array with source content
+        LOG.info("Get normalized text streams for sources");
+        FileInputStream fis = null;
         InputStreamReader isr = null;
-        List<String> aTokens;
-        List<String> bTokens;
+        String[] text = new String[2];
         try {
-            FileInputStream fis = new FileInputStream(workA);
-            isr = new InputStreamReader(fis, "UTF-8");
-            this.tokenizer.tokenize(isr);
-            aTokens = this.tokenizer.getTokens();
-        }  catch (IOException e) {
-            throw new DiffException("Tokenization failed", e);
+            for ( int i=0; i<2; i++) {
+                LOG.info("Source "+(i+1)+"...");
+                File workFile = createCleanWorkFile( srcs[i] );
+                fis = new FileInputStream(workFile);
+                isr = new InputStreamReader(fis, "UTF-8");
+                boolean isXml = XmlUtils.isValidXml(isr);
+                IOUtils.closeQuietly(isr);
+                if ( isXml ) {
+                    LOG.info("Extracting flat text content");
+                    text[i] = this.tagStripper.stripTags(workFile); 
+                } else {
+                    LOG.info("Load flat text content");
+                    fis = new FileInputStream(workFile);
+                    isr = new InputStreamReader(fis, "UTF-8");
+                    text[i] = IOUtils.toString(isr);
+                    IOUtils.closeQuietly(isr);
+                }
+                workFile.delete();
+            }
+        } catch (Exception e) {
+            throw new DiffException("Unable to get source text stream", e);
         } finally {
             IOUtils.closeQuietly(isr);
         }
-        
-        try {
-            FileInputStream fis = new FileInputStream(workB);
-            isr = new InputStreamReader(fis, "UTF-8");
-            this.tokenizer.tokenize(isr);
-            bTokens = this.tokenizer.getTokens();
-        } catch (IOException e) {
-            throw new DiffException("Tokenization failed", e);
-        } finally {
-            IOUtils.closeQuietly(isr);
+
+        // tokenize the sources
+        this.tokenizer.setConfig(this.config);
+        List<List<String>> tokens = new ArrayList<List<String>>();
+        for (int i = 0; i < text.length; i++) {
+            try {
+                this.tokenizer.tokenize( new StringReader(text[i]) );
+                tokens.add(this.tokenizer.getTokens());
+                text[i] = null;
+            } catch (IOException e ) {
+                throw new DiffException("Tokenization failed", e);
+            }
         }
-        
-        // TODO finish
-        
-        return 0;
+
+        LOG.info("Calculate change index");
+        this.diffCollator.setAlgorithm(this.config.getAlgorithm());
+        return this.diffCollator.diff(tokens.get(0), tokens.get(1));
     }
     
     /**

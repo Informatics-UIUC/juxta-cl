@@ -7,6 +7,7 @@ import org.juxtasoftware.model.Configuration.Algorithm;
 
 import scala.Option;
 
+import com.rockymadden.stringmetric.similarity.JaroWinklerMetric;
 import com.rockymadden.stringmetric.similarity.LevenshteinMetric;
 
 import difflib.Delta;
@@ -49,9 +50,89 @@ public class DiffCollator {
                 return calcJuxtaChangeIndex( diffResult.getDeltas(), lengthA, lengthB );
             case LEVENSHTEIN:
                 return calcLevenshteinDifference( diffResult.getDeltas(), lengthA, lengthB );
+            case JARO_WINKLER:
+                return calcJaroWinklerDifference( diffResult.getDeltas() );
             default:
                 throw new RuntimeException(this.algorithm+" is not yet supported");
         }
+    }
+
+    /**
+     * calculate the percent difference between the texts based in jaro-winkler distance
+     * note: jaro result is from 0-1, with 0 being completely different and 1 being the same
+     * 
+     * @param deltas
+     * @param lengthB 
+     * @param lengthA 
+     * @return
+     */
+    private float calcJaroWinklerDifference(List<Delta> deltas ) {
+        float jaro = -1f;
+        int baseTokenIndex = 0; 
+        int witnessTokenIndex = 0;
+        for (Delta delta : deltas) {
+            
+            // grab references to diff token indexes for base (original) and witness (revised)
+            int baseDiffTokenStartIndex = delta.getOriginal().getPosition();
+            int baseDiffTokenEndIndex = baseDiffTokenStartIndex + delta.getOriginal().getLines().size();
+            int witnessDiffTokenStartIndex = delta.getRevised().getPosition();
+            int witnessDiffTokenEndIndex = witnessDiffTokenStartIndex + delta.getRevised().getLines().size();
+            
+            do {
+                // curr indexes are before change - these are aligned and exact matches
+                if ( baseTokenIndex < baseDiffTokenStartIndex && witnessTokenIndex < witnessDiffTokenStartIndex) {
+                    baseTokenIndex++;
+                    witnessTokenIndex++;
+                    if ( jaro < 0 ) {
+                        jaro += 1f;
+                    } else {
+                        jaro = (jaro + 1f) / 2f;
+                    }
+                    continue;
+                }
+
+                // curr indexes are both within change bounds; this is a difference. calc similarity
+                if ( baseTokenIndex < baseDiffTokenEndIndex && witnessTokenIndex < witnessDiffTokenEndIndex) {
+                    String orig = (String) delta.getOriginal().getLines().get(baseTokenIndex-baseDiffTokenStartIndex);
+                    String rev = (String) delta.getRevised().getLines().get(witnessTokenIndex-witnessDiffTokenStartIndex);
+                    baseTokenIndex++;
+                    witnessTokenIndex++;
+                    Option<Object> out = JaroWinklerMetric.apply().compare(orig, rev, null);
+                    Double val = (Double) out.get();
+                    if ( jaro < 0 ) {
+                        jaro += val;
+                    } else {
+                        jaro = (jaro + val.floatValue()) / 2f;
+                    }
+                    continue;
+                }
+                
+                // Base still within change range, witnesss not. 
+                if ( baseTokenIndex < baseDiffTokenEndIndex && witnessTokenIndex >= witnessDiffTokenEndIndex) {
+                    baseTokenIndex++;
+                    if ( jaro > 0 ) {
+                        jaro /= 2f;
+                    }
+                    continue;
+                }
+                
+                // WITNESS still within change range, base not.
+                if ( baseTokenIndex >= baseDiffTokenEndIndex && witnessTokenIndex < witnessDiffTokenEndIndex) {
+                    witnessTokenIndex++;
+//                    if ( jaro > 0 ) {
+//                        jaro /= 2f;
+//                    }
+                    continue;
+                }
+                
+                
+            } while ( baseTokenIndex <  baseDiffTokenEndIndex || witnessTokenIndex <  witnessDiffTokenEndIndex );
+            
+        }
+        
+        // jaro values are opposite of expected; 1 is the same instead of totally different.
+        // flip it around to match other results
+        return 1.0f-jaro;
     }
 
     /**
@@ -69,8 +150,14 @@ public class DiffCollator {
         for ( Delta delta : deltas ) {
             if ( delta.getType().equals(TYPE.CHANGE)) {
                 for (int i=0; i<delta.getOriginal().getLines().size(); i++) {
-                    String orig = (String)delta.getOriginal().getLines().get(i);
-                    String rev = (String)delta.getRevised().getLines().get(i);
+                    String orig = "";
+                    for (Object ol : delta.getOriginal().getLines() ) {
+                        orig += (String)ol;
+                    }
+                    String rev = "";
+                    for (Object rl : delta.getRevised().getLines() ) {
+                        rev += (String)rl;
+                    }
                     Option<Object> out = LevenshteinMetric.apply().compare(orig, rev, null);
                     Integer val = (Integer)out.get();
                     levSum+= val;
@@ -90,7 +177,7 @@ public class DiffCollator {
             }
         }
         
-        return (float)(levSum+addSum-delSum) / (float)Math.max(lengthA, lengthB);
+        return normalizeResult( (float)(levSum+addSum-delSum) / (float)Math.max(lengthA, lengthB) );
     }
 
     /**
@@ -104,28 +191,43 @@ public class DiffCollator {
     private float calcJuxtaChangeIndex(List<Delta> deltas, long lengthA, long lengthB) {
         LOG.info("Compute change index using Juxa algorithm");
         long diffSum=0;
+        long addSum=0;
+        long delSum=0;
         for ( Delta delta : deltas ) {
             if ( delta.getType().equals(TYPE.CHANGE)) {
                 for (int i=0; i<delta.getOriginal().getLines().size(); i++) {
-                    String orig = (String)delta.getOriginal().getLines().get(i);
-                    String rev = (String)delta.getRevised().getLines().get(i);
-                    diffSum += Math.max(orig.length(), rev.length());
+                    int origLen = 0;
+                    for (Object ol : delta.getOriginal().getLines() ) {
+                        origLen += ((String)ol).length();
+                    }
+                    int revLen = 0;
+                    for (Object rl : delta.getRevised().getLines() ) {
+                        revLen += ((String)rl).length();
+                    }
+                    diffSum += Math.max(origLen, revLen);
                 }
             } else if ( delta.getType().equals(TYPE.DELETE)) {
                 // text was deleted from A. get the deleted tokens
                 for ( Object delObj : delta.getOriginal().getLines() ) {
                     String delToken = (String)delObj;
-                    diffSum += delToken.length();
+                    delSum += delToken.length();
                 }
             } else {
                 // text was inserted relative to A. get the text from B
                 for ( Object insObj : delta.getRevised().getLines() ) {
                     String insToken = (String)insObj;
-                    diffSum += insToken.length();
+                    addSum += insToken.length();
                 }
             }
         }
-        return (float)(diffSum) / (float)Math.max(lengthA, lengthB);
+        
+        return normalizeResult( (float)(diffSum+addSum+delSum) / (float)Math.max(lengthA, lengthB) );
+    }
+    
+    private float normalizeResult(float ci) {
+        ci = Math.min(1f, ci);
+        ci = Math.max(ci, 0f);
+        return ci;
     }
     
     private long getSourceLength( List<String> srcTokens ) {
