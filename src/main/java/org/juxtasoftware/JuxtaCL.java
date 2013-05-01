@@ -334,7 +334,7 @@ public class JuxtaCL {
         out.append("    -hyphens (all|linebreak|none)  : Hyphenation inclusion setting\n");
         out.append("                                       defaults to include all\n");  
         out.append("    -algorithm \n");
-        out.append("     (juxta|levenshtein|");
+        out.append("     (juxta|levenshtein|\n");
         out.append("      dice_sorensen|jaro_winkler)  : Algorthm used to determine change index\n");
         out.append("                                       defaults to juxta\n");  
         out.append("    -verbose                       : Show collation details\n");
