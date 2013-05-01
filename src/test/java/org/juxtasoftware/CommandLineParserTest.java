@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.cli2.OptionException;
 import org.junit.Test;
+import org.juxtasoftware.model.Configuration.Algorithm;
 import org.juxtasoftware.model.Configuration.Hyphens;
 import org.juxtasoftware.model.Configuration.Mode;
 
@@ -107,6 +108,32 @@ public class CommandLineParserTest extends JuxtaBase {
         assertTrue("Hyphen setting should be LINEBREAK", this.juxtaCL.getConfig().getHyphenation().equals(Hyphens.LINEBREAK));
         this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-hyphen", "none"});
         assertTrue("Hyphen setting should be NONE", this.juxtaCL.getConfig().getHyphenation().equals(Hyphens.NONE));
+    }
+    
+    @Test 
+    public void testBadAlgorithmSettings() throws OptionException {
+        boolean caughtException = false;
+        try {
+            this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-algorithm", "ferret"});
+        } catch (Exception e ) {
+            caughtException = true;
+        }
+        assertTrue("Accepted invalid algorithm setting on command line", caughtException);
+    }
+    
+    @Test 
+    public void testAlgorithmSettings() throws OptionException {
+        this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-algorithm", "juxta"});
+        assertTrue("Algorithm setting should be JUXTA", this.juxtaCL.getConfig().getAlgorithm().equals(Algorithm.JUXTA));
+        
+        this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-algorithm", "levenshtein"});
+        assertTrue("Algorithm setting should be LEVENSHTEIN", this.juxtaCL.getConfig().getAlgorithm().equals(Algorithm.LEVENSHTEIN));
+        
+        this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-algorithm", "dice_sorensen"});
+        assertTrue("Algorithm setting should be DICE_SORENSEN", this.juxtaCL.getConfig().getAlgorithm().equals(Algorithm.DICE_SORENSEN));
+        
+        this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-algorithm", "jaro_winkler"});
+        assertTrue("Algorithm setting should be JARO_WINKLER", this.juxtaCL.getConfig().getAlgorithm().equals(Algorithm.JARO_WINKLER)); 
     }
 
     @Test 

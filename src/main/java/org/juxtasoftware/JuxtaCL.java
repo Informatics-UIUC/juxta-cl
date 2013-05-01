@@ -333,7 +333,9 @@ public class JuxtaCL {
         out.append("                                       defaults to case insensitive\n");  
         out.append("    -hyphens (all|linebreak|none)  : Hyphenation inclusion setting\n");
         out.append("                                       defaults to include all\n");  
-        out.append("    -algorithm (juxta|levenshtein) : Algorthm used to determine change index\n");
+        out.append("    -algorithm \n");
+        out.append("     (juxta|levenshtein|");
+        out.append("      dice_sorensen|jaro_winkler)  : Algorthm used to determine change index\n");
         out.append("                                       defaults to juxta\n");  
         out.append("    -verbose                       : Show collation details\n");
         System.out.println(out.toString());
