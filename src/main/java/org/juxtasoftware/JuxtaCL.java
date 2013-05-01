@@ -24,8 +24,11 @@ import org.apache.commons.cli2.commandline.Parser;
 import org.apache.commons.cli2.option.Switch;
 import org.apache.commons.cli2.validation.EnumValidator;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.PatternLayout;
 import org.juxtasoftware.model.Configuration;
 import org.juxtasoftware.model.Configuration.Algorithm;
 import org.juxtasoftware.model.Configuration.Hyphens;
@@ -55,7 +58,7 @@ public class JuxtaCL {
     private static Logger LOG = Logger.getLogger(JuxtaCL.class);
     private Configuration config;
  
-    private String version = "0.1-SNAPSHOT";
+    private String version = "1.0-RC1";
     private XmlTagStripper tagStripper;
     private Tokenizer tokenizer;
     private DiffCollator diffCollator;
@@ -64,13 +67,13 @@ public class JuxtaCL {
         try {
             // init parser and logging
             System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-            PropertyConfigurator.configure("config/log4j.properties");
             
             // get the application bean
             JuxtaCL juxtaCl = new JuxtaCL();
 
             // Parse the command line to configure this instance of JuxtaCL
             juxtaCl.parseArgs(args);
+            JuxtaCL.initLogging( juxtaCl.config.isVerbose() );
             
             // run juxtaCL
             juxtaCl.execute();
@@ -82,6 +85,19 @@ public class JuxtaCL {
             LOG.error("JuxtaCL Failed", e);
             System.out.println("JuxtaCL Failed! "+e.getMessage());
             System.exit(-1);
+        }
+    }
+    
+    protected static void initLogging( boolean verbose ) {
+        if ( verbose == false ) {
+            LogManager.getRootLogger().setLevel(Level.OFF);
+        } else {
+            LogManager.getRootLogger().removeAllAppenders();
+            ConsoleAppender console = new ConsoleAppender(new PatternLayout("%m%n")); 
+            console.setThreshold(Level.DEBUG);
+            console.activateOptions();
+            LogManager.getRootLogger().addAppender(console);
+            LogManager.getRootLogger().setLevel(Level.DEBUG);
         }
     }
     
@@ -245,6 +261,7 @@ public class JuxtaCL {
         
         if ( this.config.isVerbose() ) {
             displayConfiguration(this.config);
+            Logger.getRootLogger().addAppender(new ConsoleAppender()); 
         }
     }
     

@@ -21,15 +21,6 @@
             <outputDirectory></outputDirectory>
             <fileMode>0744</fileMode>   
         </file>
-        <file>
-            <source>config/juxta.properties</source>
-            <outputDirectory>config</outputDirectory>
-        </file>
-        <file>
-            <source>config/log4j.properties-prod</source>
-            <outputDirectory>config</outputDirectory>
-            <destName>log4j.properties</destName>
-        </file>
     </files>
     <dependencySets>
         <dependencySet>

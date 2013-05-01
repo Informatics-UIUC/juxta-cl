@@ -16,7 +16,7 @@ import org.juxtasoftware.model.Configuration.Hyphens;
  * @author loufoster
  *
  */
-public class TokenizerTest {
+public class TokenizerTest extends JuxtaBase {
 
     @Test
     public void simpleTest() throws IOException {

@@ -1,6 +1,5 @@
 package org.juxtasoftware.util;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,8 +14,6 @@ import java.io.Writer;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.juxtasoftware.JuxtaCL;
-import org.mozilla.intl.chardet.nsDetector;
-import org.mozilla.intl.chardet.nsICharsetDetectionObserver;
 import org.mozilla.universalchardet.UniversalDetector;
 
 public final class EncodingUtils {
@@ -153,19 +150,9 @@ public final class EncodingUtils {
             if ( encoding != null ){
                 return encoding;
             }
-            
-            // above failed, try a different encoding detector
-            encoding =  EncodingUtils.alternateEncodeDetect(srcFile);
-            if ( encoding != null ){
-                return encoding;
-            }
-            
-            // all else fails, just look for an encoding declaration in the src
-            encoding = EncodingUtils.scanFileForEncodingDeclaration(srcFile);
-            if ( encoding == null ) {
-                LOG.error("Unable to detect encoding");
-                encoding = "UNK";
-            }
+
+            LOG.error("Unable to detect encoding");
+            encoding = "UNK";
  
         } catch (IOException e ) {
             LOG.error("Encoding detection failed", e);
@@ -174,87 +161,5 @@ public final class EncodingUtils {
             IOUtils.closeQuietly(fis);
         }
         return encoding;
-    }
-    
-    private static String scanFileForEncodingDeclaration(File srcFile) throws IOException {
-        FileInputStream fis = new FileInputStream(srcFile);
-        InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-        BufferedReader r = new BufferedReader(isr);
-        boolean foundHeader = false;
-        String encoding = null;
-        while (true) {
-            String line = r.readLine();
-            if ( line != null ) {
-                if ( foundHeader == false && line.contains("<?xml") ) {
-                    foundHeader = true;
-                    int pos = line.indexOf("<?xml");
-                    int encPos = line.indexOf("encoding=", pos);
-                    if  (encPos > -1 ) {
-                        line = line.replaceAll("\"", "'");
-                        int end = line.indexOf("'", encPos+10);
-                        encoding = line.substring(encPos+10, end);
-                        break;
-                    } else {
-                        int end = line.indexOf("?>", pos);
-                        if ( end > -1 ) {
-                            break;
-                        }
-                    }
-                } else if (foundHeader == true ) {
-                    int encPos = line.indexOf("encoding=");
-                    if  (encPos > -1 ) {
-                        line = line.replaceAll("\"", "'");
-                        int end = line.indexOf("'", encPos+10);
-                        encoding = line.substring(encPos+10, end);
-                        break;
-                    } else {
-                        int end = line.indexOf("?>");
-                        if ( end > -1 ) {
-                            break;
-                        }
-                    }
-                }
-            } else {
-                break;
-            }
-        }
-        IOUtils.closeQuietly(r);
-        return encoding;
-    }
-
-    private static String alternateEncodeDetect(File testFile) throws IOException {
-
-        nsDetector det = new nsDetector();
-        DetectListener listener = new DetectListener();
-        det.Init( listener );
-
-        BufferedInputStream imp = new BufferedInputStream(new FileInputStream(testFile));
-        byte[] buf = new byte[1024];
-        int len;
-        boolean done = false;
-        boolean isAscii = true;
-        while ((len = imp.read(buf, 0, buf.length)) != -1) {
-            if (isAscii) {
-                isAscii = det.isAscii(buf, len);
-            }
-            if (!isAscii && !done) {
-                done = det.DoIt(buf, len, false);
-            }
-        }
-        det.DataEnd();
-        imp.close();
-        return listener.getEncoding();
-    }
-    
-    private static class DetectListener implements nsICharsetDetectionObserver {
-        private String encoding;
-        public String getEncoding() {
-            return this.encoding;
-        }
-        
-        public void Notify(String charset) {
-            this.encoding = charset;
-        }
-        
     }
 }

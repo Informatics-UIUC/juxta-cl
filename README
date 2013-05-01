@@ -21,26 +21,37 @@ JuxtaCL is built by maven. Execute: mvn package
 
 Usage
 -----
-Once build, the binary distribution can be found in the target directory.
+Once built, the binary distribution can be found in the target directory.
 It will be named: juxta-{version}-bin.tar.gz.
 Expand this archive and move into the top level directory. It contains
 a script for launching JuxtaCL named juxta.sh. It accepts the following
 command line arguments:
 
--help                    - displays usage information
--version                 - prints the JuxtaCL version
--strip <file>            - takes one XML file and strips out the tag content. 
+-help                   - displays usage information
+-version                - prints the JuxtaCL version
+-strip <file>           - takes one XML file and strips out the tag content. 
                            This content is streamed to std:out
--diff <a> <b>  [options] - <a> and <b> are the two files to compare. [options]
-                           is the set of config options for the comparison.
+-diff <a> <b> [options] - <a> and <b> are the two files to compare. [options]
+                          is the set of config options for the comparison.
                            
-                           Valid options include:
+                          Valid options include:
                            
-                           [+|-]case                     - toggles case 
-                                                           sensitivity
-                           [+|-]punct                    - toggles punctuation 
-                                                           sensitivity
-                           -hyphen [all|linebreak|none]  - sets hyphenation handling
+                          [+|-]case                     - toggles case 
+                                                          sensitivity.
+                                                          Default: insensitive
+                                                           
+                          [+|-]punct                    - toggles punctuation 
+                                                          sensitivity
+                                                          Default: insensitive
+                                                           
+                          -hyphen [all|linebreak|none]  - sets hyphenation handling
+                                                          Default: all
+                                                           
+                          -algorithm                    - set the algorithm used
+                           [ juxta |                      to determine percent
+                             levenshtein |                differnece betweenn the 
+                             jaro_winkler |               files. Defaults to juxta.
+                             dice_sorensen ]
 
  
 

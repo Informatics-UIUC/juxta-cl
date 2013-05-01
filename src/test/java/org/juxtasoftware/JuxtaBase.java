@@ -15,7 +15,9 @@ public abstract class JuxtaBase {
     protected JuxtaCL juxtaCL = new JuxtaCL();
     protected ByteArrayOutputStream sysOut = new ByteArrayOutputStream();
     protected PrintStream origSysOut;
-    
+    static {
+        JuxtaCL.initLogging(true);
+    }
     @Before
     public void setup() {
         this.origSysOut = System.out;  
@@ -27,8 +29,7 @@ public abstract class JuxtaBase {
         System.setOut(this.origSysOut );
         this.sysOut.reset();
     }
-    
-    
+
     protected File resourceToFile(String resourceName) throws IOException {
         InputStream is = getClass().getResourceAsStream("/"+resourceName);
         File local = File.createTempFile("resource", "dat");
