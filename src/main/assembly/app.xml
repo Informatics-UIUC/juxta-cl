@@ -21,6 +21,21 @@
             <outputDirectory></outputDirectory>
             <fileMode>0744</fileMode>   
         </file>
+        <file>
+            <source>scripts/diff.sh</source>
+            <outputDirectory></outputDirectory>
+            <fileMode>0744</fileMode>   
+        </file>
+        <file>
+            <source>scripts/strip.sh</source>
+            <outputDirectory></outputDirectory>
+            <fileMode>0744</fileMode>   
+        </file>
+        <file>
+            <source>scripts/all.sh</source>
+            <outputDirectory></outputDirectory>
+            <fileMode>0744</fileMode>   
+        </file>
     </files>
     <dependencySets>
         <dependencySet>

@@ -68,6 +68,10 @@ public class JuxtaCL {
             // init parser and logging
             System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
             
+            // default to no logging
+            LogManager.getRootLogger().removeAllAppenders();
+            LogManager.getRootLogger().setLevel(Level.OFF);
+            
             // get the application bean
             JuxtaCL juxtaCl = new JuxtaCL();
 
@@ -90,6 +94,7 @@ public class JuxtaCL {
     
     protected static void initLogging( boolean verbose ) {
         if ( verbose == false ) {
+            LogManager.getRootLogger().removeAllAppenders();
             LogManager.getRootLogger().setLevel(Level.OFF);
         } else {
             LogManager.getRootLogger().removeAllAppenders();

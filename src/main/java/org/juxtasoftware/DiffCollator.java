@@ -153,19 +153,17 @@ public class DiffCollator {
         int addSum = 0;
         for ( Delta delta : deltas ) {
             if ( delta.getType().equals(TYPE.CHANGE)) {
-                for (int i=0; i<delta.getOriginal().getLines().size(); i++) {
-                    String orig = "";
-                    for (Object ol : delta.getOriginal().getLines() ) {
-                        orig += (String)ol;
-                    }
-                    String rev = "";
-                    for (Object rl : delta.getRevised().getLines() ) {
-                        rev += (String)rl;
-                    }
-                    Option<Object> out = LevenshteinMetric.apply().compare(orig, rev, null);
-                    Integer val = (Integer)out.get();
-                    levSum+= val;
+                String orig = "";
+                for (Object ol : delta.getOriginal().getLines() ) {
+                    orig += (String)ol;
                 }
+                String rev = "";
+                for (Object rl : delta.getRevised().getLines() ) {
+                    rev += (String)rl;
+                }
+                Option<Object> out = LevenshteinMetric.apply().compare(orig, rev, null);
+                Integer val = (Integer)out.get();
+                levSum+= val;
             } else if ( delta.getType().equals(TYPE.DELETE)) {
                 // text was deleted from A. get the deleted tokens
                 for ( Object delObj : delta.getOriginal().getLines() ) {
@@ -199,17 +197,15 @@ public class DiffCollator {
         long delSum=0;
         for ( Delta delta : deltas ) {
             if ( delta.getType().equals(TYPE.CHANGE)) {
-                for (int i=0; i<delta.getOriginal().getLines().size(); i++) {
-                    int origLen = 0;
-                    for (Object ol : delta.getOriginal().getLines() ) {
-                        origLen += ((String)ol).length();
-                    }
-                    int revLen = 0;
-                    for (Object rl : delta.getRevised().getLines() ) {
-                        revLen += ((String)rl).length();
-                    }
-                    diffSum += Math.max(origLen, revLen); 
+                int origLen = 0;
+                for (Object ol : delta.getOriginal().getLines() ) {
+                    origLen += ((String)ol).length();
                 }
+                int revLen = 0;
+                for (Object rl : delta.getRevised().getLines() ) {
+                    revLen += ((String)rl).length();
+                }
+                diffSum += Math.max(origLen, revLen); 
             } else if ( delta.getType().equals(TYPE.DELETE)) {
                 // text was deleted from A. get the deleted tokens
                 for ( Object delObj : delta.getOriginal().getLines() ) {

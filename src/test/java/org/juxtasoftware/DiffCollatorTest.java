@@ -140,9 +140,11 @@ public class DiffCollatorTest extends JuxtaBase {
         this.juxtaCL.setConfig(cfg);
         this.juxtaCL.execute();
         
-        String out = this.sysOut.toString().substring(0,4);
+        String out = this.sysOut.toString();
+        float val = Float.parseFloat(out);
+        String foo = String.format("%1.2f", val);
         
-        // the value from juxtaWS is 0.06
-        assertTrue("incorrect juxta distance diff result", out.equals("0.06"));
+        // the value from juxtaWS is 6%
+        assertTrue("incorrect juxta distance diff result", foo.equals("0.06"));
     }
 }

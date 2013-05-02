@@ -60,9 +60,11 @@ public class Tokenizer {
         StringBuilder tokenText = new StringBuilder();
 
         LOG.info("Tokenizing witness");
+        int offset = 0;
         while (true) {
             final int read = srcReader.read();
             if (read < 0) {
+                LOG.info("Total witness length: "+offset);
                 if (tokenText.length() > 0) {
                     createToken(tokenText);
                 }
@@ -106,6 +108,7 @@ public class Tokenizer {
                 }
             }
 
+            offset++;
             tokenText.append((char) read);
         }
         return this.tokens;

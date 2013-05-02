@@ -52,6 +52,16 @@ command line arguments:
                              levenshtein |                differnece betweenn the 
                              jaro_winkler |               files. Defaults to juxta.
                              dice_sorensen ]
+                             
+Also included in the final package are helper scrips; strip.sh. diff.sh and all.sh.
+
+strip.sh takes one XML file as a parameter. Flat text is dumped to std:out
+
+diff.sh takes 2 files. The change index (as calculated with Juxta algorigthm) is returned.
+The -algorithm paramter is also accepted.
+
+all.sh takes 2 file parameters. It will return a table of change indexes, one
+row for each algorithm.
 
  
 
