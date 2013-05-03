@@ -23,7 +23,7 @@ import org.xml.sax.SAXException;
  */
 public final class XmlUtils {
     
-    public enum XmlType {GENERIC, TEI, RAM};
+    public enum XmlType {GENERIC, TEI, RAM, GALE};
     private XmlUtils() {
         throw new RuntimeException("Can't instantiate XmlUtils");
     }
@@ -93,6 +93,9 @@ public final class XmlUtils {
                         break;
                     } else if ( line.contains("ram.xsd")) {
                         type = XmlType.RAM;
+                        break;
+                    } else if ( line.contains("book.dtd") || line.contains("<bookInfo>")) {
+                        type = XmlType.GALE;
                         break;
                     }
 

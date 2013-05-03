@@ -63,6 +63,15 @@ public class XmlUtilsTest {
     }
     
     @Test 
+    public void testGale() {
+        InputStream is = getClass().getResourceAsStream("/galesample.xml");
+        InputStreamReader r = new InputStreamReader(is);
+        XmlType type = XmlUtils.determineXmlType(r);
+        IOUtils.closeQuietly(r);
+        assertTrue("Unable to detect gale", type.equals(XmlType.GALE));
+    }
+    
+    @Test 
     public void testGeneric() {
         InputStream is = getClass().getResourceAsStream("/note.xml");
         InputStreamReader r = new InputStreamReader(is);

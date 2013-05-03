@@ -56,6 +56,8 @@ public class XmlTagStripper {
             return extractTeiText(content);
         } else if ( xmlType.equals(XmlType.RAM)) {
             return extractRamText(content);
+        } else if ( xmlType.equals(XmlType.GALE)) {
+            return extractGaleText(content);
         } else {
             return extractXmlText(content);
         }
@@ -69,6 +71,12 @@ public class XmlTagStripper {
         } else {
             teiXslt = IOUtils.toString( ClassLoader.getSystemResourceAsStream("xslt/tei-nons.xslt"), "utf-8");
         }
+        return doExtract(content, teiXslt);
+    }
+    
+    private String extractGaleText(String content) throws IOException, SAXException, TransformerException {
+        LOG.info("Extract Gale text");
+        String teiXslt = IOUtils.toString( ClassLoader.getSystemResourceAsStream("xslt/ocr.xslt"), "utf-8");
         return doExtract(content, teiXslt);
     }
 

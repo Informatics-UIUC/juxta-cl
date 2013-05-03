@@ -102,5 +102,19 @@ public class XmlTagStripperTest extends JuxtaBase {
         assertTrue("No text extracted", out.length() > 0);
         assertTrue("Incorrect text extracted", out.contains("=======\nThe Cry of the P.R.B."));
     }
+    
+    @Test 
+    public void testStripGaleXml() throws IOException, TagStripException, EncodingException, DiffException {
+        File testFile = resourceToFile("galesample.xml");
+        Configuration config = new Configuration();
+        config.addFile(testFile.getPath() );
+        config.setMode(Mode.STRIP);
+        this.juxtaCL.setConfig(config);
+        this.juxtaCL.execute();
+        
+        String out = this.sysOut.toString().replaceAll("\n", " ");
+        assertTrue("No text extracted", out.length() > 0);
+        assertTrue("Incorrect text extracted", out.contains("a Proposal shall not be wanting. FINIS."));
+    }
 
 }
