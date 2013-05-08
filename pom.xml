@@ -6,7 +6,7 @@
     <groupId>org.juxtasoftware</groupId>
     <artifactId>juxta-cl</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-RC1</version>
+    <version>1.0-RC2</version>
     <name>Juxta :: Command Line</name>
     <description>
         A command-line version of Juxta that accepts 2 files and returns a change index. 

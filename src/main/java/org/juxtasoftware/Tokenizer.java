@@ -3,6 +3,7 @@ package org.juxtasoftware;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -111,6 +112,13 @@ public class Tokenizer {
             offset++;
             tokenText.append((char) read);
         }
+        
+        for (Iterator<String> itr=this.tokens.iterator(); itr.hasNext(); ) {
+            String val = itr.next();
+            if ( val.equals("-")) {
+                itr.remove();
+            }
+        }
         return this.tokens;
     }
 
@@ -119,10 +127,14 @@ public class Tokenizer {
         
         // try to identify linebreak hyphenation
         boolean joinHyphenated = false;
-        if ( this.config.getHyphenation().equals(Hyphens.LINEBREAK) && this.tokens.size()>=2 ) {
+        if ( this.config.getHyphenation().equals(Hyphens.ALL) == false && this.tokens.size()>=2 ) {
             String lastToken = this.tokens.get( this.tokens.size()-1);
             if ( lastToken.equals("-")) {
-                joinHyphenated = txt.contains("\n");
+                if ( this.config.getHyphenation().equals(Hyphens.LINEBREAK)) {
+                    joinHyphenated = txt.contains("\n");
+                } else {
+                    joinHyphenated = true;
+                }
             }
         }
 
@@ -132,9 +144,6 @@ public class Tokenizer {
         } 
         if ( this.config.isIgnorePunctuation()) {
             txt = PUNCTUATION.matcher(txt).replaceAll("");
-        }
-        if ( this.config.getHyphenation().equals(Hyphens.NONE) ) {
-            txt = txt.replaceAll("-", "");
         }
         txt = txt.trim().replaceAll("\\s+", " ");
         

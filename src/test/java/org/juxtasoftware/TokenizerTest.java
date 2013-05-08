@@ -3,9 +3,11 @@ package org.juxtasoftware;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.juxtasoftware.model.Configuration;
 import org.juxtasoftware.model.Configuration.Hyphens;
@@ -36,6 +38,67 @@ public class TokenizerTest extends JuxtaBase {
         assertTrue("missing token 'quick'", tokens.get(1).equals("quick"));
         assertTrue("missing token 'brown'", tokens.get(2).equals("brown"));
         assertTrue("missing token 'fox'", tokens.get(3).equals("fox"));
+    }
+    
+    @Test
+    public void complexHyphenIgnoreTest() throws IOException {
+        InputStream is = getClass().getResourceAsStream("/hyphroses.txt");
+        String txt = IOUtils.toString(is);
+        IOUtils.closeQuietly(is);
+        
+        Configuration cfg = new Configuration();
+        cfg.setIgnoreCase(true);
+        cfg.setIgnorePunctuation(true);
+        cfg.setHyphenation(Hyphens.NONE);
+        Tokenizer tokenizer = new Tokenizer();
+        tokenizer.setConfig(cfg);
+        tokenizer.tokenize( new StringReader(txt));
+        List<String> tokens = tokenizer.getTokens();
+        assertTrue("wrong number of tokens", tokens.size() == 12);
+        assertTrue("content bad", tokens.get(0).equals("roses"));
+        assertTrue("content bad", tokens.contains("blueskunk"));
+        assertTrue("content bad", tokens.get(11).equals("you"));
+    }
+    
+    @Test
+    public void complexHyphenLinebreakTest() throws IOException {
+        InputStream is = getClass().getResourceAsStream("/hyphroses.txt");
+        String txt = IOUtils.toString(is);
+        IOUtils.closeQuietly(is);
+        
+        Configuration cfg = new Configuration();
+        cfg.setIgnoreCase(true);
+        cfg.setIgnorePunctuation(true);
+        cfg.setHyphenation(Hyphens.LINEBREAK);
+        Tokenizer tokenizer = new Tokenizer();
+        tokenizer.setConfig(cfg);
+        tokenizer.tokenize( new StringReader(txt));
+        List<String> tokens = tokenizer.getTokens();
+        assertTrue("wrong number of tokens", tokens.size() == 18);
+        assertTrue("content bad", tokens.get(0).equals("ro"));
+        assertTrue("includes hyphen", tokens.contains("-") == false);
+        assertTrue("missing joined linebreak word", tokens.contains("blueskunk"));
+        assertTrue("content bad", tokens.get(17).equals("you"));
+    }
+    
+    @Test
+    public void complexHyphenAllTest() throws IOException {
+        InputStream is = getClass().getResourceAsStream("/hyphroses.txt");
+        String txt = IOUtils.toString(is);
+        IOUtils.closeQuietly(is);
+        
+        Configuration cfg = new Configuration();
+        cfg.setIgnoreCase(true);
+        cfg.setIgnorePunctuation(true);
+        cfg.setHyphenation(Hyphens.ALL);
+        Tokenizer tokenizer = new Tokenizer();
+        tokenizer.setConfig(cfg);
+        tokenizer.tokenize( new StringReader(txt));
+        List<String> tokens = tokenizer.getTokens();
+        assertTrue("wrong number of tokens", tokens.size() == 19);
+        assertTrue("includes hyphen", tokens.contains("-") == false);
+        assertTrue("missing joined linebreak word", tokens.contains("blueskunk")==false);
+        assertTrue("content bad", tokens.get(18).equals("you"));
     }
     
     @Test
@@ -73,9 +136,8 @@ public class TokenizerTest extends JuxtaBase {
         tokenizer.setConfig(cfg);
         tokenizer.tokenize( new StringReader(txt));
         List<String> tokens = tokenizer.getTokens();
-        assertTrue("Wrong number of tokens", tokens.size()==2);
-        assertTrue("missing token 'week'", tokens.get(0).equals("week"));
-        assertTrue("missing token 'days'", tokens.get(1).equals("days"));
+        assertTrue("Wrong number of tokens", tokens.size()==1);
+        assertTrue("missing token 'weekdays'", tokens.get(0).equals("weekdays"));
     }
     
     @Test

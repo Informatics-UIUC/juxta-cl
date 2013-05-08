@@ -20,6 +20,7 @@ public class Configuration {
     private Hyphens hyphenationFilter = Hyphens.ALL; 
     private Mode mode = Mode.DIFF;
     private Algorithm algorithm = Algorithm.JUXTA;
+    private boolean normalizeEncoding = false;
     
     public void addFile(String file) {
         this.files.add(file); 
@@ -76,6 +77,14 @@ public class Configuration {
     public void setAlgorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
     }
+    
+    public void setNormalizeEncoding(boolean n) {
+        this.normalizeEncoding = n;
+    }
+    public boolean isNormalizeEncoding() {
+        return this.normalizeEncoding;
+    }
+    
 
     @Override
     public String toString() {

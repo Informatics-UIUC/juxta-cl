@@ -3,6 +3,7 @@ package org.juxtasoftware;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -58,7 +59,7 @@ public class JuxtaCL {
     private static Logger LOG = Logger.getLogger(JuxtaCL.class);
     private Configuration config;
  
-    private String version = "1.0-RC1";
+    private String version = "1.0-RC2";
     private XmlTagStripper tagStripper;
     private Tokenizer tokenizer;
     private DiffCollator diffCollator;
@@ -202,8 +203,12 @@ public class JuxtaCL {
                   .create())
           .create();
         
+        Option normal = oBuilder
+            .withShortName("normalize")
+            .create();
+        
         // put together the diff options
-        Group diffOpt = gBuilder.withOption(punct).withOption(caps).withOption(verbose).withOption(hyphen).withOption(algo).create();
+        Group diffOpt = gBuilder.withOption(punct).withOption(caps).withOption(verbose).withOption(hyphen).withOption(algo).withOption(normal).create();
         Option diff = oBuilder
             .withShortName("diff")
             .withArgument(diffArg )
@@ -258,6 +263,10 @@ public class JuxtaCL {
                 Algorithm ciAlgo = Algorithm.valueOf(a.toUpperCase());
                 this.config.setAlgorithm(ciAlgo);
             }
+            
+            if ( cl.hasOption(normal)) {
+                this.config.setNormalizeEncoding(true);
+            }
              
             if ( cl.hasOption(verbose)) {
                 this.config.setVerbose(true);
@@ -299,6 +308,7 @@ public class JuxtaCL {
             System.out.println("   Ignore Punctuation : " + cfg.isIgnorePunctuation());
             System.out.println("   Hyphenation        : " + cfg.getHyphenation());
             System.out.println("   Algorithm          : " + cfg.getAlgorithm());
+            System.out.println("   Normalize Encoding : " + cfg.isNormalizeEncoding());
         } else {
             System.out.println("Tag Strip Configuration: ");
             System.out.println("   File : " + cfg.getFiles().get(0));
@@ -336,12 +346,13 @@ public class JuxtaCL {
         out.append("                                       defaults to ignore punctuation\n");  
         out.append("    (+|-)caps                      : Toggle case sensitivity\n");
         out.append("                                       defaults to case insensitive\n");  
-        out.append("    -hyphens (all|linebreak|none)  : Hyphenation inclusion setting\n");
+        out.append("    -hyphen (all|linebreak|none)   : Hyphenation inclusion setting\n");
         out.append("                                       defaults to include all\n");  
         out.append("    -algorithm \n");
         out.append("     (juxta|levenshtein|\n");
         out.append("      dice_sorensen|jaro_winkler)  : Algorthm used to determine change index\n");
         out.append("                                       defaults to juxta\n");  
+        out.append("    -normalize                     : Normalize file encoding to UTF-8\n");
         out.append("    -verbose                       : Show collation details\n");
         System.out.println(out.toString());
     }
@@ -362,43 +373,70 @@ public class JuxtaCL {
         // validate files
         LOG.info("Compare "+this.config.getFiles());
         File[] srcs = new File[2];
+        boolean[] isXmlFile = new boolean[2];
         for ( int i=0;i<2;i++) {
             srcs[i] = new File(this.config.getFiles().get(i));
             if ( srcs[i].exists() == false ) {
                 LOG.error("Compare Failed. '"+ srcs[i]+"' does not exist");
                 throw new FileNotFoundException( srcs[i].getPath());
             }
+            isXmlFile[i] = hasXmlExtension(srcs[i]);
+            System.err.println(isXmlFile[i] );
         }
 
-        // normalize encoding, extract xml content, populate array with source content
-        LOG.info("Get normalized text streams for sources");
-        FileInputStream fis = null;
-        InputStreamReader isr = null;
         String[] text = new String[2];
-        try {
-            for ( int i=0; i<2; i++) {
-                LOG.info("Source "+(i+1)+"...");
-                File workFile = createCleanWorkFile( srcs[i] );
-                fis = new FileInputStream(workFile);
-                isr = new InputStreamReader(fis, "UTF-8");
-                boolean isXml = XmlUtils.isValidXml(isr);
-                IOUtils.closeQuietly(isr);
-                if ( isXml ) {
-                    LOG.info("Extracting flat text content");
-                    text[i] = this.tagStripper.stripTags(workFile); 
-                } else {
-                    LOG.info("Load flat text content");
+        if ( this.config.isNormalizeEncoding() ) {
+            LOG.info("Get normalized text streams for sources");
+            FileInputStream fis = null;
+            InputStreamReader isr = null;
+            
+            try {
+                for ( int i=0; i<2; i++) {
+                    LOG.info("Source "+(i+1)+"...");
+                    File workFile = createCleanWorkFile( srcs[i] );
                     fis = new FileInputStream(workFile);
                     isr = new InputStreamReader(fis, "UTF-8");
-                    text[i] = IOUtils.toString(isr);
+                    boolean isXml = XmlUtils.isValidXml(isr);
                     IOUtils.closeQuietly(isr);
+                    if ( isXml ) {
+                        LOG.info("Extracting flat text content");
+                        text[i] = this.tagStripper.stripTags(workFile); 
+                    } else {
+                        LOG.info("Load flat text content");
+                        fis = new FileInputStream(workFile);
+                        isr = new InputStreamReader(fis, "UTF-8");
+                        text[i] = IOUtils.toString(isr);
+                        IOUtils.closeQuietly(isr);
+                    }
+                    workFile.delete();
                 }
-                workFile.delete();
+            } catch (Exception e) {
+                throw new DiffException("Unable to get source text stream", e);
+            } finally {
+                IOUtils.closeQuietly(isr);
             }
-        } catch (Exception e) {
-            throw new DiffException("Unable to get source text stream", e);
-        } finally {
-            IOUtils.closeQuietly(isr);
+        } else {
+            FileReader fr = null;
+            try {
+                LOG.info("Get text streams for sources");
+                for ( int i=0; i<2; i++) {
+                    fr = new FileReader(srcs[i]);
+                    boolean isXml = XmlUtils.isValidXml(fr);
+                    if ( isXml ) {
+                        LOG.info("Extracting flat text content");
+                        text[i] = this.tagStripper.stripTags(srcs[i]); 
+                    } else {
+                        LOG.info("Load flat text content");
+                        fr = new FileReader(srcs[i]);
+                        text[i] = IOUtils.toString(fr);
+                        IOUtils.closeQuietly(fr);
+                    }
+                }
+            } catch (Exception e) {
+                throw new DiffException("Unable to get source text stream", e);
+            } finally {
+                IOUtils.closeQuietly(fr);
+            }
         }
 
         // tokenize the sources
@@ -409,6 +447,9 @@ public class JuxtaCL {
                 this.tokenizer.tokenize( new StringReader(text[i]) );
                 tokens.add(this.tokenizer.getTokens());
                 text[i] = null;
+                if ( this.config.isVerbose()) {
+                    logTokens(this.tokenizer.getTokens());
+                }
             } catch (IOException e ) {
                 throw new DiffException("Tokenization failed", e);
             }
@@ -419,6 +460,24 @@ public class JuxtaCL {
         return this.diffCollator.diff(tokens.get(0), tokens.get(1));
     }
     
+    private boolean hasXmlExtension(File file) {
+        String path = file.getAbsolutePath().toLowerCase();
+        int idx = path.lastIndexOf('.');
+        if ( idx > -1 ) {
+            return path.substring(idx).equals("xml");
+        }
+        return false;
+    }
+
+    private void logTokens(List<String> tokens) {
+        LOG.info("Source Tokens");
+        LOG.info("=============");
+        for ( String t : tokens ) {
+            LOG.info(t);
+        }
+        LOG.info("=============\n");
+    }
+
     /**
      * Strip all XML tags and return plain text string
      * 

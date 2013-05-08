@@ -15,6 +15,7 @@ public abstract class JuxtaBase {
     protected JuxtaCL juxtaCL = new JuxtaCL();
     protected ByteArrayOutputStream sysOut = new ByteArrayOutputStream();
     protected PrintStream origSysOut;
+    File workDir = new File("jx-unittests-work");
     static {
         JuxtaCL.initLogging(true);
     }
@@ -22,17 +23,20 @@ public abstract class JuxtaBase {
     public void setup() {
         this.origSysOut = System.out;  
         System.setOut(new PrintStream(this.sysOut));
+        workDir = new File("jx-unittests-work");
+        workDir.mkdir();
     }
     
     @After
     public void teardown() {
         System.setOut(this.origSysOut );
         this.sysOut.reset();
+        workDir.delete();
     }
 
     protected File resourceToFile(String resourceName) throws IOException {
         InputStream is = getClass().getResourceAsStream("/"+resourceName);
-        File local = File.createTempFile("resource", "dat");
+        File local = new File("working-"+resourceName);
         FileOutputStream fos = new FileOutputStream(local);
         IOUtils.copy(is, fos);
         IOUtils.closeQuietly(fos);
