@@ -111,6 +111,12 @@ public class CommandLineParserTest extends JuxtaBase {
     }
     
     @Test 
+    public void testNormalize() throws OptionException {
+        this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-normalize"});
+        assertTrue("normalize setting should be on", this.juxtaCL.getConfig().isNormalizeEncoding());
+    }
+    
+    @Test 
     public void testBadAlgorithmSettings() throws OptionException {
         boolean caughtException = false;
         try {
@@ -189,5 +195,27 @@ public class CommandLineParserTest extends JuxtaBase {
         this.juxtaCL.parseArgs(new String[] {"-strip", "file1", "-verbose"});
         out = this.sysOut.toString();
         assertTrue("Invalid verbose output", out.contains("Tag Strip Configuration:"));
+    }
+    
+    @Test 
+    public void testValidateTooFewXmlFiles() {
+        boolean caughtException = false;
+        try {
+            this.juxtaCL.parseArgs(new String[] {"-validate"});
+        } catch (Exception e ) {
+            caughtException = true;
+        }
+        assertTrue("Accepted missing XML file for validation", caughtException);
+    }
+    
+    @Test 
+    public void testValidateTooManyXmlFiles() {
+        boolean caughtException = false;
+        try {
+            this.juxtaCL.parseArgs(new String[] {"-validate", "file1", "file2"});
+        } catch (Exception e ) {
+            caughtException = true;
+        }
+        assertTrue("Accepted too many XML files for validation", caughtException);
     }
 }

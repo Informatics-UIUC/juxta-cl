@@ -148,11 +148,17 @@ public class JuxtaCL {
         
         // XML strip options; 1 file to strip and optional verbose flag
         Group stripOpt = gBuilder.withOption(verbose).create();
-        Argument stripArg = aBuilder.withMinimum(1).withMaximum(1).withName("file").create();
+        Argument fileArg = aBuilder.withMinimum(1).withMaximum(1).withName("file").create();
         Option strip = oBuilder
             .withShortName("strip")
-            .withArgument(stripArg )
+            .withArgument(fileArg )
             .withChildren(stripOpt)
+            .create();
+        
+        // XML validate optis
+        Option validate = oBuilder
+            .withShortName("validate")
+            .withArgument(fileArg )
             .create();
         
         // Diff options; 2 files and optional switches
@@ -216,7 +222,12 @@ public class JuxtaCL {
             .create();
 
         // glom all of the options together into the main grouping. it will be used for the parse.
-        Group opts = gBuilder.withOption(strip).withOption(diff).withOption(help).withOption(version).create();
+        Group opts = gBuilder
+            .withOption(strip)
+            .withOption(diff)
+            .withOption(validate)
+            .withOption(help)
+            .withOption(version).create();
 
         // parse the options passed in
         Parser parser = new Parser();
@@ -230,7 +241,11 @@ public class JuxtaCL {
         } else if ( cl.hasOption(help)) {
          
             this.config.setMode(Mode.HELP);
-        } else if ( cl.hasOption(strip)) {
+        } else if ( cl.hasOption(validate)) {
+         
+            this.config.setMode(Mode.VALIDATE);
+            this.config.addFile( (String)cl.getValue(validate));
+        }else if ( cl.hasOption(strip)) {
             
             this.config.setVerbose( cl.hasOption(verbose));
             this.config.setMode(Mode.STRIP);
@@ -309,8 +324,11 @@ public class JuxtaCL {
             System.out.println("   Hyphenation        : " + cfg.getHyphenation());
             System.out.println("   Algorithm          : " + cfg.getAlgorithm());
             System.out.println("   Normalize Encoding : " + cfg.isNormalizeEncoding());
-        } else {
+        } else if ( cfg.getMode().equals(Mode.STRIP)){
             System.out.println("Tag Strip Configuration: ");
+            System.out.println("   File : " + cfg.getFiles().get(0));
+        } if ( cfg.getMode().equals(Mode.VALIDATE)){
+            System.out.println("XML Validator Configuration: ");
             System.out.println("   File : " + cfg.getFiles().get(0));
         }
     }
@@ -328,6 +346,9 @@ public class JuxtaCL {
         } else if (this.config.getMode().equals(Mode.HELP)) {
             
             displayHelp();
+        } else if (this.config.getMode().equals(Mode.VALIDATE)) {
+            
+            validateXml();
         } else if ( this.config.getMode().equals(Mode.STRIP)){
             // strip XML tags and dump plain text to std::out
             String txtContent = doTagStrip();
@@ -340,7 +361,7 @@ public class JuxtaCL {
     }
     
     private void displayHelp() {
-        StringBuilder out = new StringBuilder("Usage: juxta [-diff file1 file2 [options]] | [-strip file]\n");
+        StringBuilder out = new StringBuilder("Usage: juxta [-diff file1 file2 [options]] | [-strip file] | [-validate file]\n");
         out.append("  Options:\n");
         out.append("    (+|-)punct                     : Toggle punctuation filtering\n");
         out.append("                                       defaults to ignore punctuation\n");  
@@ -353,11 +374,23 @@ public class JuxtaCL {
         out.append("      dice_sorensen|jaro_winkler)  : Algorthm used to determine change index\n");
         out.append("                                       defaults to juxta\n");  
         out.append("    -normalize                     : Normalize file encoding to UTF-8\n");
-        out.append("    -verbose                       : Show collation details\n");
+        out.append("    -verbose                       : Show progress details\n");
         System.out.println(out.toString());
     }
     
-    // TODO add validate option to check xml file? remove xml validation stuff?
+    private void validateXml() throws FileNotFoundException {
+        LOG.info("Validate XML file "+this.config.getFiles().get(0));
+        File a = new File(this.config.getFiles().get(0));
+        if ( a.exists() == false ) {
+            LOG.error("Tag Strip Failed. '"+a+"' does not exist");
+            throw new FileNotFoundException(a.getPath());
+        }
+        
+        FileReader r = new FileReader(a);
+        if ( XmlUtils.isValidXml(r,true) ) {
+            System.out.println("Valid XML");
+        }
+    }
     
     /**
      * Compare 2 files and return the change index based on the configuration
@@ -459,7 +492,8 @@ public class JuxtaCL {
         String path = file.getAbsolutePath().toLowerCase();
         int idx = path.lastIndexOf('.');
         if ( idx > -1 ) {
-            return path.substring(idx).equals("xml");
+            String ext = path.substring(idx);
+            return ext.equals(".xml");
         }
         return false;
     }

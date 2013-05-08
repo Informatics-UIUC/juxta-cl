@@ -25,18 +25,18 @@ public abstract class JuxtaBase {
         System.setOut(new PrintStream(this.sysOut));
         workDir = new File("jx-unittests-work");
         workDir.mkdir();
+        workDir.deleteOnExit();
     }
     
     @After
     public void teardown() {
         System.setOut(this.origSysOut );
         this.sysOut.reset();
-        workDir.delete();
     }
 
     protected File resourceToFile(String resourceName) throws IOException {
         InputStream is = getClass().getResourceAsStream("/"+resourceName);
-        File local = new File("working-"+resourceName);
+        File local = new File(this.workDir, resourceName);
         FileOutputStream fos = new FileOutputStream(local);
         IOUtils.copy(is, fos);
         IOUtils.closeQuietly(fos);

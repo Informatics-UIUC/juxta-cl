@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Configuration {
     public enum Hyphens {ALL, LINEBREAK, NONE}
-    public enum Mode {VERSION, HELP, STRIP, DIFF};
+    public enum Mode {VERSION, HELP, STRIP, VALIDATE, DIFF};
     public enum Algorithm {JUXTA, LEVENSHTEIN, JARO_WINKLER, DICE_SORENSEN};
     
     private List<String> files = new ArrayList<String>();

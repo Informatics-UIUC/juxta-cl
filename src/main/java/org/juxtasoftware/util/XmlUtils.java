@@ -13,6 +13,8 @@ import org.apache.commons.io.IOUtils;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Extract all namespace info from an XML source. Flavors of XML detected are:
@@ -22,7 +24,6 @@ import org.xml.sax.SAXException;
  *
  */
 public final class XmlUtils {
-    
     public enum XmlType {GENERIC, TEI, RAM, GALE};
     private XmlUtils() {
         throw new RuntimeException("Can't instantiate XmlUtils");
@@ -33,7 +34,10 @@ public final class XmlUtils {
      * @param fileReader
      * @return
      */
-    public static boolean isValidXml( final Reader fileReader ) {
+    public static boolean isValidXml( final Reader fileReader ) { 
+        return isValidXml(fileReader, false);
+    }
+    public static boolean isValidXml( final Reader fileReader, boolean logErrors ) {
         DocumentBuilder builder = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(false);
@@ -60,13 +64,40 @@ public final class XmlUtils {
         }
         
         try {
-            builder.setErrorHandler( null );
+            if ( logErrors ) {
+                builder.setErrorHandler( new LoggingErrorHandler() );
+            } else {
+                builder.setErrorHandler( null );
+            }
             builder.parse( new InputSource(fileReader));
             return true;
         } catch (SAXException e) {
             return false;
         } catch (IOException e) {
             return false;
+        }
+    }
+    
+    private static class LoggingErrorHandler extends DefaultHandler {
+        public void warning(SAXParseException e) throws SAXException {
+            System.out.println("Warning ");
+            printInfo(e);
+        }
+
+        public void error(SAXParseException e) throws SAXException {
+            System.out.println("Error ");
+            printInfo(e);
+        }
+
+        public void fatalError(SAXParseException e) throws SAXException {
+            System.out.println("Fatal Error ");
+            printInfo(e);
+        }
+
+        private void printInfo(SAXParseException e) {
+            System.out.println("  Line number: " + e.getLineNumber());
+            System.out.println("  Column number: " + e.getColumnNumber());
+            System.out.println("  "+e.getMessage());
         }
     }
     
