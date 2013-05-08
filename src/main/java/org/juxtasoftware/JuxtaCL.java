@@ -357,6 +357,8 @@ public class JuxtaCL {
         System.out.println(out.toString());
     }
     
+    // TODO add validate option to check xml file? remove xml validation stuff?
+    
     /**
      * Compare 2 files and return the change index based on the configuration
      * settings collected from the command line
@@ -381,7 +383,6 @@ public class JuxtaCL {
                 throw new FileNotFoundException( srcs[i].getPath());
             }
             isXmlFile[i] = hasXmlExtension(srcs[i]);
-            System.err.println(isXmlFile[i] );
         }
 
         String[] text = new String[2];
@@ -394,12 +395,8 @@ public class JuxtaCL {
                 for ( int i=0; i<2; i++) {
                     LOG.info("Source "+(i+1)+"...");
                     File workFile = createCleanWorkFile( srcs[i] );
-                    fis = new FileInputStream(workFile);
-                    isr = new InputStreamReader(fis, "UTF-8");
-                    boolean isXml = XmlUtils.isValidXml(isr);
-                    IOUtils.closeQuietly(isr);
-                    if ( isXml ) {
-                        LOG.info("Extracting flat text content");
+                    if ( isXmlFile[i] ) {
+                        LOG.info("Extracting flat text content from XML source");
                         text[i] = this.tagStripper.stripTags(workFile); 
                     } else {
                         LOG.info("Load flat text content");
@@ -420,10 +417,8 @@ public class JuxtaCL {
             try {
                 LOG.info("Get text streams for sources");
                 for ( int i=0; i<2; i++) {
-                    fr = new FileReader(srcs[i]);
-                    boolean isXml = XmlUtils.isValidXml(fr);
-                    if ( isXml ) {
-                        LOG.info("Extracting flat text content");
+                    if ( isXmlFile[i] ) {
+                        LOG.info("Extracting flat text content from XML source");
                         text[i] = this.tagStripper.stripTags(srcs[i]); 
                     } else {
                         LOG.info("Load flat text content");
