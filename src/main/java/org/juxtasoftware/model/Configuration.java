@@ -11,7 +11,7 @@ import java.util.List;
 public class Configuration {
     public enum Hyphens {ALL, LINEBREAK, NONE}
     public enum Mode {VERSION, HELP, STRIP, VALIDATE, DIFF};
-    public enum Algorithm {JUXTA, LEVENSHTEIN, JARO_WINKLER, DICE_SORENSEN};
+    public enum Algorithm {JUXTA, LEVENSHTEIN, JARO_WINKLER};
     
     private List<String> files = new ArrayList<String>();
     private boolean ignorePunctuation = true;

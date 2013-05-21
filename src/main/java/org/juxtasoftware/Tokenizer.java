@@ -21,6 +21,7 @@ public class Tokenizer {
     private static Logger LOG = Logger.getLogger(Tokenizer.class);
     private Configuration config;
     private List<String> tokens;
+    private long tokenizedLength = 0;
     private static final Pattern PUNCTUATION = Pattern.compile("[^a-zA-Z0-9\\-]");
 
     private enum RunType {
@@ -42,6 +43,14 @@ public class Tokenizer {
     public List<String> getTokens() {
         return this.tokens;
     }
+    
+    /**
+     * Get total length of tokens
+     * @return
+     */
+    public long getTokenizedLength() {
+        return this.tokenizedLength;
+    }
 
     /**
      * Break the content of the <code>srcFile</code> into tokens based upon
@@ -55,6 +64,7 @@ public class Tokenizer {
     public List<String> tokenize(final Reader srcReader) throws IOException {
         // reset the tokenizer results
         this.tokens = new ArrayList<String>();
+        this.tokenizedLength = 0;
         
         // set up token tracking data
         RunType runType = RunType.NONE;
@@ -156,6 +166,7 @@ public class Tokenizer {
                 txt = prior + txt;
             }
             this.tokens.add( txt );
+            this.tokenizedLength += txt.length();
         }
     }
 

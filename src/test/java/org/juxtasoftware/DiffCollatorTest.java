@@ -39,34 +39,23 @@ public class DiffCollatorTest extends JuxtaBase {
         File testFileA = resourceToFile("roses.txt");
         File testFileB = resourceToFile("roses2.txt");
         List<String> a = this.tokenizer.tokenize(new FileReader(testFileA));
+        long lenA = this.tokenizer.getTokenizedLength();
         List<String> b = this.tokenizer.tokenize(new FileReader(testFileB));
+        long lenB = this.tokenizer.getTokenizedLength();
         
         DiffCollator diff = new DiffCollator();
         
         diff.setAlgorithm(Algorithm.JUXTA);
-        float ci = diff.diff(a, b);
+        float ci = diff.diff(a, b, lenA, lenB);
         System.out.println("Juxta: "+ci);
         
         diff.setAlgorithm(Algorithm.LEVENSHTEIN);
-        ci = diff.diff(a, b);
+        ci = diff.diff(a, b, lenA, lenB);
         System.out.println("lev: "+ci);
         
         diff.setAlgorithm(Algorithm.JARO_WINKLER);
-        ci = diff.diff(a, b);
+        ci = diff.diff(a, b, lenA, lenB);
         System.out.println("jw: "+ci);
-    }
-    
-    @Test
-    public void basicDiceSorensenTest() throws IOException {
-        String txtA = "the quick brown fox";
-        String txtB = "the quick vrown fox";
-        List<String> a = this.tokenizer.tokenize(new StringReader(txtA));
-        List<String> b = this.tokenizer.tokenize(new StringReader(txtB));
-        
-        DiffCollator diff = new DiffCollator();
-        diff.setAlgorithm(Algorithm.DICE_SORENSEN);
-        float ci = diff.diff(a, b);
-        assertTrue("bad dice sorensen result", ci==0.050000012f);
     }
     
     @Test
@@ -74,11 +63,13 @@ public class DiffCollatorTest extends JuxtaBase {
         String txtA = "the quick brown fox";
         String txtB = "the quick vrown fox";
         List<String> a = this.tokenizer.tokenize(new StringReader(txtA));
+        long lenA = this.tokenizer.getTokenizedLength();
         List<String> b = this.tokenizer.tokenize(new StringReader(txtB));
+        long lenB = this.tokenizer.getTokenizedLength();
         
         DiffCollator diff = new DiffCollator();
         diff.setAlgorithm(Algorithm.JARO_WINKLER);
-        float ci = diff.diff(a, b);
+        float ci = diff.diff(a, b, lenA, lenB);
         
         // in jaro winkler tokens that are the same get a value of 1.
         // differences are < 1. using this algoithm, the value of
@@ -94,11 +85,13 @@ public class DiffCollatorTest extends JuxtaBase {
         String txtA = "the quick brown fox";
         String txtB = "the quick vrown fox";
         List<String> a = this.tokenizer.tokenize(new StringReader(txtA));
+        long lenA = this.tokenizer.getTokenizedLength();
         List<String> b = this.tokenizer.tokenize(new StringReader(txtB));
+        long lenB = this.tokenizer.getTokenizedLength();
         
         DiffCollator diff = new DiffCollator();
         diff.setAlgorithm(Algorithm.LEVENSHTEIN);
-        float ci = diff.diff(a, b);
+        float ci = diff.diff(a, b, lenA, lenB);
         
         // 16 letters considered in the diff. only 1 has been changed.
         // this makes the levenhtein diff result in:
@@ -112,11 +105,13 @@ public class DiffCollatorTest extends JuxtaBase {
         String txtA = "the quick brown fox";
         String txtB = "the quick vrown fox";
         List<String> a = this.tokenizer.tokenize(new StringReader(txtA));
+        long lenA = this.tokenizer.getTokenizedLength();
         List<String> b = this.tokenizer.tokenize(new StringReader(txtB));
+        long lenB = this.tokenizer.getTokenizedLength();
         
         DiffCollator diff = new DiffCollator();
         diff.setAlgorithm(Algorithm.JUXTA);
-        float ci = diff.diff(a, b);
+        float ci = diff.diff(a, b, lenA, lenB);
         
         // 16 letters considered in the diff. one 5 letter word has changed
         // this makes the juxta diff result in:

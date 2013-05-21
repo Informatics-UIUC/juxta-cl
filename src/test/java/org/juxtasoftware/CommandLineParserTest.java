@@ -134,10 +134,7 @@ public class CommandLineParserTest extends JuxtaBase {
         
         this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-algorithm", "levenshtein"});
         assertTrue("Algorithm setting should be LEVENSHTEIN", this.juxtaCL.getConfig().getAlgorithm().equals(Algorithm.LEVENSHTEIN));
-        
-        this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-algorithm", "dice_sorensen"});
-        assertTrue("Algorithm setting should be DICE_SORENSEN", this.juxtaCL.getConfig().getAlgorithm().equals(Algorithm.DICE_SORENSEN));
-        
+               
         this.juxtaCL.parseArgs(new String[] {"-diff", "file1", "file2", "-algorithm", "jaro_winkler"});
         assertTrue("Algorithm setting should be JARO_WINKLER", this.juxtaCL.getConfig().getAlgorithm().equals(Algorithm.JARO_WINKLER)); 
     }

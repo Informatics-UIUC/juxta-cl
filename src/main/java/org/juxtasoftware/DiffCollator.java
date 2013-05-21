@@ -7,7 +7,6 @@ import org.juxtasoftware.model.Configuration.Algorithm;
 
 import scala.Option;
 
-import com.rockymadden.stringmetric.similarity.DiceSorensenMetric;
 import com.rockymadden.stringmetric.similarity.JaroWinklerMetric;
 import com.rockymadden.stringmetric.similarity.LevenshteinMetric;
 
@@ -37,13 +36,13 @@ public class DiffCollator {
      * Compare the token streams of two documents and return a floating point value
      * between 0.0 and 1.0 that is an indicator of how different the two streams are.
      * Value of 0 means that there is no difference, 1 means completely different.
+     * @param lengthB 
+     * @param lengthA 
      * 
      * @return
      */
-    public float diff(List<String> tokensA, List<String> tokensB) {
+    public float diff(List<String> tokensA, List<String> tokensB, Long lengthA, Long lengthB) {
         LOG.info("Diff the texts");
-        long lengthA = getSourceLength(tokensA);
-        long lengthB = getSourceLength(tokensB);
         Patch diffResult = DiffUtils.diff(tokensA, tokensB);
         
         switch ( this.algorithm ) {
@@ -52,7 +51,6 @@ public class DiffCollator {
             case LEVENSHTEIN:
                 return calcLevenshteinDifference( diffResult.getDeltas(), lengthA, lengthB );
             case JARO_WINKLER:
-            case DICE_SORENSEN:
                 return calcSimilarityMetric( diffResult.getDeltas(), tokensA.size() );
             default:
                 throw new RuntimeException(this.algorithm+" is not yet supported");
@@ -98,12 +96,7 @@ public class DiffCollator {
                     String rev = (String) delta.getRevised().getLines().get(witnessTokenIndex-witnessDiffTokenStartIndex);
                     baseTokenIndex++;
                     witnessTokenIndex++;
-                    Option<Object> out = null;
-                    if ( this.algorithm.equals(Algorithm.JARO_WINKLER) ) {
-                        out = JaroWinklerMetric.apply().compare(orig, rev, null);
-                    } else {
-                        out = DiceSorensenMetric.apply().compare(orig, rev, 1);
-                    }
+                    Option<Object> out = JaroWinklerMetric.apply().compare(orig, rev, null);
                     Double val = (Double) out.get();
                     jaro += val.floatValue();
                     cnt++;
@@ -155,11 +148,11 @@ public class DiffCollator {
             if ( delta.getType().equals(TYPE.CHANGE)) {
                 String orig = "";
                 for (Object ol : delta.getOriginal().getLines() ) {
-                    orig += (String)ol;
+                    orig += ((String)ol+" ");
                 }
                 String rev = "";
                 for (Object rl : delta.getRevised().getLines() ) {
-                    rev += (String)rl;
+                    rev += ((String)rl+" ");
                 }
                 Option<Object> out = LevenshteinMetric.apply().compare(orig, rev, null);
                 Integer val = (Integer)out.get();
@@ -228,13 +221,5 @@ public class DiffCollator {
         ci = Math.min(1f, ci);
         ci = Math.max(ci, 0f);
         return ci;
-    }
-    
-    private long getSourceLength( List<String> srcTokens ) {
-        long len = 0;
-        for ( String t : srcTokens ) {
-            len += t.length();
-        }
-        return len;
     }
 }

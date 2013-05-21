@@ -59,7 +59,7 @@ public class JuxtaCL {
     private static Logger LOG = Logger.getLogger(JuxtaCL.class);
     private Configuration config;
  
-    private String version = "1.0-RC2";
+    private String version = "1.0-RC3";
     private XmlTagStripper tagStripper;
     private Tokenizer tokenizer;
     private DiffCollator diffCollator;
@@ -196,7 +196,6 @@ public class JuxtaCL {
         diffSet.add("juxta");
         diffSet.add("levenshtein");
         diffSet.add("jaro_winkler");
-        diffSet.add("dice_sorensen");
         EnumValidator algoVal = new EnumValidator( diffSet );
         Option algo = oBuilder
           .withShortName("algorithm")
@@ -344,7 +343,6 @@ public class JuxtaCL {
         if ( this.config.getMode().equals(Mode.VERSION)) {
             System.out.println("JuxtaCL Version "+this.version);
         } else if (this.config.getMode().equals(Mode.HELP)) {
-            
             displayHelp();
         } else if (this.config.getMode().equals(Mode.VALIDATE)) {
             
@@ -371,7 +369,7 @@ public class JuxtaCL {
         out.append("                                       defaults to include all\n");  
         out.append("    -algorithm \n");
         out.append("     (juxta|levenshtein|\n");
-        out.append("      dice_sorensen|jaro_winkler)  : Algorthm used to determine change index\n");
+        out.append("      jaro_winkler)                : Algorthm used to determine change index\n");
         out.append("                                       defaults to juxta\n");  
         out.append("    -normalize                     : Normalize file encoding to UTF-8\n");
         out.append("    -verbose                       : Show progress details\n");
@@ -470,10 +468,12 @@ public class JuxtaCL {
         // tokenize the sources
         this.tokenizer.setConfig(this.config);
         List<List<String>> tokens = new ArrayList<List<String>>();
+        List<Long> tokenLen = new ArrayList<Long>();
         for (int i = 0; i < text.length; i++) {
             try {
                 this.tokenizer.tokenize( new StringReader(text[i]) );
                 tokens.add(this.tokenizer.getTokens());
+                tokenLen.add( this.tokenizer.getTokenizedLength()  );
                 text[i] = null;
                 if ( this.config.isVerbose()) {
                     logTokens(this.tokenizer.getTokens());
@@ -485,7 +485,7 @@ public class JuxtaCL {
 
         LOG.info("Calculate change index");
         this.diffCollator.setAlgorithm(this.config.getAlgorithm());
-        return this.diffCollator.diff(tokens.get(0), tokens.get(1));
+        return this.diffCollator.diff(tokens.get(0), tokens.get(1), tokenLen.get(0), tokenLen.get(1));
     }
     
     private boolean hasXmlExtension(File file) {
