@@ -59,7 +59,7 @@ public class JuxtaCL {
     private static Logger LOG = Logger.getLogger(JuxtaCL.class);
     private Configuration config;
  
-    private String version = "1.0-RC3";
+    private String version = "1.0";
     private XmlTagStripper tagStripper;
     private Tokenizer tokenizer;
     private DiffCollator diffCollator;

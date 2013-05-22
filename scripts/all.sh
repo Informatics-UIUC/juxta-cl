@@ -7,6 +7,3 @@ java -jar -server -Xmn512M -Xms1G -Xmx1G -XX:+OptimizeStringConcat juxta-cl.jar 
 
 echo -n 'JARO WINKLER  : '
 java -jar -server -Xmn512M -Xms1G -Xmx1G -XX:+OptimizeStringConcat juxta-cl.jar -diff "$@" -algorithm jaro_winkler
-
-echo -n 'DICE SORENSEN : '
-java -jar -server -Xmn512M -Xms1G -Xmx1G -XX:+OptimizeStringConcat juxta-cl.jar -diff "$@" -algorithm dice_sorensen
