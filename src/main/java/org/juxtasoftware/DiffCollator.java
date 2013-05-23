@@ -127,9 +127,7 @@ public class DiffCollator {
         jaro = jaro + (baseTokenCnt - baseTokenIndex);
         cnt = (int) (cnt + (baseTokenCnt - baseTokenIndex));
         
-        // jaro values are opposite of expected; 1 is the same instead of totally different.
-        // flip it around to match other results
-        return 1.0f-(jaro/cnt);
+        return jaro/cnt;
     }
 
     /**
@@ -172,7 +170,7 @@ public class DiffCollator {
             }
         }
         
-        return normalizeResult( (float)(levSum+addSum+delSum) / (float)Math.max(lengthA, lengthB) );
+        return 1.0f-normalizeResult( (float)(levSum+addSum+delSum) / (float)Math.max(lengthA, lengthB) );
     }
 
     /**
@@ -214,7 +212,7 @@ public class DiffCollator {
             }
         }
         
-        return normalizeResult( (float)(diffSum+addSum+delSum) / (float)Math.max(lengthA, lengthB) );
+        return 1.0f-normalizeResult( (float)(diffSum+addSum+delSum) / (float)Math.max(lengthA, lengthB) );
     }
     
     private float normalizeResult(float ci) {

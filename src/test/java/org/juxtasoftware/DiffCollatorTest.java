@@ -77,7 +77,7 @@ public class DiffCollatorTest extends JuxtaBase {
         // algotithm computes average jw value over all tokens
         // for this it would be ( 1 + 1 + 0.866 + 1 ) / 4 = .9666
         // invert this to make 0 same and one different: gives 0.0333
-        assertTrue("bad jaro-winkler result", ci==0.0333333f);
+        assertTrue("bad jaro-winkler result", ci==(1f-0.0333333f) );
     }
     
     @Test
@@ -97,7 +97,7 @@ public class DiffCollatorTest extends JuxtaBase {
         // this makes the levenhtein diff result in:
         // total levenshtein distance / total letters compared
         // 1 / 16 =  0.0625
-        assertTrue("incorrect levenshtein distance diff result", ci == 0.0625);
+        assertTrue("incorrect levenshtein distance diff result", ci == (1f-0.0625));
     }
     
     @Test
@@ -117,7 +117,7 @@ public class DiffCollatorTest extends JuxtaBase {
         // this makes the juxta diff result in:
         // total word letters in diff / max witness length
         // 5 / 16 =  0.3125
-        assertTrue("incorrect juxta distance diff result", ci == 0.3125);
+        assertTrue("incorrect juxta distance diff result", ci == (1f-0.3125));
     }
     
     @Test
@@ -140,6 +140,8 @@ public class DiffCollatorTest extends JuxtaBase {
         String foo = String.format("%1.2f", val);
         
         // the value from juxtaWS is 6%
+        float expected = 1f-Float.parseFloat(foo);
+        foo = String.format("%1.2f", expected);
         assertTrue("incorrect juxta distance diff result", foo.equals("0.06"));
     }
 }

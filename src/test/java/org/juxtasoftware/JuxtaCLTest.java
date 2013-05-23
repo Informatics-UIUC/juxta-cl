@@ -55,7 +55,7 @@ public class JuxtaCLTest extends JuxtaBase {
         this.juxtaCL.setConfig(config);
         this.juxtaCL.execute();
         String out = this.sysOut.toString();
-        assertTrue("Same files have non-zero change index", Float.parseFloat(out) == 0);
+        assertTrue("Same files have < 1 change index", Float.parseFloat(out) == 1);
     }
     
     @Test
@@ -70,6 +70,6 @@ public class JuxtaCLTest extends JuxtaBase {
         this.juxtaCL.setConfig(config);
         this.juxtaCL.execute();
         String out = this.sysOut.toString();
-        assertTrue("Different files have zero change index", Float.parseFloat(out) != 0);
+        assertTrue("Different files have 1 change index", Float.parseFloat(out) != 1);
     }
 }
