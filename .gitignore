@@ -3,4 +3,6 @@ target/
 logs/
 data/
 .idea/
+.classpath
+.project
 *.iml
